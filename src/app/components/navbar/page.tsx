@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import Wrapper from "../wrapper/page";
 
 const Navbar = () => {
-  return (
-    <div>Navbar</div>
-  )
-}
+  return <Wrapper>Navbar</Wrapper>;
+};
 
-export default Navbar
+export default Navbar;

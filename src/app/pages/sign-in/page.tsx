@@ -45,26 +45,9 @@ const SignUp = () => {
             </Link>
           </Flex>
           <Heading as="h4" fontSize="1.4rem" my="1.5rem" textAlign="center">
-            Register as a Writer/Reader
+            Welcome bak{" "}
           </Heading>
           <form>
-            <HStack>
-              <FormControl mb="1rem">
-                <FormLabel>First name</FormLabel>
-                <Input placeholder="First name" />
-              </FormControl>
-              <FormControl mb="1rem">
-                <FormLabel>Last name</FormLabel>
-                <Input placeholder="Last name" />
-              </FormControl>
-            </HStack>
-            <FormControl mb="1rem">
-              <FormLabel>You are joining as?</FormLabel>
-              <Select placeholder="Writer">
-                <option>Writer</option>
-                <option>Reader</option>
-              </Select>
-            </FormControl>
             <FormControl mb="1rem">
               <FormLabel>Email</FormLabel>
               <Input placeholder="marysmith@gmail.com" />
@@ -74,25 +57,10 @@ const SignUp = () => {
               {/* <Icon as={FiEye} /> */}
               <Input placeholder="********" />
             </FormControl>
-            <FormControl mb="1rem">
-              <FormLabel>Confirm Password</FormLabel>
-
-              <Input placeholder="********" />
-            </FormControl>
             <Button type="submit" w="100%" mt=".2rem" bg="#543EE0" color="#fff">
-              Create Account
+              Log in{" "}
             </Button>
           </form>
-          <VStack gap="1.2rem" mt="1.2rem">
-            <Button type="submit" w="100%">
-              <Icon as={FcGoogle} mr=".5rem" />
-              Sign up with google
-            </Button>
-            <Button type="submit" w="100%">
-              <Icon as={FaLinkedin} color="#0072b1" mr=".5rem" />
-              Sign up with Linkedin
-            </Button>
-          </VStack>
         </Box>
       </Box>
     </Flex>

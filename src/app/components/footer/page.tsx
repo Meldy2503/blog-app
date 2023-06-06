@@ -1,7 +1,8 @@
 import React from "react";
+import Wrapper from "../wrapper/page";
 
 const Footer = () => {
-  return <div>Footer</div>;
+  return <Wrapper>Footer</Wrapper>;
 };
 
 export default Footer;

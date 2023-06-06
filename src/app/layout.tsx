@@ -1,25 +1,8 @@
-// app/providers.tsx
 "use client";
-
 import "./globals.css";
-import { CacheProvider } from "@chakra-ui/next-js";
-import { ChakraProvider } from "@chakra-ui/react";
-import { Inter } from "next/font/google";
 import Navbar from "./components/navbar/page";
 import Footer from "./components/footer/page";
-import { extendTheme } from "@chakra-ui/react";
-
-const inter = Inter({ subsets: ["latin"] });
-
-const colors = {
-  brand: {
-    900: "#1a365d",
-    800: "#153e75",
-    700: "#2a69ac",
-  },
-};
-
-export const theme = extendTheme({ colors });
+import { Providers } from "../app/providers";
 
 export const metadata = {
   title: "Create Next App",
@@ -33,14 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <CacheProvider>
-          <ChakraProvider theme={theme}>
-            <Navbar />
-            {children}
-            <Footer />
-          </ChakraProvider>
-        </CacheProvider>
+      <body>
+        <Providers>
+          {/* <Navbar /> */}
+          {children}
+          {/* <Footer /> */}
+        </Providers>
       </body>
     </html>
   );
