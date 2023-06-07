@@ -21,11 +21,8 @@ import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin } from "react-icons/fa";
 import Image from "next/image";
 
-{
-}
 const SignUp = () => {
   return (
-    // <Wrapper>
     <Flex>
       <Box
         w="50%"
@@ -96,7 +93,6 @@ const SignUp = () => {
         </Box>
       </Box>
     </Flex>
-    // </Wrapper>
   );
 };
 
