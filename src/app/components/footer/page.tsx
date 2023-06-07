@@ -14,7 +14,7 @@ export default function LargeWithLogoLeft() {
   return (
     <Box bg="rgba(255, 237, 204, 0.5)" pt="3rem" pb="2rem">
       <Box
-        maxW="1200px"
+        maxW="1100px"
         m="auto"
         w={{ base: "95%", md: "90%" }}
         color="#111111"

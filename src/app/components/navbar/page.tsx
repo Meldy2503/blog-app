@@ -27,12 +27,12 @@ export default function WithSubnavigation() {
       borderStyle={"solid"}
       borderColor={useColorModeValue("gray.200", "gray.900")}
     >
-      <Box maxW="1200px" m="auto" w={{ base: "95%", md: "90%" }}>
+      <Box maxW="1100px" m="auto" w={{ base: "95%", md: "90%" }}>
         <Flex
           bg={useColorModeValue("white", "gray.800")}
           color="#111111"
           fontWeight={700}
-          py={{ base: 2 }}
+          py={{ base: 2, md: 4 }}
           align={"center"}
         >
           <Flex
@@ -74,7 +74,7 @@ export default function WithSubnavigation() {
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}
             direction={"row"}
-            spacing={{ base: 3, md: 6 }}
+            spacing={{ base: 4, md: 6 }}
           >
             <Button
               as={"a"}
