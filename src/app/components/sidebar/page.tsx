@@ -22,30 +22,86 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Input,
 } from "@chakra-ui/react";
 import {
-  FiHome,
   FiTrendingUp,
-  FiCompass,
-  FiStar,
-  FiSettings,
   FiMenu,
   FiBell,
   FiChevronDown,
+  FiLogOut,
 } from "react-icons/fi";
+import { BsLayoutWtf, BsBookmarks, BsPerson } from "react-icons/bs";
+import { AiOutlineTeam } from "react-icons/ai";
+import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
 import { IconType } from "react-icons";
-import { ReactText } from "react";
 
 interface LinkItemProps {
   name: string;
-  icon: IconType;
+  icon?: IconType;
+  children?: { subIcon?: IconType; subName?: string }[];
 }
+
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  {
+    name: "Overview",
+    children: [
+      {
+        subIcon: BsLayoutWtf,
+        subName: "Feed",
+      },
+      {
+        subIcon: BsBookmarks,
+        subName: "Bookmarks",
+      },
+      {
+        subIcon: AiOutlineTeam,
+        subName: "Team blogs",
+      },
+      {
+        subIcon: MdOutlineDrafts,
+        subName: "Drafts",
+      },
+      {
+        subIcon: MdOutlineAnalytics,
+        subName: "Analytics",
+      },
+    ],
+  },
+  {
+    name: "Trending Tags",
+    icon: FiTrendingUp,
+    children: [
+      {
+        subName: "Programming",
+      },
+      {
+        subName: "Data science",
+      },
+      {
+        subName: "Technology ",
+      },
+      {
+        subName: "Machine learning",
+      },
+      {
+        subName: "Politics",
+      },
+    ],
+  },
+  {
+    name: "Personal",
+    children: [
+      {
+        subIcon: BsPerson,
+        subName: "Account",
+      },
+      {
+        subIcon: FiBell,
+        subName: "Notifications",
+      },
+    ],
+  },
 ];
 
 export default function SidebarWithHeader({
@@ -67,13 +123,11 @@ export default function SidebarWithHeader({
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="full"
       >
         <DrawerContent>
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
@@ -96,60 +150,53 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
+      overflow={"auto"}
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
-        </Text>
+        <Link
+          href="/"
+          textAlign={{ base: "center", md: "left" }}
+          color="#543EE0"
+          fontWeight={700}
+          fontSize="1.4rem"
+          _hover={{
+            textDecoration: "none",
+          }}
+        >
+          CHATTER
+        </Link>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
-        </NavItem>
+      {LinkItems.map((item, index) => (
+        <Flex direction={"column"} key={index} mb="1.5rem" ml="2rem">
+          <Flex align={"center"} gap=".5rem">
+            <Text color="#000">{item.name}</Text>
+            {item.icon && <Icon as={item.icon} />}
+          </Flex>
+          {item.children && item.children.length > 0 && (
+            <Flex direction={"column"} ml="1.7rem">
+              {item.children?.map((child, childIndex) => (
+                <Flex
+                  key={childIndex}
+                  gap=".5rem"
+                  mt=".7rem"
+                  align={"center"}
+                  fontSize={".94rem"}
+                >
+                  {child.subIcon && <Icon as={child.subIcon} color="#626262" />}
+                  <Text color="#626262">{child.subName}</Text>
+                </Flex>
+              ))}
+            </Flex>
+          )}
+        </Flex>
       ))}
-    </Box>
-  );
-};
-
-interface NavItemProps extends FlexProps {
-  icon: IconType;
-  children: ReactText;
-}
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
-  return (
-    <Link
-      href="#"
-      style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
-    >
-      <Flex
-        align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
-        role="group"
-        cursor="pointer"
-        _hover={{
-          bg: "cyan.400",
-          color: "white",
-        }}
-        {...rest}
-      >
-        {icon && (
-          <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: "white",
-            }}
-            as={icon}
-          />
-        )}
-        {children}
+      <Flex color="red" ml="2rem" align={"center"} gap=".5rem">
+        Log out
+        <FiLogOut />
       </Flex>
-    </Link>
+    </Box>
   );
 };
 
@@ -160,13 +207,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
-      px={{ base: 4, md: 4 }}
-      height="20"
+      px={{ base: 4, md: 10 }}
+      height={20}
       alignItems="center"
       bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent="space-between"
       {...rest}
     >
       <IconButton
@@ -176,16 +223,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Logo
-      </Text>
-
+      <Input
+        w="20rem"
+        placeholder="Search...."
+        borderColor={useColorModeValue("gray.300", "white")}
+        borderRadius="5px"
+        focusBorderColor="none"
+        ml={{ base: "1rem", md: "0rem" }}
+      />
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
           size="lg"
@@ -229,7 +274,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             >
               <MenuItem>Profile</MenuItem>
               <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
               <MenuDivider />
               <MenuItem>Sign out</MenuItem>
             </MenuList>

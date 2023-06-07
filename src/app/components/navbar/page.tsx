@@ -57,7 +57,7 @@ export default function WithSubnavigation() {
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               color="#543EE0"
               fontWeight={700}
-              fontSize="1.6rem"
+              fontSize="1.4rem"
               _hover={{
                 textDecoration: "none",
               }}
