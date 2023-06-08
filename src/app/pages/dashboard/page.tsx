@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Sidebar from "../../components/sidebar/page";
+import Sidebar from "../../components/sidebar";
 
 const Dashboard = () => {
   return (

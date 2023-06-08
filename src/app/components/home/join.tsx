@@ -1,8 +1,8 @@
 import React from "react";
-import Wrapper from "../wrapper/page";
+import Wrapper from "../wrapper";
 import Image from "next/image";
 import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
-import Button from "../button/page";
+import Button from "../button";
 
 const Join = () => {
   return (

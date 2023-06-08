@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import Navbar from "./components/navbar/page";
-import Footer from "./components/footer/page";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 import AboutUs from "./components/home/about-us";
 import Connect from "./components/home/connect";
 import Features from "./components/home/features";

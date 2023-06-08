@@ -8,7 +8,7 @@ import {
   VStack,
   Center,
 } from "@chakra-ui/react";
-import Button from "../button/page";
+import Button from "../button";
 
 const LandingPage = () => {
   return (

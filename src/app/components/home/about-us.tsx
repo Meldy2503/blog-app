@@ -1,5 +1,5 @@
 import React from "react";
-import Wrapper from "../wrapper/page";
+import Wrapper from "../wrapper";
 import Image from "next/image";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 

@@ -1,7 +1,7 @@
 "use client";
 import "./globals.css";
-import Navbar from "./components/navbar/page";
-import Footer from "./components/footer/page";
+import Navbar from "./components/navbar";
+import Footer from "./components/footer";
 import { Providers } from "../app/providers";
 
 export const metadata = {
