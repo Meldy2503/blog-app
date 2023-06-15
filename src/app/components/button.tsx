@@ -20,7 +20,7 @@ const Button = ({ href, bg, color, hoverBg, hoverColor, children }: Props) => {
       textAlign="center"
       fontSize=".92rem"
       px="1.1rem"
-      py=".6rem"
+      py=".7rem"
       borderRadius=".3rem"
       bg={bg}
       color={color}

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { Box, Link, Stack, Text, Flex } from "@chakra-ui/react";
+import { Box, Link, Stack, Text, Flex, useColorMode } from "@chakra-ui/react";
 
 const ListHeader = ({ children }: { children: ReactNode }) => {
   return (
@@ -11,14 +11,15 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 };
 
 export default function LargeWithLogoLeft() {
+  const { colorMode } = useColorMode();
   return (
-    <Box bg="rgba(255, 237, 204, 0.5)" pt="3rem" pb="2rem">
-      <Box
-        maxW="1100px"
-        m="auto"
-        w={{ base: "95%", md: "90%" }}
-        color="#111111"
-      >
+    <Box
+      pt="3rem"
+      pb="2rem"
+      bg={colorMode === "light" ? "rgba(255, 237, 204, 0.5)" : "#171923"}
+      color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
+    >
+      <Box maxW="1100px" m="auto" w={{ base: "95%", md: "90%" }}>
         <Flex justify="space-between" flexWrap="wrap" gap="2rem">
           <Stack>
             <Text color="#543EE0" fontWeight={700} fontSize="1.8rem">
@@ -45,7 +46,9 @@ export default function LargeWithLogoLeft() {
         </Flex>
       </Box>
       <Flex
-        borderTop=".5px solid #d0d0d0"
+        borderTop={`1px solid ${
+          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+        }`}
         justify="center"
         align="center"
         mt="2rem"

@@ -3,12 +3,13 @@ import { Box } from "@chakra-ui/react";
 
 interface Props {
   bg?: string;
+  color?: string;
   children: React.ReactNode;
 }
 
-const Wrapper = ({ children, bg }: Props) => {
+const Wrapper = ({ children, bg, color }: Props) => {
   return (
-    <Box w="100%" bg={bg}>
+    <Box w="100%" bg={bg} color={color}>
       <Box
         maxW="1100px"
         m="auto"

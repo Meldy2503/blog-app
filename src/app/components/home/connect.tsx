@@ -1,12 +1,24 @@
 import React from "react";
 import Wrapper from "../wrapper";
 import Image from "next/image";
-import { Box, Flex, HStack, Heading, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  useColorMode,
+} from "@chakra-ui/react";
 import Button from "../button";
 
 const Connect = () => {
+  const { colorMode } = useColorMode();
+
   return (
-    <Wrapper>
+    <Wrapper
+      bg={colorMode === "light" ? "light" : "dark"}
+      color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
+    >
       <Flex justify="space-between" direction={{ base: "column", md: "row" }}>
         <Flex
           w={{ base: "100%", md: "40%" }}
@@ -22,8 +34,8 @@ const Connect = () => {
               style={{
                 borderRadius: "50%",
               }}
-              height={154}
-              width={154}
+              height={160}
+              width={160}
             />
             <Image
               src="/assets/face-5.jpg"
@@ -35,22 +47,24 @@ const Connect = () => {
               width={160}
             />
           </VStack>
-          <Image
-            src="/assets/face-3.jpg"
-            alt="about us image"
-            style={{
-              borderRadius: "50%",
-            }}
-            height={154}
-            width={154}
-          />
+          <VStack>
+            <Image
+              src="/assets/face-3.jpg"
+              alt="about us image"
+              style={{
+                borderRadius: "50%",
+              }}
+              height={160}
+              width={160}
+            />
+          </VStack>
         </Flex>
         <Box w={{ base: "100%", md: "55%" }} mb={{ base: "2rem", md: "0rem" }}>
           <Heading
             as={"h5"}
             fontSize={{ base: "1.9rem", md: "2.1rem", lg: "2.3rem" }}
             fontWeight={600}
-            color="black"
+            color={colorMode === "dark" ? "#e3e2e2" : "black"}
           >
             Write, read and connect with great minds on chatter
           </Heading>

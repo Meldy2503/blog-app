@@ -1,12 +1,24 @@
 import React from "react";
 import Wrapper from "../wrapper";
 import Image from "next/image";
-import { Box, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  VStack,
+  useColorMode,
+} from "@chakra-ui/react";
 import Button from "../button";
 
 const Join = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Wrapper bg="rgba(255, 237, 204, 0.5)">
+    <Wrapper
+      bg={colorMode === "dark" ? "dark" : "rgba(255, 237, 204, 0.498)"}
+      color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+    >
       <Flex
         justify="space-between"
         direction={{ base: "column", md: "row" }}

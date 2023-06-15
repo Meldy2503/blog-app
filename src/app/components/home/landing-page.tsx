@@ -27,10 +27,15 @@ const LandingPage = () => {
         bgGradient="linear(to-l,rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4))"
       >
         <Box color="#fff" maxW="1100px" m="auto" w={{ base: "95%", md: "90%" }}>
-          <Box w={{ base: "90%", md: "70%" }}>
+          <Box w={{ base: "90%", sm: "75%", lg: "60%" }}>
             <Heading
               as={"h5"}
-              fontSize={{ base: "2rem", md: "2.3rem", lg: "2.5rem" }}
+              fontSize={{
+                base: "2rem",
+                sm: "2.3rem",
+                md: "2.7rem",
+                lg: "3rem",
+              }}
               fontWeight={600}
             >
               Welcome to Chatter: A Haven for Text-Based Content

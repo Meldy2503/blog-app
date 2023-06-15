@@ -5,25 +5,24 @@ import {
   Avatar,
   AvatarGroup,
   useBreakpointValue,
-  IconProps,
   Box,
-  Link,
   Heading,
   Text,
-  FormControl,
-  FormLabel,
-  Input,
-  Select,
-  Button,
   Flex,
-  VStack,
-  Icon,
+  Tabs,
+  Tab,
+  TabList,
+  TabIndicator,
+  TabPanels,
+  TabPanel,
+  useColorMode,
+  Button,
+  useColorModeValue,
+  Switch,
 } from "@chakra-ui/react";
-import NextLink from "next/link";
-import { FcGoogle } from "react-icons/fc";
-import { FaLinkedin } from "react-icons/fa";
 import { Blur } from "../../components/blur-icon";
-import PasswordInput from "../../components/password-input";
+import Login from "../../components/sign-in";
+import Register from "../../components/sign-up";
 
 const avatars = [
   {
@@ -49,8 +48,14 @@ const avatars = [
 ];
 
 export default function JoinOurTeam() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Box position={"relative"}>
+    <Box
+      position={"relative"}
+      bg={colorMode === "light" ? "light" : "dark"}
+      color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+    >
       <Flex
         maxW={"1200px"}
         w={{ base: "95%", md: "90%" }}
@@ -65,7 +70,7 @@ export default function JoinOurTeam() {
           w={{ base: "100%", md: "45%" }}
         >
           <Heading
-            bgGradient="linear(to-r, #543ee0, #333)"
+            bgGradient="linear(to-r, #543ee0, #543ee0)"
             bgClip="text"
             fontSize={{ base: "2.3rem", md: "2.7rem", lg: "3rem" }}
             mt={{ base: "0", md: "3rem" }}
@@ -147,80 +152,48 @@ export default function JoinOurTeam() {
           </Stack>
         </Flex>
         <Stack
-          bg={"gray.50"}
-          border="1px solid #e2e8f0"
+          bg={colorMode === "light" ? "gray.50" : "#2d3748"}
+          border={`1px solid ${colorMode === "dark" ? "none" : "#e2e8f0"}`}
           rounded={"xl"}
           w={{ base: "100%", md: "50%" }}
-          mt={{ base: "2rem", md: "0" }}
+          mt={{ base: "2rem", md: "1.5rem" }}
           p={{ base: 4, sm: 6 }}
           spacing={{ base: 8 }}
         >
-          <Box py=".5rem">
-            <Flex
-              justify="between"
-              align="center"
-              mb="1rem"
-              fontSize={".9rem"}
-              fontWeight={600}
+          <Tabs position="relative" colorScheme="facebook">
+            <TabList
+              display={"flex"}
+              justifyContent="space-between"
+              w="80%"
+              m="auto"
             >
-              <Link as={NextLink} href="/pages/sign-up" w="50%">
+              <Tab flex={1} fontWeight={600}>
+                SIGN IN
+              </Tab>
+              <Tab flex={1} fontWeight={600}>
                 REGISTER
-              </Link>
-              <Link as={NextLink} href="/pages/sign-in" w="50%" textAlign="end">
-                LOG IN
-              </Link>
-            </Flex>
-            <Heading as="h4" fontSize="1.4rem" my="1.5rem" textAlign="center">
-              Register as a Writer/Reader
-            </Heading>
-            <form>
-              <Stack direction={{ base: "column", lg: "row" }}>
-                <FormControl mb="1rem">
-                  <FormLabel>First name</FormLabel>
-                  <Input placeholder="First name" />
-                </FormControl>
-                <FormControl mb="1rem">
-                  <FormLabel>Last name</FormLabel>
-                  <Input placeholder="Last name" />
-                </FormControl>
-              </Stack>
-              <FormControl mb="1rem">
-                <FormLabel>You are joining as?</FormLabel>
-                <Select placeholder="Writer">
-                  <option>Writer</option>
-                  <option>Reader</option>
-                </Select>
-              </FormControl>
-              <FormControl mb="1rem">
-                <FormLabel>Email</FormLabel>
-                <Input placeholder="marysmith@gmail.com" />
-              </FormControl>
-              <PasswordInput />
-              <Button
-                type="submit"
-                w="100%"
-                mt=".2rem"
-                bg="#543EE0"
-                color="#fff"
-              >
-                Create Account
-              </Button>
-            </form>
-            <VStack gap="1.2rem" mt="1rem">
-              <Button type="submit" w="100%">
-                <Icon as={FcGoogle} mr=".5rem" />
-                Sign up with google
-              </Button>
-              <Button type="submit" w="100%">
-                <Icon as={FaLinkedin} color="#0072b1" mr=".5rem" />
-                Sign up with Linkedin
-              </Button>
-            </VStack>
-          </Box>
+              </Tab>
+            </TabList>
+            <TabIndicator
+              mt="-1.3px"
+              height="2.5px"
+              bg="#543EE0"
+              borderRadius="1px"
+            />
+            <TabPanels py="1rem">
+              <TabPanel>
+                <Login />
+              </TabPanel>
+              <TabPanel>
+                <Register />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Stack>
       </Flex>
       <Blur
         position={"absolute"}
+        zIndex="1"
         top={-10}
         left={-10}
         style={{ filter: "blur(60px)" }}

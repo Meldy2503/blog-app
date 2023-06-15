@@ -23,6 +23,7 @@ const PasswordInput = () => {
           pr="4.5rem"
           type={show ? "text" : "password"}
           placeholder="Enter password"
+          focusBorderColor="none"
         />
         <InputRightElement>
           <Box onClick={handleClick}>

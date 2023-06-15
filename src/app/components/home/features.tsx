@@ -1,20 +1,13 @@
 import React from "react";
 import Wrapper from "../wrapper";
 import Image from "next/image";
-import {
-  Box,
-  Flex,
-  HStack,
-  Heading,
-  Icon,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import Button from "../button";
+import { Box, Flex, Heading, Icon, Text, useColorMode } from "@chakra-ui/react";
 import { BsGraphUpArrow, BsNewspaper } from "react-icons/bs";
 import { IoIosPeople } from "react-icons/io";
 
 const Features = () => {
+  const { colorMode } = useColorMode();
+
   const Data = [
     {
       id: 1,
@@ -40,14 +33,17 @@ const Features = () => {
   ];
 
   return (
-    <Wrapper>
+    <Wrapper
+      bg={colorMode === "light" ? "#fff" : "#171923"}
+      color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+    >
       <Box>
         <Box>
           <Heading
             as={"h5"}
             fontSize={{ base: "1.9rem", md: "2.1rem", lg: "2.3rem" }}
             fontWeight={600}
-            color="black"
+            color={colorMode === "dark" ? "#fff" : "black"}
             textAlign={"center"}
             mb={"2rem"}
           >
@@ -72,13 +68,16 @@ const Features = () => {
             {Data.map((item) => {
               return (
                 <Box
-                  border="1px solid #d0d0d0"
+                  border={`1px solid ${
+                    colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
+                  }`}
                   borderRadius=".4rem"
-                  w={{ base: "95%", md: "47%", lg: "30%" }}
-                  h={{ base: "auto", md: "20rem" }}
+                  width={{ base: "95%", md: "47%", lg: "30%" }}
+                  height={{ base: "auto", md: "20rem" }}
                   key={item.id}
-                  p="1rem"
-                  m="auto"
+                  padding="1rem"
+                  margin="auto"
+                  bg={colorMode === "light" ? "#fff" : "#1a202c"}
                 >
                   <Flex
                     justify={"center"}
@@ -86,7 +85,11 @@ const Features = () => {
                     borderRadius="50%"
                     h="4rem"
                     w="4rem"
-                    bg="rgba(214, 209, 248, 0.2);"
+                    bg={
+                      colorMode === "light"
+                        ? "rgba(214, 209, 248, 0.2)"
+                        : "#2d3748"
+                    }
                   >
                     <Icon as={item.icon} boxSize={7} />
                   </Flex>

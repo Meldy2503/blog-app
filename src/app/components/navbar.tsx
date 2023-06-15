@@ -13,28 +13,26 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  useColorMode,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
-FiMenu;
+import { BsMoonStarsFill, BsSun } from "react-icons/bs";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Box
       borderBottom={1}
       borderStyle={"solid"}
       borderColor={useColorModeValue("gray.200", "gray.900")}
+      color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+      bg={colorMode === "dark" ? "#171923" : "light"}
     >
       <Box maxW="1100px" m="auto" w={{ base: "95%", md: "90%" }}>
-        <Flex
-          bg={useColorModeValue("white", "gray.800")}
-          color="#111111"
-          fontWeight={700}
-          py={{ base: 2, md: 4 }}
-          align={"center"}
-        >
+        <Flex fontWeight={700} py={{ base: 2, md: 4 }} align={"center"}>
           <Flex
             flex={{ base: 1, md: "auto" }}
             ml={{ base: -2 }}
@@ -74,14 +72,22 @@ export default function WithSubnavigation() {
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}
             direction={"row"}
-            spacing={{ base: 4, md: 6 }}
+            spacing={{ base: 2, md: 6 }}
           >
             <Button
+              aria-label="Toggle Color Mode"
+              onClick={toggleColorMode}
+              _focus={{ boxShadow: "none" }}
+              w="fit-content"
+            >
+              {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun />}
+            </Button>
+            {/* <Button
               as={"a"}
               fontSize={"sm"}
               variant={"link"}
               px="1.3rem"
-              href="/pages/sign-up"
+              href="/pages/auth"
               border="2px solid #543EE0"
               display={{ base: "none", md: "inline-flex" }}
               textDecor={"none"}
@@ -93,7 +99,7 @@ export default function WithSubnavigation() {
               }}
             >
               Sign up
-            </Button>
+            </Button> */}
             <Button
               as={"a"}
               fontSize={"sm"}
@@ -101,10 +107,10 @@ export default function WithSubnavigation() {
               color={"white"}
               bg="#543EE0"
               border="2px solid #543EE0"
-              href="/pages/sign-in"
+              href="/pages/auth"
               _hover={{
                 bg: "transparent",
-                color: "#111111",
+                color: colorMode === "dark" ? "#d0d0d0" : "#2b2b2b",
               }}
             >
               Sign in
@@ -121,8 +127,8 @@ export default function WithSubnavigation() {
 }
 
 const DesktopNav = () => {
-  const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Stack direction={"row"} spacing={4}>
@@ -134,7 +140,7 @@ const DesktopNav = () => {
                 p={2}
                 href={navItem.href ?? "#"}
                 fontSize={"sm"}
-                color="#111111"
+                color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
                 fontWeight={600}
                 _hover={{
                   textDecoration: "none",
@@ -168,6 +174,8 @@ const DesktopNav = () => {
 };
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <Link
       href={href}
@@ -205,12 +213,10 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 };
 
 const MobileNav = () => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <Stack
-      bg={useColorModeValue("white", "gray.800")}
-      p={4}
-      display={{ md: "none" }}
-    >
+    <Stack p={4} display={{ md: "none" }}>
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
@@ -220,6 +226,7 @@ const MobileNav = () => {
 
 const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { onToggle } = useDisclosure();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <Stack spacing={4} onClick={children && onToggle}>

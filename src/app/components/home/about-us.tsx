@@ -1,11 +1,16 @@
 import React from "react";
 import Wrapper from "../wrapper";
 import Image from "next/image";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text, useColorMode } from "@chakra-ui/react";
 
 const AboutUs = () => {
+  const { colorMode } = useColorMode();
+
   return (
-    <Wrapper bg="#f7f6f6">
+    <Wrapper
+      bg={colorMode === "light" ? "#F7f6f6" : "dark"}
+      color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
+    >
       <Flex justify={"space-between"} direction={{ base: "column", md: "row" }}>
         <Box
           w={{ base: "100%", md: "55%", lg: "47%" }}
@@ -15,7 +20,7 @@ const AboutUs = () => {
             as={"h5"}
             fontSize={{ base: "1.9rem", md: "2.1rem", lg: "2.3rem" }}
             fontWeight={600}
-            color="black"
+            color={colorMode === "dark" ? "#e3e2e2" : "black"}
             mb={"1rem"}
           >
             About Chatter
@@ -33,7 +38,7 @@ const AboutUs = () => {
         </Box>
         <Box w={{ base: "100%", md: "40%", lg: "47%" }}>
           <Image
-            src="/assets/signup.jpg"
+            src="/assets/about.png"
             alt="about us image"
             style={{
               borderRadius: ".5rem",
