@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Flex,
@@ -18,9 +18,11 @@ import {
 import Button from "../../components/button";
 import { FaPencilAlt } from "react-icons/fa";
 import ForYou from "@/app/components/for-you";
+import { BlogContext } from "../../../../context/blog-context";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
+  const { posts } = useContext(BlogContext);
 
   return (
     <Box
@@ -96,7 +98,9 @@ const Dashboard = () => {
         />
         <TabPanels>
           <TabPanel p="0">
-            <ForYou />
+            {posts.map((post) => (
+              <ForYou key={post.id} post={post} />
+            ))}
           </TabPanel>
           <TabPanel>
             <p>Featured</p>

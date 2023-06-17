@@ -10,6 +10,22 @@ const config: ThemeConfig = {
 };
 
 // 3. extend the theme
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  colors: {
+    brand: {
+      100: "#fff",
+      200: "#fff",
+      300: "#F9FAFB",
+      400: "#d0d0d0",
+      450: "#606477",
+      500: "#ffedcc7f",
+      600: "#543EE0",
+      700: "#715fe3",
+      800: "#171923",
+      900: "#1a202c",
+    },
+  },
+});
 
 export default theme;

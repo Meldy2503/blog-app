@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Flex,
@@ -7,200 +7,148 @@ import {
   Icon,
   HStack,
   useColorMode,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
 import { MdOutlineAnalytics } from "react-icons/md";
-import { BiChat } from "react-icons/bi";
 import { AiOutlineHeart } from "react-icons/ai";
+import Link from "next/link";
 
-const ForYou = () => {
+const ForYou = ({ post }: any) => {
   const { colorMode } = useColorMode();
+  const [isMobile] = useMediaQuery("(max-width: 1280px)");
+
   return (
-    <Box
-      color={colorMode === "dark" ? "#c2c1c1" : "#626262"}
-      border={`1px solid ${
-        colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
-      }`}
-      borderRadius={"6px"}
+    <Link
+      href={`/pages/dashboard/${post.id}`}
+      color={colorMode === "dark" ? "#aeadad" : "#626262"}
     >
-      <Box px={{ base: "1rem", lg: "2rem" }} py="2rem">
-        <Flex align={"center"} gap="1.5rem">
-          <Box>
-            <Image
-              src="/assets/face-1.jpg"
-              alt="a person's face"
-              style={{
-                borderRadius: "50%",
-              }}
-              height={120}
-              width={120}
-            />
-          </Box>
-          <Box>
-            <Heading
-              as={"h4"}
-              fontSize={"1.3rem"}
-              fontWeight={550}
-              color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
-              mb=".5rem"
+      <Box
+        border={`1px solid ${
+          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+        }`}
+        borderRadius={"6px"}
+      >
+        <Flex
+          justify={"space-between"}
+          align={"center"}
+          direction={{ base: "column", xl: "row" }}
+          px={{ base: "1rem", xl: "1.5rem" }}
+          py={{ base: "1rem", lg: "2rem" }}
+        >
+          <Box w={{ base: "100%", xl: "60%" }}>
+            <Flex align={"center"} gap="1rem">
+              <Box>
+                <Image
+                  src="/assets/face-1.jpg"
+                  alt="a person's face"
+                  style={{
+                    borderRadius: "50%",
+                  }}
+                  height={60}
+                  width={60}
+                />
+              </Box>
+              <Box>
+                <Heading
+                  as={"h4"}
+                  fontSize={"1.3rem"}
+                  fontWeight={550}
+                  color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
+                  mb=".3rem"
+                >
+                  Grace Ikpang{" "}
+                </Heading>
+                <Text>Product designer</Text>
+              </Box>
+            </Flex>
+            <Flex
+              align={"center"}
+              fontSize={".9rem"}
+              mt=".5rem"
+              flexWrap="wrap"
             >
-              Grace Ikpang{" "}
-            </Heading>
-            <Text>Product designer,May 25th, 2023</Text>
+              <Flex align={"center"} gap=".5rem" my=".5rem" mr="1.5rem">
+                <Icon
+                  as={VscBook}
+                  color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
+                />
+
+                <Text>{post.data.postLength} mins read</Text>
+              </Flex>
+              <Text mr="1.5rem">
+                {new Date(post.data.postedOn).toLocaleString("en-US", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </Text>
+              <Box
+                bg={colorMode === "dark" ? "#2d3748" : "#d0d0d0"}
+                py=".1rem"
+                px=".5rem"
+                borderRadius="20px"
+                mr="1.5rem"
+              >
+                <Text>{post.data.category}</Text>
+              </Box>
+            </Flex>
+
+            <Box mb={{ base: "1.5rem", xl: "0rem" }}>
+              <Heading
+                as={"h5"}
+                fontSize={"1.5rem"}
+                fontWeight={550}
+                color={colorMode === "dark" ? "#e6e5e5" : "#111111"}
+                my=".5rem"
+              >
+                {post.data.title}
+              </Heading>
+              <Text>{post.data.brief}</Text>
+            </Box>
           </Box>
-        </Flex>
-        <Box mb="1rem" mt="1.5rem">
-          <Heading
-            as={"h5"}
-            fontSize={"1.5rem"}
-            fontWeight={550}
-            color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
-          >
-            Starting out as a Product designer
-          </Heading>
-          <Flex align={"center"} gap=".5rem" mb="1rem" mt=".7rem">
-            <Icon
-              as={VscBook}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-
-            <Text fontSize={".9rem"}>10 mins read</Text>
-          </Flex>
-          <Text>
-            Embarking on a journey as a product designer can be an exhilarating
-            and fulfilling experience. As a profession that bridges the realms
-            of art, technology, and problem-solving, product design offers an
-            opportunity to shape the way people interact with the world around
-            them.
-          </Text>
-        </Box>
-        <Box>
-          <Image
-            src="/assets/feed.png"
-            alt="feed image"
-            style={{
-              objectFit: "cover",
-            }}
-            height={500}
-            width={500}
-          />{" "}
-        </Box>
-        <Flex mt="1rem" justify={"space-between"} align={"center"}>
-          <HStack>
-            <Icon
-              as={BiChat}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-            <Text fontSize={".9rem"}>110</Text>
-          </HStack>
-          <HStack>
-            <Icon
-              as={AiOutlineHeart}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-            <Text fontSize={".9rem"}>20 likes</Text>
-          </HStack>
-          <HStack>
-            <Icon
-              as={MdOutlineAnalytics}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-            <Text fontSize={".9rem"}>2000 views</Text>
-          </HStack>
-        </Flex>
-      </Box>
-
-      <hr />
-
-      {/* next post */}
-      <Box px={{ base: "1rem", md: "1.5rem", lg: "4.5rem" }} py="2rem">
-        <Flex align={"center"} gap="1.5rem">
-          <Box>
+          <Flex w={{ base: "100%", xl: "35%" }} direction="column">
             <Image
-              src="/assets/face-3.jpg"
-              alt="a person's face"
+              src={post.data.bannerImage}
+              alt="feed image"
               style={{
-                borderRadius: "50%",
+                objectFit: "cover",
+                borderRadius: "6px",
+                height: isMobile ? "11rem" : "11rem",
+                objectPosition: "center",
               }}
-              height={120}
-              width={120}
-            />
-          </Box>
-          <Box>
-            <Heading
-              as={"h4"}
-              fontSize={"1.3rem"}
-              fontWeight={550}
-              color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
-              mb=".5rem"
+              height={500}
+              width={300}
+            />{" "}
+            <Flex
+              mt=".8rem"
+              align={"center"}
+              flexWrap="wrap"
+              gap="2rem"
+              justify={{ base: "flex-start", xl: "space-between" }}
             >
-              Edward Smith
-            </Heading>
-            <Text>Product designer,May 25th, 2023</Text>
-          </Box>
-        </Flex>
-        <Box mb="1rem" mt="1.5rem">
-          <Heading
-            as={"h5"}
-            fontSize={"1.5rem"}
-            fontWeight={550}
-            color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
-          >
-            Starting out as a Product designer
-          </Heading>
-          <Flex align={"center"} gap=".5rem" mb="1rem" mt=".7rem">
-            <Icon
-              as={VscBook}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-
-            <Text fontSize={".9rem"}>10 mins read</Text>
+              <HStack>
+                <Icon
+                  as={AiOutlineHeart}
+                  color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
+                />
+                <Text fontSize={".8rem"}>20 likes</Text>
+              </HStack>
+              <HStack>
+                <Icon
+                  as={MdOutlineAnalytics}
+                  color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
+                />
+                <Text fontSize={".8rem"}>2000 views</Text>
+              </HStack>
+            </Flex>
           </Flex>
-          <Text>
-            Embarking on a journey as a product designer can be an exhilarating
-            and fulfilling experience. As a profession that bridges the realms
-            of art, technology, and problem-solving, product design offers an
-            opportunity to shape the way people interact with the world around
-            them.
-          </Text>
-        </Box>
-        <Box>
-          <Image
-            src="/assets/feed.png"
-            alt="feed image"
-            style={{
-              objectFit: "cover",
-            }}
-            height={500}
-            width={500}
-          />
-        </Box>
-        <Flex mt="1rem" justify={"space-between"} align={"center"}>
-          <HStack>
-            <Icon
-              as={BiChat}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-            <Text fontSize={".9rem"}>110</Text>
-          </HStack>
-          <HStack>
-            <Icon
-              as={AiOutlineHeart}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-            <Text fontSize={".9rem"}>20 likes</Text>
-          </HStack>
-          <HStack>
-            <Icon
-              as={MdOutlineAnalytics}
-              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            />
-            <Text fontSize={".9rem"}>2000 views</Text>
-          </HStack>
         </Flex>
+
+        <hr />
       </Box>
-    </Box>
+    </Link>
   );
 };
 

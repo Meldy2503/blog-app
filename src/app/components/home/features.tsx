@@ -59,7 +59,6 @@ const Features = () => {
             justify={"space-between"}
             align={"center"}
             m="auto"
-            w="90%"
             mt="1rem"
             py="2rem"
             flexWrap={"wrap"}
@@ -72,7 +71,7 @@ const Features = () => {
                     colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
                   }`}
                   borderRadius=".4rem"
-                  width={{ base: "95%", md: "47%", lg: "30%" }}
+                  width={{ base: "100%", md: "47%", lg: "31%" }}
                   height={{ base: "auto", md: "20rem" }}
                   key={item.id}
                   padding="1rem"

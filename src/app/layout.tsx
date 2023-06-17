@@ -6,6 +6,7 @@ import theme from "@/app/components/utils/theme";
 import { ColorModeScript } from "@chakra-ui/react";
 
 import { Providers } from "../app/providers";
+import { BlogProvider } from "../../context/blog-context";
 
 export const metadata = {
   title: "Create Next App",
@@ -20,16 +21,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          {/* <Navbar /> */}
-          {/* <Stack align='center' direction='row'> */}
-          {/* <Switch size='md' /> */}
-          {/* <Switch size='lg' /> */}
-          {/* </Stack> */}
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          {children}
-          {/* <Footer /> */}
-        </Providers>
+        <BlogProvider>
+          <Providers>
+            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+            {children}
+          </Providers>
+        </BlogProvider>
       </body>
     </html>
   );

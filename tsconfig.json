@@ -28,7 +28,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/components/button"
+    "src/app/components/button",
+    "firebase.js"
   ],
   "exclude": ["node_modules"]
 }
