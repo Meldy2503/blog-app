@@ -2,7 +2,7 @@
 import { Flex } from "@chakra-ui/react";
 import Sidebar from "../../../app/components/sidebar";
 import { Providers } from "../../../app/providers";
-import SideNav from "@/app/components/side-nav";
+// import SideNav from "@/app/components/side-nav";
 
 export const metadata = {
   title: "Dashboard",
@@ -27,7 +27,7 @@ export default function RootLayout({
               borderRadius={"3px"}
             >
               {children}
-              <SideNav />
+              {/* <SideNav /> */}
             </Flex>
           </Sidebar>
         </Providers>

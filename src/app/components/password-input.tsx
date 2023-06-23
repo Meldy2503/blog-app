@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
+import { passwordValidate } from "./utils/form.-validate";
 
 const PasswordInput = () => {
   const [show, setShow] = React.useState(false);

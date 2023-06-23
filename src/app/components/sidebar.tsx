@@ -37,8 +37,10 @@ import { BsLayoutWtf, BsBookmarks, BsPerson } from "react-icons/bs";
 import { AiOutlineTeam } from "react-icons/ai";
 import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
 import { IconType } from "react-icons";
-import { AiOutlineClose } from "react-icons/ai";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
+import { useRouter } from "next/navigation";
+import { auth } from "../../../firebase";
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 
 interface LinkItemProps {
   name: string;
@@ -148,6 +150,16 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { colorMode } = useColorMode();
+  const router = useRouter();
+  const [signOut, loading, error] = useSignOut(auth);
+  const [user, floading, ferror] = useAuthState(auth);
+
+  console.log(user);
+
+  const handleLogout = () => {
+    signOut();
+    router.push("/");
+  };
 
   return (
     <Box
@@ -211,7 +223,16 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           )}
         </Flex>
       ))}
-      <Flex color="red" ml="2rem" align={"center"} gap=".5rem">
+      <Flex
+        as={Button}
+        color="red"
+        isLoading={loading}
+        ml="2rem"
+        align={"center"}
+        gap=".5rem"
+        cursor={"pointer"}
+        onClick={handleLogout}
+      >
         Log out
         <FiLogOut />
       </Flex>

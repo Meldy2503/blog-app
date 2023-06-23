@@ -271,15 +271,15 @@ const NAV_ITEMS: NavItem[] = [
     href: "/",
   },
   {
-    label: "About us",
+    label: "Feed",
     children: [
       {
-        label: "Learn more about us",
-        subLabel: "Discover who we are",
-        href: "#",
+        label: "Explore our feed",
+        subLabel: "Explore our feed and get inspired",
+        href: "/pages/feed",
       },
     ],
-    href: "#",
+    href: "/pages/feed",
   },
   {
     label: "Contact us",

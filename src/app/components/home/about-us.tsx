@@ -2,9 +2,14 @@ import React from "react";
 import Wrapper from "../wrapper";
 import Image from "next/image";
 import { Box, Flex, Heading, Text, useColorMode } from "@chakra-ui/react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../../../firebase";
 
 const AboutUs = () => {
   const { colorMode } = useColorMode();
+  const [user, floading, ferror] = useAuthState(auth);
+
+  console.log("-----home", user);
 
   return (
     <Wrapper

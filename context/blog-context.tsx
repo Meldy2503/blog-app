@@ -17,7 +17,7 @@ export interface Posts {
   id: string;
   data: {
     title: string;
-    brief: string;
+    brief?: string;
     body: string;
     category?: string;
     postedOn?: any;

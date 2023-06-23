@@ -44,9 +44,14 @@ const LandingPage = () => {
               Unleash the Power of Words, Connect with Like-minded Readers and
               Writers
             </Text>
-            <Button href="/pages/sign-up" bg="#543EE0" color="#fff">
-              Get started{" "}
-            </Button>
+            <Flex gap="1rem">
+              <Button href="/pages/sign-up" bg="#543EE0" color="#fff">
+                Get started{" "}
+              </Button>
+              <Button href="/pages/feed" bg="#543EE0" color="#fff">
+                Feeds{" "}
+              </Button>
+            </Flex>
           </Box>
         </Box>
       </Flex>

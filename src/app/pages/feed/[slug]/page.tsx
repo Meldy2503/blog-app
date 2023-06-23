@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -15,21 +15,45 @@ import { VscBook } from "react-icons/vsc";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
-import { BlogContext } from "../../../../../context/blog-context";
+import { BlogContext, Posts } from "../../../../../context/blog-context";
+import { usePathname, useSearchParams } from "next/navigation";
+import Navbar from "@/app/components/navbar";
+import Loader from "@/app/components/spinner";
 
 const PostId = () => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [post, setPost] = useState<Posts | any>([]);
+
   const { colorMode } = useColorMode();
   const { posts } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+  useEffect(() => {
+    if (posts.length === 0) {
+      return;
+    }
+    const url = `${pathname}?${searchParams}`;
+    const id = url.split("/").pop()?.replace("?", "");
+    const selectedPost = posts.find((post) => post.id === id);
+    setPost(selectedPost);
+  }, [posts, pathname, searchParams, post]);
+
+  if (!posts.length) {
+    return <Loader />;
+  }
+
   return (
-    <Box
-      color={colorMode === "dark" ? "#b0afaf" : "#626262"}
-      bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
-      px={{ base: "1rem", xl: "2rem" }}
-      py={{ base: "1rem", lg: "2rem" }}
-    >
-      {posts.map((post) => (
-        <Box key={post.id}>
+    <>
+      <Navbar />
+      <Box
+        maxW="1100px"
+        w={{ base: "95%", md: "75%", xl: "60%" }}
+        m="auto"
+        color={colorMode === "dark" ? "#b0afaf" : "#626262"}
+        // px={{ base: "1rem", xl: "2rem" }}
+        py={{ base: "1rem", lg: "2rem" }}
+      >
+        <Box>
           <Heading
             as={"h1"}
             fontSize={"3rem"}
@@ -37,7 +61,7 @@ const PostId = () => {
             color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
             mb="2rem"
           >
-            {post.data.title}
+            {post?.data?.title}
           </Heading>
           <Flex align={"center"} gap="1rem" mt="2rem">
             <Box>
@@ -76,10 +100,10 @@ const PostId = () => {
                 color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
               />
 
-              <Text>{post.data.postLength} mins read</Text>
+              <Text>{post?.data?.postLength} mins read</Text>
             </Flex>
             <Text>
-              {new Date(post.data.postedOn).toLocaleString("en-US", {
+              {new Date(post?.data?.postedOn).toLocaleString("en-US", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
@@ -112,7 +136,7 @@ const PostId = () => {
           </Flex>
           <Box mt="2rem">
             <Image
-              src={post.data.bannerImage}
+              src={post?.data?.bannerImage}
               alt="feed image"
               style={{
                 objectFit: "cover",
@@ -127,12 +151,12 @@ const PostId = () => {
               width={800}
             />{" "}
             <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">
-              {post.data.body}
+              {post?.data?.body}
             </Text>
           </Box>
         </Box>
-      ))}
-    </Box>
+      </Box>
+    </>
   );
 };
 
