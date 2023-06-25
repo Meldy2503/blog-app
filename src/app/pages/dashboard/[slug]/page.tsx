@@ -17,17 +17,40 @@ import { AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
 import { BlogContext, Posts } from "../../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
-import Loader from "@/app/components/spinner";
+import Loader from "@/app/components/utils/spinner";
 import Sidebar from "../../../../app/components/sidebar";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
+import { db } from "../../../../../firebase";
 
 const PostId = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [post, setPost] = useState<Posts | any>([]);
+  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   const { colorMode } = useColorMode();
   const { posts } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+
+  useEffect(() => {
+    const fetchAuthorData = async () => {
+      try {
+        const docRef = doc(db, "users", post?.data?.author);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const authorProfile = docSnap.data();
+          setAuthorData(authorProfile);
+        } else {
+          return;
+        }
+      } catch (error) {
+        return;
+      }
+    };
+
+    fetchAuthorData();
+  }, [post?.data?.author]);
+
   useEffect(() => {
     if (posts.length === 0) {
       return;
@@ -65,13 +88,17 @@ const PostId = () => {
           <Flex align={"center"} gap="1rem" mt="2rem">
             <Box>
               <Image
-                src="/assets/face-1.jpg"
-                alt="a person's face"
+                src={authorData?.imageUrl}
+                alt="author image"
                 style={{
                   borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  width: "60px",
+                  height: "60px",
                 }}
-                height={60}
-                width={60}
+                height={200}
+                width={200}
               />
             </Box>
             <Box>
@@ -83,13 +110,13 @@ const PostId = () => {
                   color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                   mb=".2rem"
                 >
-                  Grace Ikpang{" "}
+                  {authorData?.name}
                 </Heading>
                 <Box color="green">
                   <Link href="#">Follow</Link>
                 </Box>
               </Flex>
-              <Text>Product designer</Text>
+              <Text>{authorData?.occupation}</Text>
             </Box>
           </Flex>
           <Flex align={"center"} gap="2rem" fontSize={".9rem"}>
@@ -140,14 +167,13 @@ const PostId = () => {
               style={{
                 objectFit: "cover",
                 objectPosition: "center",
-                borderRadius: "6px",
                 margin: "auto",
                 height: isMobile ? "15rem" : "25rem",
                 width: isMobile ? "100%" : "80%",
                 maxWidth: "100%",
               }}
-              height={800}
-              width={800}
+              height={1500}
+              width={1500}
             />{" "}
             <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">
               {post?.data?.body}

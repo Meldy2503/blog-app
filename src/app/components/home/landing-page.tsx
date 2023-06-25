@@ -19,9 +19,11 @@ const LandingPage = () => {
       bgRepeat="no-repeat"
       bgSize="cover"
       w="100%"
+      borderBottomRadius={{ base: "10rem", sm: "15rem", md: "50%" }}
     >
       <Flex
         align={"center"}
+        borderBottomRadius={{ base: "10rem", sm: "15rem", md: "50%" }}
         justify={"center"}
         h="100%"
         bgGradient="linear(to-l,rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4))"

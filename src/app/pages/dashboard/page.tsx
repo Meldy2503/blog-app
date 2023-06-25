@@ -17,17 +17,15 @@ import {
 } from "@chakra-ui/react";
 import Button from "../../components/button";
 import { FaPencilAlt } from "react-icons/fa";
-import ForYou from "@/app/components/for-you";
+import Feeds from "@/app/components/feeds";
 import { BlogContext } from "../../../../context/blog-context";
 import Link from "next/link";
-import Loader from "@/app/components/spinner";
+import Loader from "@/app/components/utils/spinner";
 import Sidebar from "../../../app/components/sidebar";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const { posts, users } = useContext(BlogContext);
-
-  console.log("----->", users);
 
   if (!posts.length) {
     return <Loader />;
@@ -83,7 +81,7 @@ const Dashboard = () => {
                 fontSize={{ base: "1rem", md: "1.1rem" }}
                 fontWeight={600}
               >
-                For you
+                Your posts
               </Tab>
               <Tab
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
@@ -107,16 +105,33 @@ const Dashboard = () => {
               borderRadius="1px"
             />
             <TabPanels>
+              <TabPanel>
+                {!posts.length ? (
+                  <Box>nothing to show</Box>
+                ) : (
+                  <>
+                    <p>Your posts</p>
+                    {/* Render your posts here */}
+                  </>
+                )}
+              </TabPanel>
               <TabPanel p="0">
                 {posts.map((post) => (
                   <Link href={`/pages/dashboard/${post.id}`} key={post.id}>
-                    <ForYou post={post} />
+                    <Feeds
+                      post={post}
+                      borderRadius={"6px"}
+                      border={`1px solid ${
+                        colorMode === "dark"
+                          ? "rgb(255, 255, 255, .2)"
+                          : "#d0d0d0"
+                      }`}
+                      px={{ base: "1rem", xl: "1.5rem" }}
+                    />
                   </Link>
                 ))}
               </TabPanel>
-              <TabPanel>
-                <p>Featured</p>
-              </TabPanel>
+
               <TabPanel>
                 <p>Recent</p>
               </TabPanel>

@@ -2,9 +2,7 @@
 "use client";
 import React, { useEffect } from "react";
 import {
-  Stack,
   Heading,
-  Select,
   Button,
   VStack,
   InputGroup,
@@ -19,7 +17,6 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
-import { FaLinkedin } from "react-icons/fa";
 import { emailValidate, passwordValidate } from "./utils/form.-validate";
 import { auth } from "../../../firebase";
 import {
@@ -58,15 +55,6 @@ export default function LogIn() {
   } = useForm<SignInForm>();
   const onSubmit = (data: SignInForm) => {
     signInWithEmailAndPassword(data.email, data.password);
-
-    // if (user || signInUser || googleUser) {
-    //   router.push("/pages/dashboard");
-    //   SuccessToast("Login Successful!");
-    // }
-
-    // if (signInError || googleError) {
-    //   ErrorToast("Invalid Credentials");
-    // }
   };
 
   useEffect(() => {
@@ -78,7 +66,7 @@ export default function LogIn() {
     if (signInError || googleError) {
       ErrorToast("Invalid Credentials");
     }
-  }, [user, googleUser, signInUser]);
+  }, [user, googleUser, signInUser, signInError, googleError, router]);
 
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>

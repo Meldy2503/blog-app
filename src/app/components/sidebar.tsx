@@ -7,7 +7,6 @@ import {
   CloseButton,
   Flex,
   HStack,
-  VStack,
   Icon,
   useColorModeValue,
   Link,
@@ -202,7 +201,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           {item.children && item.children.length > 0 && (
             <Flex direction={"column"} ml="1.7rem">
               {item.children?.map((child, childIndex) => (
-                <Link key={childIndex} href={child.href}>
+                <Link key={childIndex} href={child.href} color="transparent">
                   <Flex
                     gap=".5rem"
                     mt=".7rem"

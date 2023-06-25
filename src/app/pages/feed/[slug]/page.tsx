@@ -15,17 +15,16 @@ import { VscBook } from "react-icons/vsc";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
-import { BlogContext, Posts } from "../../../../../context/blog-context";
+import { BlogContext } from "../../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
 import Navbar from "@/app/components/navbar";
-import Loader from "@/app/components/spinner";
+import Loader from "@/app/components/utils/spinner";
 import { db } from "../../../../../firebase";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 const PostId = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  // const [post, setPost] = useState<Posts | any>([]);
   const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   const { colorMode } = useColorMode();
@@ -65,8 +64,6 @@ const PostId = () => {
     return <Loader />;
   }
 
-  console.log(".......", post);
-
   return (
     <>
       <Navbar />
@@ -75,7 +72,6 @@ const PostId = () => {
         w={{ base: "95%", md: "75%", xl: "60%" }}
         m="auto"
         color={colorMode === "dark" ? "#b0afaf" : "#626262"}
-        // px={{ base: "1rem", xl: "2rem" }}
         py={{ base: "1rem", lg: "2rem" }}
       >
         <Box>
@@ -170,7 +166,6 @@ const PostId = () => {
               style={{
                 objectFit: "cover",
                 objectPosition: "center",
-                borderRadius: "6px",
                 margin: "auto",
                 height: isMobile ? "15rem" : "25rem",
                 width: isMobile ? "100%" : "80%",

@@ -37,7 +37,6 @@ import { RiEyeCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SuccessToast, ErrorToast } from "./utils/toast";
-import UserEmailExists from "./utils/user-exists";
 
 interface SignUpForm {
   firstName: string;

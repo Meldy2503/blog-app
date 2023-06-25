@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -13,56 +13,82 @@ import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
-import Link from "next/link";
-import Loader from "./spinner";
+import Loader from "./utils/spinner";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
+import { db } from "../../../firebase";
 
-const ForYou = ({ post }: any) => {
+const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
   const { colorMode } = useColorMode();
   const [isMobile] = useMediaQuery("(max-width: 1280px)");
+  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
+
+  useEffect(() => {
+    const fetchAuthorData = async () => {
+      try {
+        const docRef = doc(db, "users", post?.data?.author);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const authorProfile = docSnap.data();
+          setAuthorData(authorProfile);
+        } else {
+          return;
+        }
+      } catch (error) {
+        return;
+      }
+    };
+
+    fetchAuthorData();
+  }, [post?.data?.author]);
+
+  if (post.length === 0) {
+    return <Loader />;
+  }
 
   return (
-    //   <Link
-    //     href={`/pages/dashboard/${post.id}`}
-    //   >
     <Box
       color={colorMode === "dark" ? "#aeadad" : "#626262"}
-      border={`1px solid ${
-        colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
-      }`}
-      borderRadius={"6px"}
+      border={border}
+      borderBottom={borderBottom}
+      borderRadius={borderRadius}
       mb=".5rem"
     >
       <Flex
         justify={"space-between"}
         align={"center"}
-        direction={{ base: "column", xl: "row" }}
-        px={{ base: "1rem", xl: "1.5rem" }}
+        direction={{ base: "column", sm: "row" }}
+        px={px}
         py={{ base: "1rem", lg: "2rem" }}
+        gap="2rem"
       >
-        <Box w={{ base: "100%", xl: "60%" }}>
-          <Flex align={"center"} gap="1rem">
+        <Box w={{ base: "100%", md: "67%", xl: "60%" }}>
+          <Flex align={"center"} gap=".7rem">
             <Box>
               <Image
-                src="/assets/face-1.jpg"
+                src={authorData?.imageUrl}
                 alt="a person's face"
                 style={{
                   borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  width: "50px",
+                  height: "50px",
                 }}
-                height={60}
-                width={60}
+                height={200}
+                width={200}
               />
             </Box>
             <Box>
               <Heading
                 as={"h4"}
-                fontSize={"1.3rem"}
+                fontSize={"1.2rem"}
                 fontWeight={550}
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                 mb=".3rem"
               >
-                Grace Ikpang{" "}
+                {authorData?.name}
               </Heading>
-              <Text>Product designer</Text>
+              <Text>{authorData?.occupation}</Text>
             </Box>
           </Flex>
           <Flex align={"center"} fontSize={".9rem"} mt=".5rem" flexWrap="wrap">
@@ -92,10 +118,10 @@ const ForYou = ({ post }: any) => {
             </Box>
           </Flex>
 
-          <Box mb={{ base: "1.5rem", xl: "0rem" }}>
+          <Box mb={{ base: ".5rem", sm: "0rem" }}>
             <Heading
               as={"h5"}
-              fontSize={"1.5rem"}
+              fontSize={"1.2rem"}
               fontWeight={550}
               color={colorMode === "dark" ? "#e6e5e5" : "#111111"}
               my=".5rem"
@@ -105,39 +131,42 @@ const ForYou = ({ post }: any) => {
             <Text>{post.data.brief}</Text>
           </Box>
         </Box>
-        <Flex w={{ base: "100%", xl: "35%" }} direction="column">
+        <Flex w={{ base: "100%", sm: "28%", xl: "30%" }} direction="column">
           <Image
             src={post.data.bannerImage}
             alt="feed image"
             style={{
               objectFit: "cover",
-              borderRadius: "6px",
-              height: isMobile ? "11rem" : "11rem",
+              height: isMobile ? "100%" : "10rem",
               objectPosition: "center",
             }}
             height={500}
-            width={300}
+            width={500}
           />{" "}
           <Flex
             mt=".8rem"
             align={"center"}
             flexWrap="wrap"
-            gap="2rem"
-            justify={{ base: "flex-start", xl: "space-between" }}
+            gap=".3rem"
+            justify="space-between"
           >
             <HStack>
               <Icon
                 as={AiOutlineHeart}
                 color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
               />
-              <Text fontSize={".8rem"}>20 likes</Text>
+              <Text fontSize={".8rem"} lineHeight={"15px"}>
+                20 likes
+              </Text>
             </HStack>
             <HStack>
               <Icon
                 as={MdOutlineAnalytics}
                 color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
               />
-              <Text fontSize={".8rem"}>2000 views</Text>
+              <Text fontSize={".8rem"} lineHeight={"15px"}>
+                2000 views
+              </Text>
             </HStack>
           </Flex>
         </Flex>
@@ -145,8 +174,7 @@ const ForYou = ({ post }: any) => {
 
       <hr />
     </Box>
-    // </Link>
   );
 };
 
-export default ForYou;
+export default Feeds;

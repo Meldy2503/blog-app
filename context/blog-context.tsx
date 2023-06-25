@@ -10,10 +10,6 @@ export const BlogContext = createContext({
   posts: [] as Posts[],
   users: [] as Users[],
   post: null as Posts | any,
-  // authorData: null as DocumentData | any,
-  // setAuthorData: null as unknown as React.Dispatch<
-  //   React.SetStateAction<DocumentData | any>
-  // >,
   setPost: null as unknown as React.Dispatch<React.SetStateAction<Posts | any>>,
 });
 
@@ -39,7 +35,7 @@ export interface Posts {
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
-  // const [authorData, setAuthorData] = useState<DocumentData | any>(null);
+  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
   const [post, setPost] = useState<Posts | any>([]);
 
   useEffect(() => {

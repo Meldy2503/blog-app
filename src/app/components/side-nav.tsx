@@ -10,9 +10,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { it } from "node:test";
 import React from "react";
-import Posts from "../pages/feed/page";
 
 const SideNav = () => {
   const { colorMode } = useColorMode();
@@ -66,7 +64,6 @@ const SideNav = () => {
   ];
 
   return (
-    // <Posts>
     <Box
       bg={colorMode === "light" ? "light" : "dark"}
       color={colorMode === "dark" ? "#bdbbbb" : "#737373"}
@@ -75,7 +72,7 @@ const SideNav = () => {
       pl={{ base: "1rem", md: "2rem" }}
       position="sticky"
       top="0px"
-      h="10rem"
+      h="100%"
     >
       <Flex align={"center"} justify={"center"}>
         <Input
@@ -201,7 +198,6 @@ const SideNav = () => {
         </Box>
       </Box>
     </Box>
-    // </Posts>
   );
 };
 

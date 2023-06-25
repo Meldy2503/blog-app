@@ -20,7 +20,7 @@ import {
   useColorModeValue,
   Switch,
 } from "@chakra-ui/react";
-import { Blur } from "../../../components/blur-icon";
+import { Blur } from "../../../components/utils/blur-icon";
 import Login from "../../../components/sign-in";
 import Register from "../../../components/sign-up";
 import Link from "next/link";
