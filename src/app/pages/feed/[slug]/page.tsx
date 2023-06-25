@@ -19,28 +19,53 @@ import { BlogContext, Posts } from "../../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
 import Navbar from "@/app/components/navbar";
 import Loader from "@/app/components/spinner";
+import { db } from "../../../../../firebase";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
 
 const PostId = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [post, setPost] = useState<Posts | any>([]);
+  // const [post, setPost] = useState<Posts | any>([]);
+  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   const { colorMode } = useColorMode();
-  const { posts } = useContext(BlogContext);
+  const { posts, post, setPost } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
+
+  useEffect(() => {
+    const fetchAuthorData = async () => {
+      try {
+        const docRef = doc(db, "users", post?.data?.author);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const authorProfile = docSnap.data();
+          setAuthorData(authorProfile);
+        } else {
+          return;
+        }
+      } catch (error) {
+        return;
+      }
+    };
+
+    fetchAuthorData();
+  }, [post?.data?.author]);
+
   useEffect(() => {
     if (posts.length === 0) {
       return;
     }
     const url = `${pathname}?${searchParams}`;
     const id = url.split("/").pop()?.replace("?", "");
-    const selectedPost = posts.find((post) => post.id === id);
+    const selectedPost = posts?.find((post) => post.id === id);
     setPost(selectedPost);
-  }, [posts, pathname, searchParams, post]);
+  }, [posts, pathname, searchParams, post, setPost]);
 
   if (!posts.length) {
     return <Loader />;
   }
+
+  console.log(".......", post);
 
   return (
     <>
@@ -66,13 +91,17 @@ const PostId = () => {
           <Flex align={"center"} gap="1rem" mt="2rem">
             <Box>
               <Image
-                src="/assets/face-1.jpg"
-                alt="a person's face"
+                src={authorData?.imageUrl}
+                alt="author image"
                 style={{
                   borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  width: "60px",
+                  height: "60px",
                 }}
-                height={60}
-                width={60}
+                height={200}
+                width={200}
               />
             </Box>
             <Box>
@@ -84,13 +113,13 @@ const PostId = () => {
                   color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                   mb=".2rem"
                 >
-                  Grace Ikpang{" "}
+                  {authorData?.name}
                 </Heading>
                 <Box color="green">
                   <Link href="#">Follow</Link>
                 </Box>
               </Flex>
-              <Text>Product designer</Text>
+              <Text>{authorData?.occupation}</Text>
             </Box>
           </Flex>
           <Flex align={"center"} gap="2rem" fontSize={".9rem"}>

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 import React, { useEffect } from "react";
 import {
@@ -14,6 +15,8 @@ import {
   FormControl,
   FormLabel,
   useColorMode,
+  Text,
+  Flex,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin } from "react-icons/fa";
@@ -28,6 +31,8 @@ import { useRouter } from "next/navigation";
 import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
+import { SuccessToast, ErrorToast } from "./utils/toast";
 
 interface SignInForm {
   email: string;
@@ -42,7 +47,6 @@ export default function LogIn() {
   const [signInWithGoogle, googleUser, googleLoader, googleError] =
     useSignInWithGoogle(auth);
   const [user, loading, error] = useAuthState(auth);
-  console.log("---->", user);
 
   const { colorMode } = useColorMode();
 
@@ -54,13 +58,27 @@ export default function LogIn() {
   } = useForm<SignInForm>();
   const onSubmit = (data: SignInForm) => {
     signInWithEmailAndPassword(data.email, data.password);
+
+    // if (user || signInUser || googleUser) {
+    //   router.push("/pages/dashboard");
+    //   SuccessToast("Login Successful!");
+    // }
+
+    // if (signInError || googleError) {
+    //   ErrorToast("Invalid Credentials");
+    // }
   };
 
   useEffect(() => {
-    if (user) {
+    if (user || signInUser || googleUser) {
       router.push("/pages/dashboard");
+      SuccessToast("Login Successful!");
     }
-  }, [user, router]);
+
+    if (signInError || googleError) {
+      ErrorToast("Invalid Credentials");
+    }
+  }, [user, googleUser, signInUser]);
 
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>
@@ -68,10 +86,9 @@ export default function LogIn() {
         as="h4"
         fontSize="1.4rem"
         mb="1.5rem"
-        textAlign="center"
         color={colorMode === "dark" ? "#d0d0d0" : "black"}
       >
-        Welcome back
+        Sign in
       </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl mb="2rem">
@@ -81,6 +98,11 @@ export default function LogIn() {
             focusBorderColor="none"
             {...register("email", emailValidate)}
           />
+          {errors.email && (
+            <Text color="red" fontSize=".8rem" mt=".2rem">
+              {errors.email.message}
+            </Text>
+          )}
         </FormControl>
         <FormControl mb="1rem">
           <FormLabel>Password</FormLabel>
@@ -92,12 +114,18 @@ export default function LogIn() {
               focusBorderColor="none"
               {...register("password", passwordValidate)}
             />
+
             <InputRightElement>
               <Box onClick={handleClick}>
                 {show ? <Icon as={FiEye} /> : <Icon as={RiEyeCloseLine} />}
               </Box>
             </InputRightElement>
           </InputGroup>
+          {errors.password && (
+            <Text color="red" fontSize=".8rem" mt=".2rem">
+              {errors.password.message}
+            </Text>
+          )}
         </FormControl>{" "}
         <Button
           type="submit"
@@ -126,8 +154,17 @@ export default function LogIn() {
           }`}
         >
           <Icon as={FcGoogle} mr=".5rem" />
-          Sign up with google
+          Sign in with google
         </Button>
+
+        <Flex mt="2rem" gap=".5rem">
+          <Text>Don't have an account? </Text>
+          <Link href="/pages/auth/sign-up">
+            <Text color="#543EE0" textDecoration={"underline"}>
+              Sign up
+            </Text>
+          </Link>
+        </Flex>
       </VStack>
     </Box>
   );

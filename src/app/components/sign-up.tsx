@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Stack,
   Heading,
@@ -15,6 +15,8 @@ import {
   FormControl,
   FormLabel,
   useColorMode,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin } from "react-icons/fa";
@@ -33,6 +35,9 @@ import {
 import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { SuccessToast, ErrorToast } from "./utils/toast";
+import UserEmailExists from "./utils/user-exists";
 
 interface SignUpForm {
   firstName: string;
@@ -49,6 +54,7 @@ export default function SignUp() {
     useCreateUserWithEmailAndPassword(auth);
   const [signInWithGoogle, googleUser, googleLoader, error] =
     useSignInWithGoogle(auth);
+
   const router = useRouter();
 
   const {
@@ -57,10 +63,20 @@ export default function SignUp() {
     formState: { errors },
   } = useForm<SignUpForm>();
 
-  const onSubmit = (data: SignUpForm) => {
+  const onSubmit = async (data: SignUpForm) => {
     createUserWithEmailAndPassword(data.email, data.password);
-    router.push("/pages/dashboard");
   };
+
+  useEffect(() => {
+    if (user || googleUser) {
+      router.push("/pages/dashboard");
+      SuccessToast("Account created successful!");
+    }
+
+    if (authError || error) {
+      ErrorToast("User already exists!");
+    }
+  }, [user, googleUser, authError, error, router]);
 
   const { colorMode } = useColorMode();
   return (
@@ -83,6 +99,11 @@ export default function SignUp() {
               focusBorderColor="none"
               {...register("firstName", firstNameValidate)}
             />
+            {errors.firstName && (
+              <Text color="red" fontSize=".8rem" mt=".2rem">
+                {errors.firstName.message}
+              </Text>
+            )}
           </FormControl>
           <FormControl mb="1rem">
             <FormLabel>Last name</FormLabel>
@@ -91,6 +112,11 @@ export default function SignUp() {
               focusBorderColor="none"
               {...register("lastName", lastNameValidate)}
             />
+            {errors.lastName && (
+              <Text color="red" fontSize=".8rem" mt=".2rem">
+                {errors.lastName.message}
+              </Text>
+            )}
           </FormControl>
         </Stack>
         <FormControl mb="1rem">
@@ -107,6 +133,11 @@ export default function SignUp() {
             focusBorderColor="none"
             {...register("email", emailValidate)}
           />
+          {errors.email && (
+            <Text color="red" fontSize=".8rem" mt=".2rem">
+              {errors.email.message}
+            </Text>
+          )}
         </FormControl>
         <FormControl mb="1rem">
           <FormLabel>Password</FormLabel>
@@ -124,12 +155,17 @@ export default function SignUp() {
               </Box>
             </InputRightElement>
           </InputGroup>
+          {errors.password && (
+            <Text color="red" fontSize=".8rem" mt=".2rem">
+              {errors.password.message}
+            </Text>
+          )}
         </FormControl>{" "}
         <Button
           type="submit"
           isLoading={loading}
           w="100%"
-          mt=".2rem"
+          mt=".5rem"
           bg="#543EE0"
           color="#fff"
           _hover={{
@@ -139,7 +175,7 @@ export default function SignUp() {
           Create Account
         </Button>
       </form>
-      <VStack gap="1.2rem" mt="1rem">
+      <VStack gap="1.2rem" mt="1.5rem">
         <Button
           type="submit"
           onClick={() => signInWithGoogle()}
@@ -154,6 +190,14 @@ export default function SignUp() {
           <Icon as={FcGoogle} mr=".5rem" />
           Sign up with google
         </Button>
+        <Flex mt="2rem" gap=".5rem">
+          <Text>Already have an account? </Text>
+          <Link href="/pages/auth/sign-in">
+            <Text color="#543EE0" textDecoration={"underline"}>
+              Sign in
+            </Text>
+          </Link>
+        </Flex>
       </VStack>
     </Box>
   );

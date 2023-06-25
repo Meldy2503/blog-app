@@ -2,11 +2,19 @@
 import React, { createContext, useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
+
 import firebase from "firebase/app";
 
 export const BlogContext = createContext({
   posts: [] as Posts[],
   users: [] as Users[],
+  post: null as Posts | any,
+  // authorData: null as DocumentData | any,
+  // setAuthorData: null as unknown as React.Dispatch<
+  //   React.SetStateAction<DocumentData | any>
+  // >,
+  setPost: null as unknown as React.Dispatch<React.SetStateAction<Posts | any>>,
 });
 
 export interface Users {
@@ -17,6 +25,7 @@ export interface Posts {
   id: string;
   data: {
     title: string;
+    author: string;
     brief?: string;
     body: string;
     category?: string;
@@ -30,6 +39,8 @@ export interface Posts {
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
+  // const [authorData, setAuthorData] = useState<DocumentData | any>(null);
+  const [post, setPost] = useState<Posts | any>([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -43,7 +54,6 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
           },
         };
       });
-      console.log(usersList);
       setUsers(usersList);
     };
 
@@ -60,6 +70,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
           data: {
             title: doc.data().title,
             brief: doc.data().brief,
+            author: doc.data().author,
             body: doc.data().body,
             category: doc.data().category,
             postedOn: doc.data().postedOn.toDate(),
@@ -69,15 +80,20 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
         };
       });
       setPosts(postsList);
-      console.log(postsList);
     };
 
     fetchPosts();
   }, []);
 
   return (
-    <BlogContext.Provider value={{ posts, users }}>
+    <BlogContext.Provider value={{ posts, users, post, setPost }}>
       {children}
     </BlogContext.Provider>
   );
 };
+// interface PostIdProps {
+//   post: Posts | any;
+//   authorData: DocumentData | any;
+//   setAuthorData: React.Dispatch<React.SetStateAction<DocumentData | any>>;
+//   setPost: React.Dispatch<React.SetStateAction<Posts | any>>;
+// }

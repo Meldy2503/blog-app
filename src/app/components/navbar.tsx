@@ -107,7 +107,7 @@ export default function WithSubnavigation() {
               color={"white"}
               bg="#543EE0"
               border="2px solid #543EE0"
-              href="/pages/auth"
+              href="/pages/auth/sign-in"
               _hover={{
                 bg: "transparent",
                 color: colorMode === "dark" ? "#d0d0d0" : "#2b2b2b",

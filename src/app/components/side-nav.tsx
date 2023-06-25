@@ -12,6 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { it } from "node:test";
 import React from "react";
+import Posts from "../pages/feed/page";
 
 const SideNav = () => {
   const { colorMode } = useColorMode();
@@ -65,13 +66,16 @@ const SideNav = () => {
   ];
 
   return (
+    // <Posts>
     <Box
       bg={colorMode === "light" ? "light" : "dark"}
       color={colorMode === "dark" ? "#bdbbbb" : "#737373"}
       w={{ base: "100%", md: "45%" }}
-      h="100%"
       py="1rem"
       pl={{ base: "1rem", md: "2rem" }}
+      position="sticky"
+      top="0px"
+      h="10rem"
     >
       <Flex align={"center"} justify={"center"}>
         <Input
@@ -165,7 +169,10 @@ const SideNav = () => {
                     width={30}
                   />
                   <Box>
-                    <Heading fontSize=".9rem" color="#111">
+                    <Heading
+                      fontSize=".9rem"
+                      color={colorMode === "dark" ? "#edeaea" : "#111"}
+                    >
                       {item.name}
                     </Heading>
                     <Text fontSize={".8rem"}>{item.title}</Text>
@@ -194,6 +201,7 @@ const SideNav = () => {
         </Box>
       </Box>
     </Box>
+    // </Posts>
   );
 };
 

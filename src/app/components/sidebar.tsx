@@ -41,6 +41,7 @@ import { BsMoonStarsFill, BsSun } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import { auth } from "../../../firebase";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { SuccessToast } from "./utils/toast";
 
 interface LinkItemProps {
   name: string;
@@ -158,6 +159,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
   const handleLogout = () => {
     signOut();
+    SuccessToast("Logout Successful!");
     router.push("/");
   };
 
@@ -245,6 +247,15 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const router = useRouter();
+  const [signOut, loading, error] = useSignOut(auth);
+  const [user, floading, ferror] = useAuthState(auth);
+
+  const handleLogout = () => {
+    signOut();
+    SuccessToast("Logout Successful!");
+    router.push("/");
+  };
 
   return (
     <Flex
@@ -314,13 +325,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={colorMode === "light" ? "light" : "#171923"}
+              bg={colorMode === "light" ? "#fff" : "#171923"}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleLogout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

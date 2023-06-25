@@ -26,6 +26,11 @@ const theme = extendTheme({
       900: "#1a202c",
     },
   },
+  fonts: {
+    body: "Poppins, sans-serif",
+    heading: "Ubuntu, sans-serif",
+    // Add more custom font families as needed
+  },
 });
 
 export default theme;

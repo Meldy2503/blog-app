@@ -2,12 +2,28 @@
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import theme from "@/app/components/utils/theme";
+import Head from "next/head";
+import { ToastContainer } from "react-toastify";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <CacheProvider>
       <ChakraProvider theme={theme}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <ToastContainer theme="colored" />
+
+        {/* <Head>
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap"
+            rel="stylesheet"
+          />
+          <link
+            href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;700&display=swap"
+            rel="stylesheet"
+          />
+        </Head> */}
 
         {children}
       </ChakraProvider>

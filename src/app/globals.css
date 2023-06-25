@@ -42,3 +42,17 @@ body {
 a {
   text-decoration: none;
 }
+
+.side-nav {
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: transparent transparent; /* For Firefox */
+
+  &::-webkit-scrollbar {
+    width: 6px; /* For Chrome, Safari, and Opera */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Change this to the desired color */
+    border-radius: 3px;
+  }
+}
