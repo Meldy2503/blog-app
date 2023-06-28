@@ -19,11 +19,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
-import { FaLinkedin } from "react-icons/fa";
-import {
-  useCreateUserWithEmailAndPassword,
-  useSignInWithGoogle,
-} from "react-firebase-hooks/auth";
+import { useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase";
 import { useForm } from "react-hook-form";
 import {
@@ -31,28 +27,30 @@ import {
   firstNameValidate,
   lastNameValidate,
   passwordValidate,
+  usernameValidate,
 } from "./utils/form.-validate";
 import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SuccessToast, ErrorToast } from "./utils/toast";
+import { useRegister } from "../hooks/auth";
 
 interface SignUpForm {
   firstName: string;
   lastName: string;
   joiningAs: string;
   email: string;
+  username: string;
   password: string;
 }
 
 export default function SignUp() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  const [createUserWithEmailAndPassword, user, loading, authError] =
-    useCreateUserWithEmailAndPassword(auth);
   const [signInWithGoogle, googleUser, googleLoader, error] =
     useSignInWithGoogle(auth);
+  const { register: signup, isLoading } = useRegister();
 
   const router = useRouter();
 
@@ -62,22 +60,30 @@ export default function SignUp() {
     formState: { errors },
   } = useForm<SignUpForm>();
 
-  const onSubmit = async (data: SignUpForm) => {
-    createUserWithEmailAndPassword(data.email, data.password);
-  };
+  const { colorMode } = useColorMode();
+
+  async function handleRegister(data: SignUpForm) {
+    signup({
+      email: data.email,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      joiningAs: data.joiningAs,
+      username: data.username,
+      redirectTo: "/pages/dashboard",
+    });
+  }
 
   useEffect(() => {
-    if (user || googleUser) {
+    if (googleUser) {
       router.push("/pages/dashboard");
-      SuccessToast("Account created successful!");
+      SuccessToast("Login Successful!");
     }
 
-    if (authError || error) {
-      ErrorToast("User already exists!");
+    if (error) {
+      ErrorToast("Login Failed!");
     }
-  }, [user, googleUser, authError, error, router]);
-
-  const { colorMode } = useColorMode();
+  }, [googleUser, error, router]);
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>
       <Heading
@@ -89,7 +95,7 @@ export default function SignUp() {
       >
         Register as a Writer/Reader
       </Heading>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleRegister)}>
         <Stack direction={{ base: "column", lg: "row" }}>
           <FormControl mb="1rem">
             <FormLabel>First name</FormLabel>
@@ -119,8 +125,21 @@ export default function SignUp() {
           </FormControl>
         </Stack>
         <FormControl mb="1rem">
+          <FormLabel>Username</FormLabel>
+          <Input
+            placeholder="Username"
+            focusBorderColor="none"
+            {...register("username", usernameValidate)}
+          />
+          {errors.username && (
+            <Text color="red" fontSize=".8rem" mt=".2rem">
+              {errors.username.message}
+            </Text>
+          )}
+        </FormControl>
+        <FormControl mb="1rem">
           <FormLabel>You are joining as?</FormLabel>
-          <Select focusBorderColor="none">
+          <Select focusBorderColor="none" {...register("joiningAs")}>
             <option>Writer</option>
             <option>Reader</option>
           </Select>
@@ -162,7 +181,7 @@ export default function SignUp() {
         </FormControl>{" "}
         <Button
           type="submit"
-          isLoading={loading}
+          isLoading={isLoading}
           w="100%"
           mt=".5rem"
           bg="#543EE0"

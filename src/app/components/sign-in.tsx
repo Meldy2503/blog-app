@@ -29,7 +29,9 @@ import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+
 import { SuccessToast, ErrorToast } from "./utils/toast";
+import { useLogin } from "../hooks/auth";
 
 interface SignInForm {
   email: string;
@@ -39,11 +41,12 @@ interface SignInForm {
 export default function LogIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  const [signInWithEmailAndPassword, signInUser, signInLoading, signInError] =
-    useSignInWithEmailAndPassword(auth);
+  // const [signInWithEmailAndPassword, signInUser, signInLoading, signInError] =
+  // useSignInWithEmailAndPassword(auth);
   const [signInWithGoogle, googleUser, googleLoader, googleError] =
     useSignInWithGoogle(auth);
-  const [user, loading, error] = useAuthState(auth);
+  // const [user, loading, error] = useAuthState(auth);
+  const { login: userlogin, isLoading } = useLogin();
 
   const { colorMode } = useColorMode();
 
@@ -53,20 +56,26 @@ export default function LogIn() {
     handleSubmit,
     formState: { errors },
   } = useForm<SignInForm>();
-  const onSubmit = (data: SignInForm) => {
-    signInWithEmailAndPassword(data.email, data.password);
-  };
+
+  async function handleLogin(data: SignInForm) {
+    const succeeded = await userlogin({
+      email: data.email,
+      password: data.password,
+      redirectTo: "/pages/dashboard",
+    });
+    if (succeeded) console.log("Login successfull");
+  }
 
   useEffect(() => {
-    if (user || signInUser || googleUser) {
+    if (googleUser) {
       router.push("/pages/dashboard");
       SuccessToast("Login Successful!");
     }
 
-    if (signInError || googleError) {
-      ErrorToast("Invalid Credentials");
+    if (googleError) {
+      ErrorToast("Login Failed!");
     }
-  }, [user, googleUser, signInUser, signInError, googleError, router]);
+  }, [googleUser, googleError, router]);
 
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>
@@ -78,7 +87,7 @@ export default function LogIn() {
       >
         Sign in
       </Heading>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleLogin)}>
         <FormControl mb="2rem">
           <FormLabel>Email</FormLabel>
           <Input
@@ -118,9 +127,9 @@ export default function LogIn() {
         <Button
           type="submit"
           w="100%"
-          isLoading={signInLoading}
+          isLoading={isLoading}
           mt=".2rem"
-          bg="#543EE0"
+          bg="#543ee0"
           color="#fff"
           _hover={{
             bg: "#4430c5",

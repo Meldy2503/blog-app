@@ -9,16 +9,8 @@ import {
   Heading,
   Text,
   Flex,
-  Tabs,
-  Tab,
-  TabList,
-  TabIndicator,
-  TabPanels,
-  TabPanel,
   useColorMode,
   Button,
-  useColorModeValue,
-  Switch,
 } from "@chakra-ui/react";
 import { Blur } from "../../../components/utils/blur-icon";
 import Login from "../../../components/sign-in";
@@ -71,9 +63,7 @@ export default function JoinOurTeam() {
           colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
         }`}
       >
-        {/* <Box> */}
         <Link href="/">CHATTER</Link>
-        {/* </Box> */}
         <Button
           aria-label="Toggle Color Mode"
           onClick={toggleColorMode}

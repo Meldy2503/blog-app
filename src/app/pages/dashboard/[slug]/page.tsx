@@ -110,7 +110,7 @@ const PostId = () => {
                   color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                   mb=".2rem"
                 >
-                  {authorData?.name}
+                  {authorData?.firstName} {authorData?.lastName}
                 </Heading>
                 <Box color="green">
                   <Link href="#">Follow</Link>

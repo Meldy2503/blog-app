@@ -86,7 +86,7 @@ const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                 mb=".3rem"
               >
-                {authorData?.name}
+                {authorData?.firstName} {authorData?.lastName}
               </Heading>
               <Text>{authorData?.occupation}</Text>
             </Box>

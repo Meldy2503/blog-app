@@ -9,20 +9,11 @@ import {
   Heading,
   Text,
   Flex,
-  Tabs,
-  Tab,
-  TabList,
-  TabIndicator,
-  TabPanels,
-  TabPanel,
   useColorMode,
   Button,
-  useColorModeValue,
-  Switch,
 } from "@chakra-ui/react";
 import { Blur } from "../../../components/utils/blur-icon";
 import Login from "../../../components/sign-in";
-import Register from "../../../components/sign-up";
 import Link from "next/link";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
 
@@ -70,9 +61,7 @@ export default function JoinOurTeam() {
           colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
         }`}
       >
-        {/* <Box> */}
         <Link href="/">CHATTER</Link>
-        {/* </Box> */}
         <Button
           aria-label="Toggle Color Mode"
           onClick={toggleColorMode}
@@ -189,36 +178,6 @@ export default function JoinOurTeam() {
             spacing={{ base: 8 }}
           >
             <Login />
-
-            {/* <Tabs position="relative" colorScheme="facebook">
-            <TabList
-              display={"flex"}
-              justifyContent="space-between"
-              w="80%"
-              m="auto"
-            >
-              <Tab flex={1} fontWeight={600}>
-                SIGN IN
-              </Tab>
-              <Tab flex={1} fontWeight={600}>
-                REGISTER
-              </Tab>
-            </TabList>
-            <TabIndicator
-              mt="-1.3px"
-              height="2.5px"
-              bg="#543EE0"
-              borderRadius="1px"
-            />
-            <TabPanels py="1rem">
-              <TabPanel>
-                <Login />
-              </TabPanel>
-              <TabPanel>
-                <Register />
-              </TabPanel>
-            </TabPanels>
-          </Tabs> */}
           </Stack>
         </Flex>
         <Blur

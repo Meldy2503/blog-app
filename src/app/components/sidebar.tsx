@@ -41,6 +41,8 @@ import { useRouter } from "next/navigation";
 import { auth } from "../../../firebase";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { SuccessToast } from "./utils/toast";
+import { useAuth, useLogout } from "../hooks/auth";
+import NextLink from "next/link";
 
 interface LinkItemProps {
   name: string;
@@ -151,16 +153,7 @@ interface SidebarProps extends BoxProps {
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { colorMode } = useColorMode();
   const router = useRouter();
-  const [signOut, loading, error] = useSignOut(auth);
-  const [user, floading, ferror] = useAuthState(auth);
-
-  console.log(user);
-
-  const handleLogout = () => {
-    signOut();
-    SuccessToast("Logout Successful!");
-    router.push("/");
-  };
+  const { logout, isLoading } = useLogout();
 
   return (
     <Box
@@ -227,12 +220,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       <Flex
         as={Button}
         color="red"
-        isLoading={loading}
+        isLoading={isLoading}
         ml="2rem"
         align={"center"}
         gap=".5rem"
         cursor={"pointer"}
-        onClick={handleLogout}
+        onClick={logout}
       >
         Log out
         <FiLogOut />
@@ -246,15 +239,10 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const router = useRouter();
-  const [signOut, loading, error] = useSignOut(auth);
-  const [user, floading, ferror] = useAuthState(auth);
+  const { user } = useAuth();
+  const { logout } = useLogout();
 
-  const handleLogout = () => {
-    signOut();
-    SuccessToast("Logout Successful!");
-    router.push("/");
-  };
+  console.log(user, "user");
 
   return (
     <Flex
@@ -311,12 +299,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={"sm"}
-                  src={
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                  }
+                  // name={user?.username}
+                  name={user?.firstName + " " + user?.lastName}
+                  src={user?.avatar}
                 />
+
                 <Text fontSize=".78rem" lineHeight={1.2}>
-                  Justina Clark
+                  {user?.firstName}
                 </Text>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
@@ -327,9 +316,12 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={colorMode === "light" ? "#fff" : "#171923"}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
+              <MenuItem as={NextLink} href={"/pages/dashboard/profile"}>
+                Profile
+              </MenuItem>
+
               <MenuDivider />
-              <MenuItem onClick={handleLogout}>Sign out</MenuItem>
+              <MenuItem onClick={logout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

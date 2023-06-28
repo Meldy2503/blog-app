@@ -38,7 +38,7 @@ const Posts = () => {
           pr={{ base: 0, md: "3rem" }}
         >
           {posts.map((post) => (
-            <Link href={`/pages/dashboard/${post.id}`} key={post.id}>
+            <Link href={`/pages/feed/${post.id}`} key={post.id}>
               <Feeds
                 post={post}
                 borderRadius="none"

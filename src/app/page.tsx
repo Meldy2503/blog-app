@@ -7,10 +7,11 @@ import Connect from "./components/home/connect";
 import Features from "./components/home/features";
 import LandingPage from "./components/home/landing-page";
 import Join from "./components/home/join";
+import { Box } from "@chakra-ui/react";
 
 export default function Home() {
   return (
-    <>
+    <Box>
       <Navbar />
       <LandingPage />
       <AboutUs />
@@ -18,6 +19,6 @@ export default function Home() {
       <Join />
       <Connect />
       <Footer />
-    </>
+    </Box>
   );
 }

@@ -10,9 +10,18 @@ interface Props {
   hoverBg?: string;
   hoverColor?: string;
   children: React.ReactNode;
+  w?: string;
 }
 
-const Button = ({ href, bg, color, hoverBg, hoverColor, children }: Props) => {
+const Button = ({
+  href,
+  bg,
+  color,
+  hoverBg,
+  hoverColor,
+  children,
+  w,
+}: Props) => {
   return (
     <Link
       as={NextLink}
@@ -21,6 +30,7 @@ const Button = ({ href, bg, color, hoverBg, hoverColor, children }: Props) => {
       fontSize=".92rem"
       px="1.1rem"
       py=".7rem"
+      w={w}
       borderRadius=".3rem"
       bg={bg}
       color={color}

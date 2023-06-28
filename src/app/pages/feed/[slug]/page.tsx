@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { use, useContext, useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -15,20 +15,20 @@ import { VscBook } from "react-icons/vsc";
 import { MdOutlineAnalytics } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
-import { BlogContext } from "../../../../../context/blog-context";
+import { BlogContext, Posts, Users } from "../../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
 import Navbar from "@/app/components/navbar";
 import Loader from "@/app/components/utils/spinner";
 import { db } from "../../../../../firebase";
-import { doc, getDoc, DocumentData } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 const PostId = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
-
+  const [authorData, setAuthorData] = useState<Users | any>(null);
+  const [post, setPost] = useState<Posts | any>(null);
   const { colorMode } = useColorMode();
-  const { posts, post, setPost } = useContext(BlogContext);
+  const { posts, users } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   useEffect(() => {
@@ -51,14 +51,14 @@ const PostId = () => {
   }, [post?.data?.author]);
 
   useEffect(() => {
-    if (posts.length === 0) {
+    if (posts.length === 0 || users.length === 0) {
       return;
     }
     const url = `${pathname}?${searchParams}`;
     const id = url.split("/").pop()?.replace("?", "");
     const selectedPost = posts?.find((post) => post.id === id);
     setPost(selectedPost);
-  }, [posts, pathname, searchParams, post, setPost]);
+  }, [pathname, post, posts, searchParams, users]);
 
   if (!posts.length) {
     return <Loader />;
@@ -85,21 +85,23 @@ const PostId = () => {
             {post?.data?.title}
           </Heading>
           <Flex align={"center"} gap="1rem" mt="2rem">
-            <Box>
-              <Image
-                src={authorData?.imageUrl}
-                alt="author image"
-                style={{
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  width: "60px",
-                  height: "60px",
-                }}
-                height={200}
-                width={200}
-              />
-            </Box>
+            {authorData?.imageUrl && (
+              <Box>
+                <Image
+                  src={authorData?.imageUrl}
+                  alt="author image"
+                  style={{
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    width: "60px",
+                    height: "60px",
+                  }}
+                  height={200}
+                  width={200}
+                />
+              </Box>
+            )}
             <Box>
               <Flex gap="1rem" align="center">
                 <Heading
@@ -109,7 +111,7 @@ const PostId = () => {
                   color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                   mb=".2rem"
                 >
-                  {authorData?.name}
+                  {authorData?.firstName} {authorData?.lastName}
                 </Heading>
                 <Box color="green">
                   <Link href="#">Follow</Link>

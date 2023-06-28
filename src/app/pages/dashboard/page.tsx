@@ -81,14 +81,14 @@ const Dashboard = () => {
                 fontSize={{ base: "1rem", md: "1.1rem" }}
                 fontWeight={600}
               >
-                Your posts
+                Featured
               </Tab>
               <Tab
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                 fontSize={{ base: "1rem", md: "1.1rem" }}
                 fontWeight={600}
               >
-                Featured
+                Your posts
               </Tab>
               <Tab
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
@@ -105,16 +105,6 @@ const Dashboard = () => {
               borderRadius="1px"
             />
             <TabPanels>
-              <TabPanel>
-                {!posts.length ? (
-                  <Box>nothing to show</Box>
-                ) : (
-                  <>
-                    <p>Your posts</p>
-                    {/* Render your posts here */}
-                  </>
-                )}
-              </TabPanel>
               <TabPanel p="0">
                 {posts.map((post) => (
                   <Link href={`/pages/dashboard/${post.id}`} key={post.id}>
@@ -130,6 +120,9 @@ const Dashboard = () => {
                     />
                   </Link>
                 ))}
+              </TabPanel>
+              <TabPanel>
+                <p>Your posts</p>
               </TabPanel>
 
               <TabPanel>

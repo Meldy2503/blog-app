@@ -15,12 +15,19 @@ export const BlogContext = createContext({
 
 export interface Users {
   id: string;
-  data: { [x: string]: any };
+  data: {
+    email: string;
+    followerCount?: string;
+    imageUrl?: string;
+    name: string;
+    joiningAs?: string;
+    occupation?: string;
+    username?: string;
+  };
 }
 export interface Posts {
   id: string;
   data: {
-    title: string;
     author: string;
     brief?: string;
     body: string;
@@ -35,7 +42,6 @@ export interface Posts {
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
-  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
   const [post, setPost] = useState<Posts | any>([]);
 
   useEffect(() => {
@@ -46,7 +52,13 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
         return {
           id: doc.id,
           data: {
-            ...doc.data(),
+            email: doc.data().email,
+            followerCount: doc.data().followerCount,
+            imageUrl: doc.data().imageUrl,
+            name: doc.data().name,
+            joiningAs: doc.data().joiningAs,
+            username: doc.data().username,
+            occupation: doc.data().occupation,
           },
         };
       });
@@ -64,7 +76,6 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
         return {
           id: doc.id,
           data: {
-            title: doc.data().title,
             brief: doc.data().brief,
             author: doc.data().author,
             body: doc.data().body,
@@ -87,9 +98,3 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     </BlogContext.Provider>
   );
 };
-// interface PostIdProps {
-//   post: Posts | any;
-//   authorData: DocumentData | any;
-//   setAuthorData: React.Dispatch<React.SetStateAction<DocumentData | any>>;
-//   setPost: React.Dispatch<React.SetStateAction<Posts | any>>;
-// }

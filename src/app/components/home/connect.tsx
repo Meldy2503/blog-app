@@ -16,7 +16,7 @@ const Connect = () => {
 
   return (
     <Wrapper
-      bg={colorMode === "light" ? "light" : "dark"}
+      bg={colorMode === "light" ? "#fff" : "dark"}
       color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
     >
       <Flex justify="space-between" direction={{ base: "column", md: "row" }}>

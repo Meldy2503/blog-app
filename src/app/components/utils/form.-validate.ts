@@ -46,3 +46,13 @@ export const passwordValidate = {
     message: "Password must be at least 6 characters long",
   },
 };
+export const usernameValidate = {
+  required: {
+    value: true,
+    message: "Please enter username",
+  },
+  minLength: {
+    value: 3,
+    message: "Password must be at least 3 characters long",
+  },
+};
