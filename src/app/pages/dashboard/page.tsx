@@ -60,7 +60,11 @@ const Dashboard = () => {
                 Explore different contents you’d love{" "}
               </Text>
             </Box>
-            <Button href="#" bg="#543EE0" color="#fff">
+            <Button
+              href="/pages/dashboard/write-post"
+              bg="#543EE0"
+              color="#fff"
+            >
               <Icon as={FaPencilAlt} color="#fff" mr=".5rem" />
               Write
             </Button>

@@ -11,7 +11,11 @@ const AboutUs = () => {
       bg={colorMode === "light" ? "#F7f6f6" : "dark"}
       color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
     >
-      <Flex justify={"space-between"} direction={{ base: "column", md: "row" }}>
+      <Flex
+        justify={"space-between"}
+        direction={{ base: "column", md: "row" }}
+        my={{ base: "1rem", md: "2rem" }}
+      >
         <Box
           w={{ base: "100%", md: "55%", lg: "47%" }}
           mb={{ base: "2rem", md: "0rem" }}

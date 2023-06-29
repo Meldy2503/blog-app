@@ -16,8 +16,6 @@ export function useAuth() {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<DocumentData | null>(null);
 
-  console.log("UseAuth now", authUser);
-
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
@@ -35,6 +33,7 @@ export function useAuth() {
     }
   }, [authLoading, authUser]);
 
+  console.log(user, "user");
   return { user, isLoading, error };
 }
 

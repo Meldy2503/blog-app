@@ -1,16 +1,16 @@
 "use client";
 import React, { createContext, useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
-import { doc, getDoc, DocumentData } from "firebase/firestore";
-
-import firebase from "firebase/app";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { db, auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
 
 export const BlogContext = createContext({
   posts: [] as Posts[],
   users: [] as Users[],
-  post: null as Posts | any,
-  setPost: null as unknown as React.Dispatch<React.SetStateAction<Posts | any>>,
+  handleUserAuth: null as unknown as React.Dispatch<
+    React.SetStateAction<Users | any>
+  >,
+  currentUser: null as null | any,
 });
 
 export interface Users {
@@ -42,7 +42,7 @@ export interface Posts {
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [posts, setPosts] = useState<Posts[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
-  const [post, setPost] = useState<Posts | any>([]);
+  const [currentUser, setCurrentUser] = useState<any>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -92,8 +92,29 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     fetchPosts();
   }, []);
 
+  const addUserToFirebase = async (user: any) => {
+    await setDoc(doc(db, "users", user.email), {
+      email: user.email,
+      followerCount: 0,
+      imageUrl: user.photoURL,
+      name: user.displayName,
+      joiningAs: "writer",
+      username: user.displayName,
+      occupation: "writer",
+    });
+  };
+
+  const handleUserAuth = async () => {
+    const userResponse = await signInWithPopup(auth, provider);
+    const userData = userResponse.user;
+    setCurrentUser(userData);
+    addUserToFirebase(userData);
+
+    console.log(userData, "--->>>>");
+  };
+
   return (
-    <BlogContext.Provider value={{ posts, users, post, setPost }}>
+    <BlogContext.Provider value={{ posts, users, currentUser, handleUserAuth }}>
       {children}
     </BlogContext.Provider>
   );

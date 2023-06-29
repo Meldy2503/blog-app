@@ -28,7 +28,7 @@ const LandingPage = () => {
     // >
     <Wrapper
       bg={colorMode === "light" ? "light" : "#171923"}
-      color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
+      color={colorMode === "dark" ? "#fff" : "#2b2b2b"}
     >
       {/* <Blur
         position={"absolute"}

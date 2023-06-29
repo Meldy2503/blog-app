@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Stack,
   Heading,
@@ -35,6 +35,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { SuccessToast, ErrorToast } from "./utils/toast";
 import { useRegister } from "../hooks/auth";
+import { BlogContext } from "../../../context/blog-context";
 
 interface SignUpForm {
   firstName: string;
@@ -48,8 +49,10 @@ interface SignUpForm {
 export default function SignUp() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  const [signInWithGoogle, googleUser, googleLoader, error] =
-    useSignInWithGoogle(auth);
+  const { handleUserAuth, currentUser } = useContext(BlogContext);
+
+  // const [signInWithGoogle, googleUser, googleLoader, error] =
+  // useSignInWithGoogle(auth);
   const { register: signup, isLoading } = useRegister();
 
   const router = useRouter();
@@ -75,15 +78,12 @@ export default function SignUp() {
   }
 
   useEffect(() => {
-    if (googleUser) {
+    if (currentUser) {
       router.push("/pages/dashboard");
       SuccessToast("Login Successful!");
     }
+  }, [currentUser, router]);
 
-    if (error) {
-      ErrorToast("Login Failed!");
-    }
-  }, [googleUser, error, router]);
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>
       <Heading
@@ -196,9 +196,9 @@ export default function SignUp() {
       <VStack gap="1.2rem" mt="1.5rem">
         <Button
           type="submit"
-          onClick={() => signInWithGoogle()}
+          onClick={handleUserAuth}
           w="100%"
-          isLoading={googleLoader}
+          // isLoading={googleLoader}
           bg={colorMode === "light" ? "#f6f5f5" : "dark"}
           color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
           border={`1px solid ${

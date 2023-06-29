@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Heading,
   Button,
@@ -32,6 +32,7 @@ import Link from "next/link";
 
 import { SuccessToast, ErrorToast } from "./utils/toast";
 import { useLogin } from "../hooks/auth";
+import { BlogContext } from "../../../context/blog-context";
 
 interface SignInForm {
   email: string;
@@ -41,10 +42,12 @@ interface SignInForm {
 export default function LogIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+  const { handleUserAuth, currentUser } = useContext(BlogContext);
+
   // const [signInWithEmailAndPassword, signInUser, signInLoading, signInError] =
   // useSignInWithEmailAndPassword(auth);
-  const [signInWithGoogle, googleUser, googleLoader, googleError] =
-    useSignInWithGoogle(auth);
+  // const [signInWithGoogle, googleUser, googleLoader, googleError] =
+  //   useSignInWithGoogle(auth);
   // const [user, loading, error] = useAuthState(auth);
   const { login: userlogin, isLoading } = useLogin();
 
@@ -67,15 +70,11 @@ export default function LogIn() {
   }
 
   useEffect(() => {
-    if (googleUser) {
+    if (currentUser) {
       router.push("/pages/dashboard");
       SuccessToast("Login Successful!");
     }
-
-    if (googleError) {
-      ErrorToast("Login Failed!");
-    }
-  }, [googleUser, googleError, router]);
+  }, [currentUser, router]);
 
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>
@@ -141,9 +140,9 @@ export default function LogIn() {
       <VStack gap="1.2rem" mt="2rem">
         <Button
           type="submit"
-          onClick={() => signInWithGoogle()}
+          onClick={handleUserAuth}
           w="100%"
-          isLoading={googleLoader}
+          // isLoading={googleLoader}
           bg={colorMode === "light" ? "#f6f5f5" : "dark"}
           color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
           border={`1px solid ${

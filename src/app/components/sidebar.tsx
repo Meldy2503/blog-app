@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import {
   IconButton,
   Avatar,
@@ -43,6 +43,7 @@ import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { SuccessToast } from "./utils/toast";
 import { useAuth, useLogout } from "../hooks/auth";
 import NextLink from "next/link";
+import { BlogContext } from "../../../context/blog-context";
 
 interface LinkItemProps {
   name: string;
@@ -241,8 +242,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user } = useAuth();
   const { logout } = useLogout();
+  const { currentUser } = useContext(BlogContext);
 
-  console.log(user, "user");
+  console.log(currentUser?.name, "currentUser");
 
   return (
     <Flex
@@ -300,7 +302,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 <Avatar
                   size={"sm"}
                   // name={user?.username}
-                  name={user?.firstName + " " + user?.lastName}
+                  name={
+                    user?.firstName + " " + user?.lastName || currentUser?.name
+                  }
                   src={user?.avatar}
                 />
 
@@ -316,6 +320,21 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={colorMode === "light" ? "#fff" : "#171923"}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
+              <Flex
+                align={"center"}
+                direction={"column"}
+                justify={"center"}
+                gap=".5rem"
+                mb="1rem"
+              >
+                <Avatar
+                  name="Emelder Okafor"
+                  size={"lg"}
+                  border={"1px solid #1f222f"}
+                  src="https://bit.ly/dan-abramov"
+                />
+                <Text fontSize={".85rem"}>Emelder Okafor</Text>
+              </Flex>
               <MenuItem as={NextLink} href={"/pages/dashboard/profile"}>
                 Profile
               </MenuItem>

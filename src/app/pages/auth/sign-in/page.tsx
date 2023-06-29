@@ -10,12 +10,10 @@ import {
   Text,
   Flex,
   useColorMode,
-  Button,
 } from "@chakra-ui/react";
 import { Blur } from "../../../components/utils/blur-icon";
 import Login from "../../../components/sign-in";
-import Link from "next/link";
-import { BsMoonStarsFill, BsSun } from "react-icons/bs";
+import UserNavbar from "../../../components/user-nav";
 
 const avatars = [
   {
@@ -41,36 +39,11 @@ const avatars = [
 ];
 
 export default function JoinOurTeam() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   return (
     <>
-      <Flex
-        justify={"center"}
-        align="center"
-        h="3.5rem"
-        fontWeight={700}
-        fontSize="1.6rem"
-        _hover={{
-          textDecoration: "none",
-        }}
-        gap="2rem"
-        shadow="lg"
-        color="#543EE0"
-        borderBottom={`1px solid ${
-          colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
-        }`}
-      >
-        <Link href="/">CHATTER</Link>
-        <Button
-          aria-label="Toggle Color Mode"
-          onClick={toggleColorMode}
-          _focus={{ boxShadow: "none" }}
-          w="fit-content"
-        >
-          {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun />}
-        </Button>
-      </Flex>
+      <UserNavbar />
       <Box
         position={"relative"}
         bg={colorMode === "light" ? "light" : "dark"}
