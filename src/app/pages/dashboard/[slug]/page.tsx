@@ -9,6 +9,7 @@ import {
   HStack,
   useColorMode,
   useMediaQuery,
+  Avatar,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
@@ -21,29 +22,41 @@ import Loader from "@/app/components/utils/spinner";
 import Sidebar from "../../../../app/components/sidebar";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "../../../../../firebase";
+import { useAuth } from "@/app/hooks/auth";
 
 const PostId = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [post, setPost] = useState<Posts | any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   const { colorMode } = useColorMode();
   const { posts } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
+  const capitalizedName = authorData?.name?.replace(/\b\w/g, (letter: any) =>
+    letter.toUpperCase()
+  );
+
   useEffect(() => {
     const fetchAuthorData = async () => {
       try {
+        setLoading(true);
+
         const docRef = doc(db, "users", post?.data?.author);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const authorProfile = docSnap.data();
           setAuthorData(authorProfile);
+          setLoading(false);
         } else {
           return;
         }
       } catch (error) {
+        setLoading(false);
+
         return;
       }
     };
@@ -62,7 +75,7 @@ const PostId = () => {
     setPost(selectedPost);
   }, [posts, pathname, searchParams, post]);
 
-  if (!posts.length) {
+  if (!posts.length || authorData === null) {
     return <Loader />;
   }
 
@@ -87,18 +100,10 @@ const PostId = () => {
           </Heading>
           <Flex align={"center"} gap="1rem" mt="2rem">
             <Box>
-              <Image
+              <Avatar
+                size="lg"
                 src={authorData?.imageUrl}
-                alt="author image"
-                style={{
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  width: "60px",
-                  height: "60px",
-                }}
-                height={200}
-                width={200}
+                name={capitalizedName}
               />
             </Box>
             <Box>
@@ -110,7 +115,7 @@ const PostId = () => {
                   color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                   mb=".2rem"
                 >
-                  {authorData?.firstName} {authorData?.lastName}
+                  {capitalizedName}
                 </Heading>
                 <Box color="green">
                   <Link href="#">Follow</Link>
@@ -161,20 +166,22 @@ const PostId = () => {
             </HStack>
           </Flex>
           <Box mt="2rem">
-            <Image
-              src={post?.data?.bannerImage}
-              alt="feed image"
-              style={{
-                objectFit: "cover",
-                objectPosition: "center",
-                margin: "auto",
-                height: isMobile ? "15rem" : "25rem",
-                width: isMobile ? "100%" : "80%",
-                maxWidth: "100%",
-              }}
-              height={1500}
-              width={1500}
-            />{" "}
+            {post?.data?.bannerImage && (
+              <Image
+                src={post?.data?.bannerImage}
+                alt="feed image"
+                style={{
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  margin: "auto",
+                  height: isMobile ? "15rem" : "25rem",
+                  width: isMobile ? "100%" : "80%",
+                  maxWidth: "100%",
+                }}
+                height={1500}
+                width={1500}
+              />
+            )}
             <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">
               {post?.data?.body}
             </Text>

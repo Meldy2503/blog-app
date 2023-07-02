@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const SideNav = () => {
+const SideNav = ({ bg, px, btnBg }: any) => {
   const { colorMode } = useColorMode();
 
   const data = [
@@ -65,10 +65,11 @@ const SideNav = () => {
 
   return (
     <Box
-      bg={colorMode === "light" ? "light" : "dark"}
+      bg={bg}
       color={colorMode === "dark" ? "#bdbbbb" : "#737373"}
       w={{ base: "100%", md: "45%" }}
       py="1rem"
+      px={px}
       pl={{ base: "1rem", md: "2rem" }}
       position="sticky"
       top="0px"
@@ -102,7 +103,8 @@ const SideNav = () => {
             return (
               <Text
                 key={item.id}
-                bg={colorMode === "dark" ? "#2d3748" : "#f5f4f4"}
+                bg={btnBg}
+                // bg={colorMode === "dark" ? "#2d3748" : "#f5f4f4"}
                 py=".2rem"
                 px=".9rem"
                 borderRadius="20px"
@@ -145,7 +147,7 @@ const SideNav = () => {
             mt="2.5rem"
             color={colorMode === "light" ? "#252525" : "#d0d0d0"}
           >
-            Who to Follow
+            You might Know
           </Text>
           {follow.map((item) => {
             return (

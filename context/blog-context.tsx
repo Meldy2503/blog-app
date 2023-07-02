@@ -1,16 +1,50 @@
 "use client";
 import React, { createContext, useEffect, useState } from "react";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db, auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useAuth } from "@/app/hooks/auth";
 
-export const BlogContext = createContext({
-  posts: [] as Posts[],
-  users: [] as Users[],
-  handleUserAuth: null as unknown as React.Dispatch<
-    React.SetStateAction<Users | any>
-  >,
-  currentUser: null as null | any,
+// export const BlogContext = createContext({
+//   posts: [] as Posts[],
+//   users: [] as Users[],
+//   handleUserAuth: null as unknown as React.Dispatch<
+//     React.SetStateAction<Users | any>
+//   >,
+//   currentUser: null as null | any,
+//   entry: {} as Entry,
+//   setEntry: null as unknown as React.Dispatch<React.SetStateAction<Entry>>,
+// });
+
+export const BlogContext = createContext<{
+  posts: Posts[];
+  users: Users[];
+  currentUser: null | any;
+  handleUserAuth: React.Dispatch<React.SetStateAction<Users | any>>;
+  entry: Entry | any;
+  setEntry: React.Dispatch<React.SetStateAction<Entry>>;
+}>({
+  posts: [],
+  users: [],
+  handleUserAuth: () => {},
+  currentUser: null,
+  entry: {
+    author: "",
+    brief: "",
+    body: "",
+    category: "",
+    postedOn: serverTimestamp(),
+    title: "",
+    bannerImage: "",
+    postLength: 0,
+  },
+  setEntry: () => [],
 });
 
 export interface Users {
@@ -39,10 +73,34 @@ export interface Posts {
   };
 }
 
+export interface Entry {
+  author?: string;
+  brief?: string;
+  body: string;
+  category?: string;
+  postedOn?: any;
+  title: string;
+  bannerImage?: string;
+  postLength: number;
+}
+
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user } = useAuth();
   const [posts, setPosts] = useState<Posts[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [entry, setEntry] = useState<Entry>({
+    author: "",
+    title: "",
+    brief: "",
+    bannerImage: "",
+    category: "",
+    body: "",
+    postedOn: serverTimestamp(),
+    postLength: 0,
+  });
+
+  console.log(currentUser, "currentUser");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -114,7 +172,9 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <BlogContext.Provider value={{ posts, users, currentUser, handleUserAuth }}>
+    <BlogContext.Provider
+      value={{ posts, users, currentUser, handleUserAuth, entry, setEntry }}
+    >
       {children}
     </BlogContext.Provider>
   );

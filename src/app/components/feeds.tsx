@@ -8,6 +8,7 @@ import {
   HStack,
   useColorMode,
   useMediaQuery,
+  Avatar,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
@@ -16,24 +17,29 @@ import { AiOutlineHeart } from "react-icons/ai";
 import Loader from "./utils/spinner";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "../../../firebase";
+import { useAuth } from "../hooks/auth";
 
 const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
   const { colorMode } = useColorMode();
   const [isMobile] = useMediaQuery("(max-width: 1280px)");
+  const [loading, setLoading] = useState<boolean>(false);
   const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   useEffect(() => {
     const fetchAuthorData = async () => {
       try {
+        setLoading(true);
         const docRef = doc(db, "users", post?.data?.author);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const authorProfile = docSnap.data();
           setAuthorData(authorProfile);
+          setLoading(false);
         } else {
           return;
         }
       } catch (error) {
+        setLoading(false);
         return;
       }
     };
@@ -41,9 +47,13 @@ const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
     fetchAuthorData();
   }, [post?.data?.author]);
 
-  if (post.length === 0) {
+  if (loading) {
     return <Loader />;
   }
+
+  const capitalizedName = authorData?.name?.replace(/\b\w/g, (letter: any) =>
+    letter.toUpperCase()
+  );
 
   return (
     <Box
@@ -64,29 +74,21 @@ const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
         <Box w={{ base: "100%", md: "67%", xl: "60%" }}>
           <Flex align={"center"} gap=".7rem">
             <Box>
-              <Image
+              <Avatar
                 src={authorData?.imageUrl}
-                alt="a person's face"
-                style={{
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                  objectPosition: "center",
-                  width: "50px",
-                  height: "50px",
-                }}
-                height={200}
-                width={200}
+                size="lg"
+                name={capitalizedName}
               />
             </Box>
             <Box>
               <Heading
                 as={"h4"}
-                fontSize={"1.2rem"}
+                fontSize={"1.1rem"}
                 fontWeight={550}
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
                 mb=".3rem"
               >
-                {authorData?.firstName} {authorData?.lastName}
+                {capitalizedName}
               </Heading>
               <Text>{authorData?.occupation}</Text>
             </Box>
@@ -98,10 +100,10 @@ const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
                 color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
               />
 
-              <Text>{post.data.postLength} mins read</Text>
+              <Text>{post?.data?.postLength} mins read</Text>
             </Flex>
             <Text mr="1.5rem">
-              {new Date(post.data.postedOn).toLocaleString("en-US", {
+              {new Date(post?.data?.postedOn).toLocaleString("en-US", {
                 day: "numeric",
                 month: "short",
                 year: "numeric",
@@ -114,7 +116,7 @@ const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
               borderRadius="20px"
               mr="1.5rem"
             >
-              <Text>{post.data.category}</Text>
+              <Text>{post?.data?.category}</Text>
             </Box>
           </Flex>
 
@@ -128,21 +130,23 @@ const Feeds = ({ post, borderBottom, border, borderRadius, px }: any) => {
             >
               {post.data.title}
             </Heading>
-            <Text>{post.data.brief}</Text>
+            <Text>{post?.data?.brief}</Text>
           </Box>
         </Box>
         <Flex w={{ base: "100%", sm: "28%", xl: "30%" }} direction="column">
-          <Image
-            src={post.data.bannerImage}
-            alt="feed image"
-            style={{
-              objectFit: "cover",
-              height: isMobile ? "100%" : "10rem",
-              objectPosition: "center",
-            }}
-            height={500}
-            width={500}
-          />{" "}
+          {post?.data?.bannerImage && (
+            <Image
+              src={post?.data?.bannerImage}
+              alt="feed image"
+              style={{
+                objectFit: "cover",
+                height: isMobile ? "100%" : "10rem",
+                objectPosition: "center",
+              }}
+              height={500}
+              width={500}
+            />
+          )}
           <Flex
             mt=".8rem"
             align={"center"}

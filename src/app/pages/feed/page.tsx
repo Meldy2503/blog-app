@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Flex, useColorMode } from "@chakra-ui/react";
 import Link from "next/link";
 import { BlogContext } from "../../../../context/blog-context";
@@ -49,7 +49,10 @@ const Posts = () => {
             </Link>
           ))}
         </Box>
-        <SideNav />
+        <SideNav
+          bg={colorMode === "light" ? "light" : "dark"}
+          btnBg={colorMode === "dark" ? "#2d3748" : "#f5f4f4"}
+        />
       </Flex>
     </>
   );

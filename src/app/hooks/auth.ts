@@ -6,10 +6,20 @@ import {
 import { useEffect, useState } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
-import { setDoc, doc, getDoc, DocumentData } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  getDoc,
+  DocumentData,
+  collection,
+  where,
+  query,
+  getDocs,
+} from "firebase/firestore";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import isUsernameExists from "../components/utils/user-exists";
 import { SuccessToast, ErrorToast } from "../components/utils/toast";
+import { Users } from "../../../context/blog-context";
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
@@ -20,9 +30,14 @@ export function useAuth() {
     async function fetchData() {
       setLoading(true);
       if (authUser) {
-        const ref = doc(db, "users", authUser.uid);
-        const docSnap = await getDoc(ref);
-        setUser(docSnap.data() as DocumentData);
+        const ref = collection(db, "users");
+        const q = query(ref, where("email", "==", authUser.email));
+        const querySnapshot = await getDocs(q);
+        const userDocs = querySnapshot.docs;
+        if (userDocs.length > 0) {
+          const userDoc = userDocs[0];
+          setUser(userDoc.data() as Users);
+        }
       }
       setLoading(false);
     }
@@ -33,16 +48,14 @@ export function useAuth() {
     }
   }, [authLoading, authUser]);
 
-  console.log(user, "user");
-  return { user, isLoading, error };
+  return { user, isLoading, error, setUser };
 }
 
 interface SignUpProps {
   username: string;
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  name: string;
   joiningAs: string;
   redirectTo: string;
 }
@@ -87,8 +100,7 @@ export function useRegister() {
   const router = useRouter();
 
   async function register({
-    firstName,
-    lastName,
+    name,
     joiningAs,
     username,
     email,
@@ -109,8 +121,7 @@ export function useRegister() {
         await setDoc(doc(db, "users", email), {
           id: email,
           username: username?.toLowerCase(),
-          firstName,
-          lastName,
+          name,
           email,
           joiningAs,
           avatar: "",

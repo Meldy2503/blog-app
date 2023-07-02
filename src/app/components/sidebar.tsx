@@ -38,9 +38,6 @@ import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
 import { IconType } from "react-icons";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
 import { useRouter } from "next/navigation";
-import { auth } from "../../../firebase";
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
-import { SuccessToast } from "./utils/toast";
 import { useAuth, useLogout } from "../hooks/auth";
 import NextLink from "next/link";
 import { BlogContext } from "../../../context/blog-context";
@@ -241,10 +238,16 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user } = useAuth();
-  const { logout } = useLogout();
   const { currentUser } = useContext(BlogContext);
+  const { logout } = useLogout();
+  const capitalizedName =
+    user?.name?.replace(/\b\w/g, (letter: any) => letter.toUpperCase()) ||
+    user?.firstName?.replace(/\b\w/g, (letter: any) => letter.toUpperCase()) +
+      " " +
+      user?.lastName?.replace(/\b\w/g, (letter: any) => letter.toUpperCase());
 
-  console.log(currentUser?.name, "currentUser");
+  console.log(user, "user");
+  console.log(currentUser, "currentUser");
 
   return (
     <Flex
@@ -301,16 +304,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={"sm"}
-                  // name={user?.username}
-                  name={
-                    user?.firstName + " " + user?.lastName || currentUser?.name
-                  }
-                  src={user?.avatar}
+                  src={user?.imageUrl}
+                  name={capitalizedName}
                 />
 
-                <Text fontSize=".78rem" lineHeight={1.2}>
-                  {user?.firstName}
-                </Text>
                 <Box display={{ base: "none", md: "flex" }}>
                   <FiChevronDown />
                 </Box>
@@ -328,12 +325,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 mb="1rem"
               >
                 <Avatar
-                  name="Emelder Okafor"
                   size={"lg"}
-                  border={"1px solid #1f222f"}
-                  src="https://bit.ly/dan-abramov"
+                  src={user?.imageUrl}
+                  name={capitalizedName}
                 />
-                <Text fontSize={".85rem"}>Emelder Okafor</Text>
+                <Text fontSize={".85rem"}>{capitalizedName}</Text>
               </Flex>
               <MenuItem as={NextLink} href={"/pages/dashboard/profile"}>
                 Profile

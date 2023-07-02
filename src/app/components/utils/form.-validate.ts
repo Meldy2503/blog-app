@@ -1,29 +1,15 @@
-export const firstNameValidate = {
+export const nameValidate = {
   required: {
     value: true,
-    message: "Please enter your first name",
+    message: "Please enter your name",
   },
   minLength: {
     value: 3,
-    message: "first name must be at least 3 characters long",
+    message: "name must be at least 3 characters long",
   },
   pattern: {
     value: /^[a-zA-Z]+$/,
-    message: "first name must not be alphanumeric",
-  },
-};
-export const lastNameValidate = {
-  required: {
-    value: true,
-    message: "Please enter your last name",
-  },
-  minLength: {
-    value: 3,
-    message: "last name must be at least 3 characters long",
-  },
-  pattern: {
-    value: /^[a-zA-Z]+$/,
-    message: "last name must not be alphanumeric",
+    message: "name must not be alphanumeric",
   },
 };
 export const emailValidate = {

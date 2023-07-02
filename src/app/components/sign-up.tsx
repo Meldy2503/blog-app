@@ -24,8 +24,7 @@ import { auth } from "../../../firebase";
 import { useForm } from "react-hook-form";
 import {
   emailValidate,
-  firstNameValidate,
-  lastNameValidate,
+  nameValidate,
   passwordValidate,
   usernameValidate,
 } from "./utils/form.-validate";
@@ -38,8 +37,7 @@ import { useRegister } from "../hooks/auth";
 import { BlogContext } from "../../../context/blog-context";
 
 interface SignUpForm {
-  firstName: string;
-  lastName: string;
+  name: string;
   joiningAs: string;
   email: string;
   username: string;
@@ -69,11 +67,10 @@ export default function SignUp() {
     signup({
       email: data.email,
       password: data.password,
-      firstName: data.firstName,
-      lastName: data.lastName,
+      name: data.name,
       joiningAs: data.joiningAs,
       username: data.username,
-      redirectTo: "/pages/dashboard",
+      redirectTo: "/pages/auth/sign-in",
     });
   }
 
@@ -98,28 +95,15 @@ export default function SignUp() {
       <form onSubmit={handleSubmit(handleRegister)}>
         <Stack direction={{ base: "column", lg: "row" }}>
           <FormControl mb="1rem">
-            <FormLabel>First name</FormLabel>
+            <FormLabel>Full name</FormLabel>
             <Input
-              placeholder="First name"
+              placeholder="Full name"
               focusBorderColor="none"
-              {...register("firstName", firstNameValidate)}
+              {...register("name", nameValidate)}
             />
-            {errors.firstName && (
+            {errors.name && (
               <Text color="red" fontSize=".8rem" mt=".2rem">
-                {errors.firstName.message}
-              </Text>
-            )}
-          </FormControl>
-          <FormControl mb="1rem">
-            <FormLabel>Last name</FormLabel>
-            <Input
-              placeholder="Last name"
-              focusBorderColor="none"
-              {...register("lastName", lastNameValidate)}
-            />
-            {errors.lastName && (
-              <Text color="red" fontSize=".8rem" mt=".2rem">
-                {errors.lastName.message}
+                {errors.name.message}
               </Text>
             )}
           </FormControl>
