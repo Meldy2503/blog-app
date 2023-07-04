@@ -14,6 +14,7 @@ import {
   TabPanel,
   TabIndicator,
   useColorMode,
+  Center,
 } from "@chakra-ui/react";
 import Button from "../../components/button";
 import { FaPencilAlt } from "react-icons/fa";
@@ -22,14 +23,12 @@ import { BlogContext } from "../../../../context/blog-context";
 import Link from "next/link";
 import Loader from "@/app/components/utils/spinner";
 import Sidebar from "../../../app/components/sidebar";
+import { useAuth } from "@/app/hooks/auth";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
-  const { posts, users } = useContext(BlogContext);
-
-  if (!posts.length) {
-    return <Loader />;
-  }
+  const { posts } = useContext(BlogContext);
+  const { user } = useAuth();
 
   return (
     <Sidebar>
@@ -92,7 +91,7 @@ const Dashboard = () => {
                 fontSize={{ base: "1rem", md: "1.1rem" }}
                 fontWeight={600}
               >
-                Your posts
+                My posts
               </Tab>
               <Tab
                 color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
@@ -110,27 +109,68 @@ const Dashboard = () => {
             />
             <TabPanels>
               <TabPanel p="0">
-                {posts.map((post) => (
-                  <Link href={`/pages/dashboard/${post.id}`} key={post.id}>
-                    <Feeds
-                      post={post}
-                      borderRadius={"6px"}
-                      border={`1px solid ${
-                        colorMode === "dark"
-                          ? "rgb(255, 255, 255, .2)"
-                          : "#d0d0d0"
-                      }`}
-                      px={{ base: "1rem", xl: "1.5rem" }}
-                    />
-                  </Link>
-                ))}
+                {!posts?.length ? (
+                  <Center>
+                    <Text pb="20rem" pt="10rem">
+                      No posts to display
+                    </Text>
+                  </Center>
+                ) : (
+                  posts?.map((post) => (
+                    <Box key={post.id}>
+                      <Feeds
+                        post={post}
+                        borderRadius={"6px"}
+                        border={`1px solid ${
+                          colorMode === "dark"
+                            ? "rgb(255, 255, 255, .2)"
+                            : "#d0d0d0"
+                        }`}
+                        px={{ base: "1rem", xl: "1.5rem" }}
+                        href={`/pages/dashboard/${post.id}`}
+                      />
+                    </Box>
+                  ))
+                )}
               </TabPanel>
-              <TabPanel>
-                <p>Your posts</p>
+              <TabPanel p="0">
+                {posts && posts.length > 0 ? (
+                  posts
+                    .filter((post) => post?.data?.author === user?.email)
+                    .map((post) => (
+                      <Box key={post.id}>
+                        <Feeds
+                          post={post}
+                          borderRadius={"6px"}
+                          border={`1px solid ${
+                            colorMode === "dark"
+                              ? "rgb(255, 255, 255, .2)"
+                              : "#d0d0d0"
+                          }`}
+                          px={{ base: "1rem", xl: "1.5rem" }}
+                          href={`/pages/dashboard/${post.id}`}
+                        />
+                      </Box>
+                    ))
+                ) : (
+                  <Center>
+                    <Text pb="20rem" pt="10rem">
+                      No posts to display
+                    </Text>
+                  </Center>
+                )}
               </TabPanel>
 
               <TabPanel>
-                <p>Recent</p>
+                {!posts?.length ? (
+                  <Center>
+                    <Text pb="20rem" pt="10rem">
+                      No posts to display
+                    </Text>
+                  </Center>
+                ) : (
+                  <p>Recent</p>
+                )}
               </TabPanel>
             </TabPanels>
           </Tabs>

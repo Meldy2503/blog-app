@@ -18,9 +18,13 @@ import {
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
+import { useAuth, useLogout } from "../hooks/auth";
+import NavProfile from "./navbar-profile";
+import { useEffect, useState } from "react";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const { user, isLoading } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -100,21 +104,30 @@ export default function WithSubnavigation() {
             >
               Sign up
             </Button> */}
-            <Button
-              as={"a"}
-              fontSize={"sm"}
-              fontWeight={600}
-              color={"white"}
-              bg="#543EE0"
-              border="2px solid #543EE0"
-              href="/pages/auth/sign-in"
-              _hover={{
-                bg: "transparent",
-                color: colorMode === "dark" ? "#d0d0d0" : "#2b2b2b",
-              }}
-            >
-              Sign in
-            </Button>
+
+            {isLoading ? null : (
+              <>
+                {user ? (
+                  <NavProfile />
+                ) : (
+                  <Button
+                    as={"a"}
+                    fontSize={"sm"}
+                    fontWeight={600}
+                    color={"white"}
+                    bg="#543EE0"
+                    border="2px solid #543EE0"
+                    href="/pages/auth/sign-in"
+                    _hover={{
+                      bg: "transparent",
+                      color: colorMode === "dark" ? "#d0d0d0" : "#2b2b2b",
+                    }}
+                  >
+                    Sign in
+                  </Button>
+                )}
+              </>
+            )}
           </Stack>
         </Flex>
 
@@ -128,7 +141,7 @@ export default function WithSubnavigation() {
 
 const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   return (
     <Stack direction={"row"} spacing={4}>
@@ -213,8 +226,6 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 };
 
 const MobileNav = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
-
   return (
     <Stack p={4} display={{ md: "none" }}>
       {NAV_ITEMS.map((navItem) => (

@@ -150,7 +150,7 @@ export function useLogout() {
   async function logout() {
     if (await signOut()) {
       SuccessToast("Successfully logged out!");
-
+      window.location.reload();
       router.push("/");
     }
   }

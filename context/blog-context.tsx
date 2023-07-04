@@ -11,17 +11,6 @@ import { db, auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useAuth } from "@/app/hooks/auth";
 
-// export const BlogContext = createContext({
-//   posts: [] as Posts[],
-//   users: [] as Users[],
-//   handleUserAuth: null as unknown as React.Dispatch<
-//     React.SetStateAction<Users | any>
-//   >,
-//   currentUser: null as null | any,
-//   entry: {} as Entry,
-//   setEntry: null as unknown as React.Dispatch<React.SetStateAction<Entry>>,
-// });
-
 export const BlogContext = createContext<{
   posts: Posts[];
   users: Users[];
@@ -33,6 +22,7 @@ export const BlogContext = createContext<{
   posts: [],
   users: [],
   handleUserAuth: () => {},
+  setEntry: () => [],
   currentUser: null,
   entry: {
     author: "",
@@ -44,7 +34,6 @@ export const BlogContext = createContext<{
     bannerImage: "",
     postLength: 0,
   },
-  setEntry: () => [],
 });
 
 export interface Users {
@@ -57,6 +46,7 @@ export interface Users {
     joiningAs?: string;
     occupation?: string;
     username?: string;
+    joinedOn?: any;
   };
 }
 export interface Posts {
@@ -66,8 +56,9 @@ export interface Posts {
     brief?: string;
     body: string;
     category?: string;
+    title?: string;
     postedOn?: any;
-    // postedOn?: firebase.firestore.Timestamp;
+    likes?: string[];
     bannerImage: string;
     postLength?: number;
   };
@@ -100,8 +91,6 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     postLength: 0,
   });
 
-  console.log(currentUser, "currentUser");
-
   useEffect(() => {
     const fetchUsers = async () => {
       const usersCollection = collection(db, "users");
@@ -117,6 +106,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
             joiningAs: doc.data().joiningAs,
             username: doc.data().username,
             occupation: doc.data().occupation,
+            joinedOn: doc.data().joinedOn,
           },
         };
       });
@@ -138,6 +128,8 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
             author: doc.data().author,
             body: doc.data().body,
             category: doc.data().category,
+            likes: doc.data().likes,
+            title: doc.data().title,
             postedOn: doc.data().postedOn.toDate(),
             bannerImage: doc.data().bannerImage,
             postLength: doc.data().postLength,
@@ -159,6 +151,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
       joiningAs: "writer",
       username: user.displayName,
       occupation: "writer",
+      joinedOn: Date.now(),
     });
   };
 
@@ -167,13 +160,18 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     const userData = userResponse.user;
     setCurrentUser(userData);
     addUserToFirebase(userData);
-
-    console.log(userData, "--->>>>");
   };
 
   return (
     <BlogContext.Provider
-      value={{ posts, users, currentUser, handleUserAuth, entry, setEntry }}
+      value={{
+        posts,
+        users,
+        currentUser,
+        handleUserAuth,
+        entry,
+        setEntry,
+      }}
     >
       {children}
     </BlogContext.Provider>

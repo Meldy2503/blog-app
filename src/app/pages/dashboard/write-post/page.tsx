@@ -1,6 +1,4 @@
 "use client";
-
-// import { db } from "@/app/firebase";
 import {
   Box,
   Button,
@@ -19,16 +17,13 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
+
 import "react-markdown-editor-lite/lib/index.css";
-// import { ChatterContext } from "../context/ChatterContext";
 import { BlogContext } from "../../../../../context/blog-context";
-// import Modal from "./PreviewModal";
 // import PreviewModal from "./PreviewModal";
 import { useRouter } from "next/navigation";
-// import { useAddPost } from "../hooks/post";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/app/hooks/auth";
-import Preview from "@/app/components/preview";
 import { db } from "../../../../../firebase";
 import Wrapper from "@/app/components/wrapper";
 import UserNavbar from "@/app/components/user-nav";
@@ -55,17 +50,6 @@ const categories = [
   { value: "food", label: "Food" },
 ];
 
-// interface Entry {
-//   author?: string;
-//   brief?: string;
-//   body: string;
-//   category?: string;
-//   postedOn?: any;
-//   title: string;
-//   bannerImage?: string;
-//   postLength: number;
-// }
-
 const LiteEditor: React.FC = () => {
   const { user } = useAuth();
   const { currentUser } = useContext(BlogContext);
@@ -75,16 +59,6 @@ const LiteEditor: React.FC = () => {
   const mdParser = new MarkdownIt();
   const toast = useToast();
   const [publishLoading, setPublishLoading] = useState(false);
-  // const [entry, setEntry] = useState<Entry>({
-  //   author: currentUser?.email || user?.email,
-  //   title: "",
-  //   brief: "",
-  //   bannerImage: "",
-  //   category: "",
-  //   body: "",
-  //   postedOn: "",
-  //   postLength: 0,
-  // });
   const [draftLoading, setDraftLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
@@ -95,20 +69,9 @@ const LiteEditor: React.FC = () => {
     formState: { errors },
   } = useForm();
 
-  // function onImageUpload(file) {
-  //   return new Promise((resolve) => {
-  //     const url = URL.createObjectURL(file);
-  //     resolve(url);
-  //   });
-  // }
-
-  // function handleAddPost() {
-  //   addPost(entry);
-  // }
-
   function calculateReadTime(content: string) {
     const wordCount = content.trim().split(/\s+/).length;
-    const averageReadingSpeed = 200;
+    const averageReadingSpeed = 100;
     const readTime = Math.ceil(wordCount / averageReadingSpeed);
     return readTime;
   }
@@ -119,14 +82,6 @@ const LiteEditor: React.FC = () => {
       body: text,
     }));
   };
-
-  // const timestamp: number = new Date().getTime();
-  // const date: Date = new Date(timestamp);
-  // const formattedDate: string = date.toLocaleDateString("en-US", {
-  //   month: "short",
-  //   day: "numeric",
-  //   year: "numeric",
-  // });
 
   useEffect(() => {
     setEntry((prevEntry) => ({
@@ -152,8 +107,6 @@ const LiteEditor: React.FC = () => {
       [name]: value,
     }));
   };
-
-  console.log(entry);
 
   const handlePublish = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -236,11 +189,11 @@ const LiteEditor: React.FC = () => {
           <Flex flexDir={"column"} justify={"flex-end"}>
             <HStack justify={"space-between"} w={"100%"}>
               {/* <Box /> */}
-              <Button onClick={onOpen}>Preview</Button>
-              <PreviewModal isOpen={isOpen} onClose={onClose}>
-                {/* <PreviewModal /> */}
-                fffffff
-              </PreviewModal>
+              {/* <Button onClick={onOpen}>Preview</Button> */}
+              {/* <PreviewModal isOpen={isOpen} onClose={onClose}> */}
+              <PreviewModal />
+              {/* fffffff */}
+              {/* </PreviewModal> */}
               <ButtonGroup as={Flex} mb={"10px"} justifySelf={"flex-end"}>
                 <Button
                   type="submit"
@@ -305,7 +258,6 @@ const LiteEditor: React.FC = () => {
               ))}
             </Select>
           </Flex>
-
           <MdEditor
             style={{ height: "500px" }}
             renderHTML={(text) => mdParser.render(text)}

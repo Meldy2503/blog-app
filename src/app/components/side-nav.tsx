@@ -11,9 +11,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { useAuth } from "../hooks/auth";
 
 const SideNav = ({ bg, px, btnBg }: any) => {
   const { colorMode } = useColorMode();
+  const { user } = useAuth();
 
   const data = [
     {
@@ -104,7 +106,6 @@ const SideNav = ({ bg, px, btnBg }: any) => {
               <Text
                 key={item.id}
                 bg={btnBg}
-                // bg={colorMode === "dark" ? "#2d3748" : "#f5f4f4"}
                 py=".2rem"
                 px=".9rem"
                 borderRadius="20px"
@@ -135,7 +136,13 @@ const SideNav = ({ bg, px, btnBg }: any) => {
             w="fit-content"
             fontSize={".9rem"}
           >
-            <Link href="/pages/auth/sign-in">start writing</Link>
+            <Link
+              href={
+                user ? "/pages/dashboard/write-post" : "/pages/auth/sign-in"
+              }
+            >
+              start writing
+            </Link>
           </Box>
         </Box>
 

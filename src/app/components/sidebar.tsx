@@ -41,6 +41,7 @@ import { useRouter } from "next/navigation";
 import { useAuth, useLogout } from "../hooks/auth";
 import NextLink from "next/link";
 import { BlogContext } from "../../../context/blog-context";
+import NavProfile from "./navbar-profile";
 
 interface LinkItemProps {
   name: string;
@@ -238,16 +239,10 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user } = useAuth();
-  const { currentUser } = useContext(BlogContext);
   const { logout } = useLogout();
-  const capitalizedName =
-    user?.name?.replace(/\b\w/g, (letter: any) => letter.toUpperCase()) ||
-    user?.firstName?.replace(/\b\w/g, (letter: any) => letter.toUpperCase()) +
-      " " +
-      user?.lastName?.replace(/\b\w/g, (letter: any) => letter.toUpperCase());
-
-  console.log(user, "user");
-  console.log(currentUser, "currentUser");
+  const capitalizedName = user?.name?.replace(/\b\w/g, (letter: any) =>
+    letter.toUpperCase()
+  );
 
   return (
     <Flex
@@ -295,50 +290,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           icon={<FiBell />}
         />
         <Flex alignItems={"center"}>
-          <Menu>
-            <MenuButton
-              py={2}
-              transition="all 0.3s"
-              _focus={{ boxShadow: "none" }}
-            >
-              <HStack>
-                <Avatar
-                  size={"sm"}
-                  src={user?.imageUrl}
-                  name={capitalizedName}
-                />
-
-                <Box display={{ base: "none", md: "flex" }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack>
-            </MenuButton>
-            <MenuList
-              bg={colorMode === "light" ? "#fff" : "#171923"}
-              borderColor={useColorModeValue("gray.200", "gray.700")}
-            >
-              <Flex
-                align={"center"}
-                direction={"column"}
-                justify={"center"}
-                gap=".5rem"
-                mb="1rem"
-              >
-                <Avatar
-                  size={"lg"}
-                  src={user?.imageUrl}
-                  name={capitalizedName}
-                />
-                <Text fontSize={".85rem"}>{capitalizedName}</Text>
-              </Flex>
-              <MenuItem as={NextLink} href={"/pages/dashboard/profile"}>
-                Profile
-              </MenuItem>
-
-              <MenuDivider />
-              <MenuItem onClick={logout}>Sign out</MenuItem>
-            </MenuList>
-          </Menu>
+          <NavProfile />
         </Flex>
       </HStack>
     </Flex>

@@ -8,10 +8,12 @@ import SideNav from "@/app/components/side-nav";
 import Navbar from "@/app/components/navbar";
 import Loader from "@/app/components/utils/spinner";
 import Feeds from "@/app/components/feeds";
+import { useAuth } from "@/app/hooks/auth";
 
 const Posts = () => {
   const { colorMode } = useColorMode();
   const { posts } = useContext(BlogContext);
+  const { user } = useAuth();
 
   if (!posts.length) {
     return <Loader />;
@@ -38,15 +40,17 @@ const Posts = () => {
           pr={{ base: 0, md: "3rem" }}
         >
           {posts.map((post) => (
-            <Link href={`/pages/feed/${post.id}`} key={post.id}>
+            <Box key={post.id}>
               <Feeds
                 post={post}
                 borderRadius="none"
                 borderBottom={`1px solid ${
                   colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
                 }`}
+                pb={user ? "0" : "2rem"}
+                href={`/pages/feed/${post.id}`}
               />
-            </Link>
+            </Box>
           ))}
         </Box>
         <SideNav

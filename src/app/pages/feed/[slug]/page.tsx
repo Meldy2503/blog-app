@@ -1,42 +1,55 @@
 "use client";
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Box,
   Flex,
   Heading,
   Text,
   Icon,
-  HStack,
   useColorMode,
   useMediaQuery,
   Avatar,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
-import { MdOutlineAnalytics } from "react-icons/md";
-import { AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
-import { BlogContext, Posts, Users } from "../../../../../context/blog-context";
+import { BlogContext, Posts } from "../../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
-import Navbar from "@/app/components/navbar";
 import Loader from "@/app/components/utils/spinner";
+import { doc, getDoc, DocumentData } from "firebase/firestore";
 import { db } from "../../../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import Navbar from "@/app/components/navbar";
+import MarkdownIt from "markdown-it";
 
 const PostId = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [authorData, setAuthorData] = useState<Users | any>(null);
-  const [post, setPost] = useState<Posts | any>(null);
+  const [post, setPost] = useState<Posts | any>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
+  const { entry } = useContext(BlogContext);
+
   const { colorMode } = useColorMode();
-  const { posts, users } = useContext(BlogContext);
+  const { posts } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const capitalizedName = authorData?.name?.replace(/\b\w/g, (letter: any) =>
     letter.toUpperCase()
   );
+
+  // function calculateReadTime(content: string) {
+  //   const wordCount = content.trim().split(/\s+/).length;
+  //   const averageReadingSpeed = 50;
+  //   const readTime = Math.ceil(wordCount / averageReadingSpeed);
+  //   return readTime;
+  // }
+
+  function renderMarkdownToHtml(markdownText: string): React.ReactNode {
+    const md = new MarkdownIt();
+    const html = md.render(markdownText);
+    return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  }
 
   useEffect(() => {
     const fetchAuthorData = async () => {
@@ -63,14 +76,15 @@ const PostId = () => {
   }, [post?.data?.author]);
 
   useEffect(() => {
-    if (posts.length === 0 || users.length === 0) {
+    if (posts.length === 0) {
       return;
     }
+
     const url = `${pathname}?${searchParams}`;
     const id = url.split("/").pop()?.replace("?", "");
-    const selectedPost = posts?.find((post) => post.id === id);
+    const selectedPost = posts.find((post) => post.id === id);
     setPost(selectedPost);
-  }, [pathname, post, posts, searchParams, users]);
+  }, [posts, pathname, searchParams, post]);
 
   if (!posts.length || authorData === null) {
     return <Loader />;
@@ -89,7 +103,7 @@ const PostId = () => {
         <Box>
           <Heading
             as={"h1"}
-            fontSize={"3rem"}
+            fontSize={{ base: "2rem", md: "2.5rem", lg: "3rem" }}
             fontWeight={550}
             color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
             mb="2rem"
@@ -122,7 +136,16 @@ const PostId = () => {
               <Text>{authorData?.occupation}</Text>
             </Box>
           </Flex>
-          <Flex align={"center"} gap="2rem" fontSize={".9rem"}>
+          <Flex
+            align={"center"}
+            gap="2rem"
+            fontSize={".9rem"}
+            borderY={`1px solid ${
+              colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
+            }`}
+            mt="2rem"
+            mb="3rem"
+          >
             <Flex align={"center"} gap=".5rem" my="1rem">
               <Icon
                 as={VscBook}
@@ -139,30 +162,6 @@ const PostId = () => {
               })}
             </Text>
           </Flex>
-          <Flex
-            mt="1rem"
-            flexWrap="wrap"
-            gap="3rem"
-            borderY={`1px solid ${
-              colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
-            }`}
-            py="1rem"
-          >
-            <HStack>
-              <Icon
-                as={AiOutlineHeart}
-                color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-              />
-              <Text fontSize={".9rem"}>20 likes</Text>
-            </HStack>
-            <HStack>
-              <Icon
-                as={MdOutlineAnalytics}
-                color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-              />
-              <Text fontSize={".9rem"}>2000 views</Text>
-            </HStack>
-          </Flex>
           <Box mt="2rem">
             {post?.data?.bannerImage && (
               <Image
@@ -172,17 +171,18 @@ const PostId = () => {
                   objectFit: "cover",
                   objectPosition: "center",
                   margin: "auto",
-                  height: isMobile ? "15rem" : "25rem",
+                  height: isMobile ? "200px" : "450px",
                   width: isMobile ? "100%" : "80%",
                   maxWidth: "100%",
                 }}
                 height={800}
-                width={800}
+                width={300}
               />
             )}
-            <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">
+            {/* <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">
               {post?.data?.body}
-            </Text>
+            </Text> */}
+            <Box>{renderMarkdownToHtml(entry?.body)}</Box>
           </Box>
         </Box>
       </Box>

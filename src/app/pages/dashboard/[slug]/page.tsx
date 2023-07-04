@@ -17,7 +17,7 @@ import { MdOutlineAnalytics } from "react-icons/md";
 import { AiOutlineHeart } from "react-icons/ai";
 import Link from "next/link";
 import { BlogContext, Posts } from "../../../../../context/blog-context";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import Loader from "@/app/components/utils/spinner";
 import Sidebar from "../../../../app/components/sidebar";
 import { doc, getDoc, DocumentData } from "firebase/firestore";
@@ -29,6 +29,7 @@ const PostId = () => {
   const searchParams = useSearchParams();
   const [post, setPost] = useState<Posts | any>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  // const { id } = useParams();
 
   const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
@@ -91,7 +92,7 @@ const PostId = () => {
         <Box w={{ base: "100%", lg: "70%" }} m="auto" pt="2rem">
           <Heading
             as={"h1"}
-            fontSize={"3rem"}
+            fontSize={{ base: "2rem", md: "2.5rem", lg: "3rem" }}
             fontWeight={550}
             color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
             mb="2rem"
@@ -174,12 +175,12 @@ const PostId = () => {
                   objectFit: "cover",
                   objectPosition: "center",
                   margin: "auto",
-                  height: isMobile ? "15rem" : "25rem",
-                  width: isMobile ? "100%" : "80%",
+                  height: isMobile ? "200px" : "450px",
+                  width: "100%",
                   maxWidth: "100%",
                 }}
-                height={1500}
-                width={1500}
+                width={800}
+                height={300}
               />
             )}
             <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">

@@ -23,6 +23,15 @@ const Profile = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
 
+  const formatDate = (date: number) => {
+    const newDate = new Date(date);
+    return newDate.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
   const capitalizedName = user?.name?.replace(/\b\w/g, (letter: any) =>
     letter.toUpperCase()
   );
@@ -79,7 +88,7 @@ const Profile = () => {
               <Heading fontSize="2xl" color="#543ee0" letterSpacing={".1rem"}>
                 {capitalizedName}
               </Heading>
-              <Text>Joined as a {user?.joiningAs}</Text>
+              <Text>Joined on {formatDate(user?.joinedOn)}</Text>
             </Box>
             <EditProfileModal />
           </Flex>
@@ -119,6 +128,12 @@ const Profile = () => {
                     Username:
                   </Text>
                   <Text fontWeight={"bold"}>{user?.username}</Text>
+                </Flex>
+                <Flex gap="1rem">
+                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                    Occupation:
+                  </Text>
+                  <Text fontWeight={"bold"}>{user?.occupation}</Text>
                 </Flex>
                 <Flex gap="1rem">
                   <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
