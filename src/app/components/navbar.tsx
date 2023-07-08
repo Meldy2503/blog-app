@@ -14,13 +14,14 @@ import {
   useBreakpointValue,
   useDisclosure,
   useColorMode,
+  Icon,
 } from "@chakra-ui/react";
 import { FiMenu } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-import { useAuth, useLogout } from "../hooks/auth";
+import { useAuth } from "../hooks/auth";
 import NavProfile from "./navbar-profile";
-import { useEffect, useState } from "react";
+import { FaPencilAlt } from "react-icons/fa";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -31,9 +32,12 @@ export default function WithSubnavigation() {
     <Box
       borderBottom={1}
       borderStyle={"solid"}
-      borderColor={useColorModeValue("gray.200", "gray.900")}
+      border={`1px solid ${
+        colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
+      }`}
       color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
-      bg={colorMode === "dark" ? "#171923" : "light"}
+      bg={colorMode === "dark" ? "#1a202c" : "#fff"}
+      zIndex={10}
     >
       <Box maxW="1100px" m="auto" w={{ base: "95%", md: "90%" }}>
         <Flex fontWeight={700} py={{ base: 2, md: 4 }} align={"center"}>
@@ -86,24 +90,26 @@ export default function WithSubnavigation() {
             >
               {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun />}
             </Button>
-            {/* <Button
+            <Button
               as={"a"}
               fontSize={"sm"}
               variant={"link"}
               px="1.3rem"
-              href="/pages/auth"
+              href={
+                user ? "/pages/dashboard/write-post" : "/pages/auth/sign-in"
+              }
+              color={"white"}
+              bg="#543EE0"
               border="2px solid #543EE0"
               display={{ base: "none", md: "inline-flex" }}
-              textDecor={"none"}
-              color="#111111"
               fontWeight={600}
               _hover={{
-                bg: "#543EE0",
-                color: "#ffffff",
+                textDecor: "none",
               }}
             >
-              Sign up
-            </Button> */}
+              <Icon as={FaPencilAlt} color="#fff" mr=".5rem" />
+              Write
+            </Button>
 
             {isLoading ? null : (
               <>
@@ -114,13 +120,13 @@ export default function WithSubnavigation() {
                     as={"a"}
                     fontSize={"sm"}
                     fontWeight={600}
-                    color={"white"}
-                    bg="#543EE0"
+                    bg="transparent"
+                    color={colorMode === "dark" ? "white" : "#111"}
                     border="2px solid #543EE0"
                     href="/pages/auth/sign-in"
                     _hover={{
-                      bg: "transparent",
-                      color: colorMode === "dark" ? "#d0d0d0" : "#2b2b2b",
+                      bg: "#543EE0",
+                      color: "#ffffff",
                     }}
                   >
                     Sign in
@@ -144,7 +150,7 @@ const DesktopNav = () => {
   const { colorMode } = useColorMode();
 
   return (
-    <Stack direction={"row"} spacing={4}>
+    <Stack direction={"row"} spacing={4} zIndex={10}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
@@ -187,8 +193,6 @@ const DesktopNav = () => {
 };
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  const { colorMode, toggleColorMode } = useColorMode();
-
   return (
     <Link
       href={href}
@@ -197,6 +201,7 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
       p={2}
       rounded={"md"}
       _hover={{ bg: useColorModeValue("#543ee010", "gray.900") }}
+      zIndex={10}
     >
       <Stack direction={"row"} align={"center"}>
         <Box>
@@ -237,10 +242,9 @@ const MobileNav = () => {
 
 const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { onToggle } = useDisclosure();
-  const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={4} onClick={children && onToggle} zIndex={10}>
       <Flex
         py={2}
         as={Link}
@@ -298,17 +302,6 @@ const NAV_ITEMS: NavItem[] = [
       {
         label: "We are here to help you",
         subLabel: "Reach out to us for any assistance",
-        href: "#",
-      },
-    ],
-    href: "#",
-  },
-  {
-    label: "Blogs",
-    children: [
-      {
-        label: "Read our latest blogs",
-        subLabel: "Be updated with our latest blogs",
         href: "#",
       },
     ],

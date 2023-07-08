@@ -8,7 +8,7 @@ const AboutUs = () => {
 
   return (
     <Wrapper
-      bg={colorMode === "light" ? "#F7f6f6" : "dark"}
+      bg={colorMode === "light" ? "#F7f6f6" : "#171923"}
       color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
     >
       <Flex

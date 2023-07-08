@@ -48,9 +48,6 @@ export default function SignUp() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const { handleUserAuth, currentUser } = useContext(BlogContext);
-
-  // const [signInWithGoogle, googleUser, googleLoader, error] =
-  // useSignInWithGoogle(auth);
   const { register: signup, isLoading } = useRegister();
 
   const router = useRouter();
@@ -182,7 +179,6 @@ export default function SignUp() {
           type="submit"
           onClick={handleUserAuth}
           w="100%"
-          // isLoading={googleLoader}
           bg={colorMode === "light" ? "#f6f5f5" : "dark"}
           color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
           border={`1px solid ${

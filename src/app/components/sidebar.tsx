@@ -98,19 +98,6 @@ const LinkItems: Array<LinkItemProps> = [
       },
     ],
   },
-  {
-    name: "Personal",
-    children: [
-      {
-        subIcon: BsPerson,
-        subName: "Account",
-      },
-      {
-        subIcon: FiBell,
-        subName: "Notifications",
-      },
-    ],
-  },
 ];
 
 export default function SidebarWithHeader({
@@ -151,7 +138,7 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { colorMode } = useColorMode();
-  const router = useRouter();
+  // const router = useRouter();
   const { logout, isLoading } = useLogout();
 
   return (
@@ -183,7 +170,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((item, index) => (
-        <Flex direction={"column"} key={index} mb="1.5rem" ml="2rem">
+        <Flex direction={"column"} key={index} mb="3rem" ml="2rem">
           <Flex align={"center"} gap=".5rem">
             <Text color={colorMode === "dark" ? "#f5f6f6" : "#000"}>
               {item.name}
@@ -196,7 +183,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 <Link key={childIndex} href={child.href} color="transparent">
                   <Flex
                     gap=".5rem"
-                    mt=".7rem"
+                    mt="1.2rem"
                     align={"center"}
                     fontSize={".94rem"}
                   >
@@ -239,10 +226,6 @@ interface MobileProps extends FlexProps {
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { user } = useAuth();
-  const { logout } = useLogout();
-  const capitalizedName = user?.name?.replace(/\b\w/g, (letter: any) =>
-    letter.toUpperCase()
-  );
 
   return (
     <Flex

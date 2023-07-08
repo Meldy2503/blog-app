@@ -156,7 +156,7 @@ export default function JoinOurTeam() {
         </Flex>
         <Blur
           position={"absolute"}
-          zIndex="1"
+          zIndex="-1"
           top={-10}
           left={-10}
           style={{ filter: "blur(60px)" }}

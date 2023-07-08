@@ -9,12 +9,11 @@ import { useRouter } from "next/navigation";
 import {
   setDoc,
   doc,
-  getDoc,
   DocumentData,
   collection,
   where,
-  query,
   getDocs,
+  query,
 } from "firebase/firestore";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import isUsernameExists from "../components/utils/user-exists";
@@ -63,6 +62,11 @@ interface SignInProps {
   email: string;
   password: string;
   redirectTo: string;
+}
+
+interface UserHookResult {
+  user: Users | null;
+  isLoading: boolean;
 }
 
 export function useLogin() {
@@ -144,13 +148,11 @@ export function useRegister() {
 
 export function useLogout() {
   const [signOut, isLoading, error] = useSignOut(auth);
-  const toast = useToast();
   const router = useRouter();
 
   async function logout() {
     if (await signOut()) {
       SuccessToast("Successfully logged out!");
-      window.location.reload();
       router.push("/");
     }
   }

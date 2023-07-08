@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, Flex, useColorMode } from "@chakra-ui/react";
+import { Box, Flex, useColorMode, useMediaQuery } from "@chakra-ui/react";
 import Image from "next/image";
 
 export const HeroImg = () => {
   const { colorMode } = useColorMode();
+  const [isMobile] = useMediaQuery("(max-width: 480px)");
 
   return (
     <Box position="relative">
@@ -13,8 +14,8 @@ export const HeroImg = () => {
             position="relative"
             align={"center"}
             justify={"center"}
-            height="30rem"
-            w="30rem"
+            height={{ base: "20rem", sm: "25rem", md: "30rem" }}
+            width={{ base: "20rem", sm: "25rem", md: "30rem" }}
             borderRadius={"50%"}
             border={`1px solid ${
               colorMode === "dark" ? "rgb(255, 255, 255, .25)" : "#757474"
@@ -27,6 +28,7 @@ export const HeroImg = () => {
               alt="img2"
               style={{
                 position: "absolute",
+                zIndex: "10",
                 top: "2rem",
                 right: "4rem",
                 borderRadius: "50%",
@@ -39,25 +41,29 @@ export const HeroImg = () => {
                 }`,
               }}
             />
-            <Image
-              width={200}
-              height={200}
-              src="/assets/img2.jpg"
-              alt="img2"
-              style={{
-                position: "absolute",
-                top: "9rem",
-                left: "-1rem",
-                borderRadius: "50%",
-                width: "3.5rem",
-                height: "3.5rem",
-                objectFit: "cover",
-                objectPosition: "center",
-                border: `1px solid ${
-                  colorMode === "dark" ? "transparent" : "#d0d0d0"
-                }`,
-              }}
-            />
+            {!isMobile && (
+              <Image
+                width={200}
+                height={200}
+                src="/assets/img2.jpg"
+                alt="img2"
+                style={{
+                  position: "absolute",
+                  top: "9rem",
+                  zIndex: "10",
+
+                  left: "-1rem",
+                  borderRadius: "50%",
+                  width: "3.5rem",
+                  height: "3.5rem",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                  border: `1px solid ${
+                    colorMode === "dark" ? "transparent" : "#d0d0d0"
+                  }`,
+                }}
+              />
+            )}
 
             <Image
               width={200}
@@ -67,6 +73,8 @@ export const HeroImg = () => {
               style={{
                 position: "absolute",
                 right: "3rem",
+                zIndex: "10",
+
                 bottom: "3rem",
                 borderRadius: "50%",
                 width: "3.5rem",
@@ -87,6 +95,8 @@ export const HeroImg = () => {
               style={{
                 position: "absolute",
                 left: "6rem",
+                zIndex: "10",
+
                 bottom: "1rem",
                 borderRadius: "50%",
                 width: "3rem",
@@ -102,13 +112,13 @@ export const HeroImg = () => {
               position="relative"
               align={"center"}
               justify={"center"}
-              w="25rem"
+              height={{ base: "16rem", sm: "20rem", md: "25rem" }}
+              width={{ base: "16rem", sm: "20rem", md: "25rem" }}
               borderRadius={"50%"}
               border={`1px solid ${
                 colorMode === "dark" ? "rgb(255, 255, 255, .25)" : "#757474"
               }`}
               alignContent={"center"}
-              height="25rem"
             >
               <Box
                 bg="yellow"
@@ -134,13 +144,13 @@ export const HeroImg = () => {
                 position="relative"
                 align={"center"}
                 justify={"center"}
-                w="20rem"
+                height={{ base: "11rem", sm: "15rem", md: "20rem" }}
+                width={{ base: "11rem", sm: "15rem", md: "20rem" }}
                 borderRadius={"50%"}
                 border={`1px solid ${
                   colorMode === "dark" ? "rgb(255, 255, 255, .25)" : "#757474"
                 }`}
                 alignContent={"center"}
-                height="20rem"
               >
                 <Image
                   width={200}
@@ -150,6 +160,8 @@ export const HeroImg = () => {
                   style={{
                     position: "absolute",
                     top: "-1rem",
+                    zIndex: "10",
+
                     right: "12rem",
                     borderRadius: "50%",
                     width: "3.5rem",
@@ -180,6 +192,8 @@ export const HeroImg = () => {
                   style={{
                     position: "absolute",
                     left: "-1rem",
+                    zIndex: "10",
+
                     bottom: "7rem",
                     borderRadius: "50%",
                     width: "2.5rem",
@@ -197,12 +211,17 @@ export const HeroImg = () => {
                   align={"center"}
                   justify={"center"}
                   w="15rem"
-                  borderRadius={"50%"}
-                  border={`1px solid ${
-                    colorMode === "dark" ? "rgb(255, 255, 255, .25)" : "#757474"
-                  }`}
-                  alignContent={"center"}
                   height="15rem"
+                  borderRadius={"50%"}
+                  border={{
+                    base: "none",
+                    md: `1px solid ${
+                      colorMode === "dark"
+                        ? "rgb(255, 255, 255, .25)"
+                        : "#757474"
+                    }`,
+                  }}
+                  alignContent={"center"}
                 >
                   <Image
                     width={200}
@@ -212,6 +231,8 @@ export const HeroImg = () => {
                     style={{
                       position: "absolute",
                       top: "3rem",
+                      zIndex: "10",
+
                       right: "0rem",
                       borderRadius: "50%",
                       width: "2.5rem",
@@ -224,25 +245,23 @@ export const HeroImg = () => {
                       }`,
                     }}
                   />
+                  <Flex align={"center"} justify={"center"}>
+                    <Image
+                      width={100}
+                      height={100}
+                      src="/assets/bg0.svg"
+                      alt="img13"
+                      style={{
+                        borderRadius: "50%",
+                        zIndex: "10",
 
-                  <Image
-                    width={100}
-                    height={100}
-                    src="/assets/bg0.svg"
-                    alt="img13"
-                    style={{
-                      position: "absolute",
-                      top: "1rem",
-                      left: "1.2rem",
-                      right: "3rem",
-                      bottom: "3rem",
-                      borderRadius: "50%",
-                      width: "12rem",
-                      height: "12rem",
-                      objectFit: "cover",
-                      objectPosition: "center",
-                    }}
-                  />
+                        width: isMobile ? "8rem" : "10rem",
+                        height: isMobile ? "8rem" : "10rem",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
+                    />
+                  </Flex>
                 </Flex>
               </Flex>
             </Flex>

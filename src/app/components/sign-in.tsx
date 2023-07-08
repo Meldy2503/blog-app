@@ -18,19 +18,13 @@ import {
 } from "@chakra-ui/react";
 import { FcGoogle } from "react-icons/fc";
 import { emailValidate, passwordValidate } from "./utils/form.-validate";
-import { auth } from "../../../firebase";
-import {
-  useSignInWithEmailAndPassword,
-  useSignInWithGoogle,
-} from "react-firebase-hooks/auth";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useRouter } from "next/navigation";
 import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 
-import { SuccessToast, ErrorToast } from "./utils/toast";
+import { SuccessToast } from "./utils/toast";
 import { useLogin } from "../hooks/auth";
 import { BlogContext } from "../../../context/blog-context";
 
@@ -43,12 +37,6 @@ export default function LogIn() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const { handleUserAuth, currentUser } = useContext(BlogContext);
-
-  // const [signInWithEmailAndPassword, signInUser, signInLoading, signInError] =
-  // useSignInWithEmailAndPassword(auth);
-  // const [signInWithGoogle, googleUser, googleLoader, googleError] =
-  //   useSignInWithGoogle(auth);
-  // const [user, loading, error] = useAuthState(auth);
   const { login: userlogin, isLoading } = useLogin();
 
   const { colorMode } = useColorMode();
@@ -142,7 +130,6 @@ export default function LogIn() {
           type="submit"
           onClick={handleUserAuth}
           w="100%"
-          // isLoading={googleLoader}
           bg={colorMode === "light" ? "#f6f5f5" : "dark"}
           color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
           border={`1px solid ${

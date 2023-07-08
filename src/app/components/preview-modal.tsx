@@ -22,6 +22,22 @@ import { useContext } from "react";
 import MarkdownIt from "markdown-it";
 import { VscBook } from "react-icons/vsc";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+import {
+  paragraphStyle,
+  heading1,
+  heading2,
+  heading3,
+  heading4,
+  heading5,
+  heading6,
+  orderedListStyle,
+  unorderedListStyle,
+} from "./editor-style";
+import remarkGfm from "remark-gfm";
 
 const PreviewModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,7 +59,9 @@ const PreviewModal = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>Preview</Button>
+      <Button onClick={onOpen} colorScheme="blue">
+        Preview
+      </Button>
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered size={"3xl"}>
         <ModalOverlay bgGradient="linear(to-l,rgb(0, 0, 0, 0.4),rgb(0, 0, 0, 0.4))" />
@@ -57,7 +75,7 @@ const PreviewModal = () => {
               color={colorMode === "light" ? "brand.800" : "brand.400"}
             >
               <Stack mx={{ base: "0px", lg: "44px" }}>
-                <Box>
+                <>
                   <Heading
                     fontWeight={600}
                     fontSize={"3rem"}
@@ -101,9 +119,69 @@ const PreviewModal = () => {
                       />
                     )}
                   </Flex>
+                </>
+                <Box>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    // children={entry?.body}
+                    className=" break-words"
+                    components={{
+                      p: ({ children }) => (
+                        <p style={paragraphStyle}>{children}</p>
+                      ),
+                      h1: ({ children }) => (
+                        <h1 style={heading1}>{children}</h1>
+                      ),
+                      h2: ({ children }) => (
+                        <h2 style={heading2}>{children}</h2>
+                      ),
+                      h3: ({ children }) => (
+                        <h3 style={heading3}>{children}</h3>
+                      ),
+                      h4: ({ children }) => (
+                        <h4 style={heading4}>{children}</h4>
+                      ),
+                      h5: ({ children }) => (
+                        <h5 style={heading5}>{children}</h5>
+                      ),
+                      h6: ({ children }) => (
+                        <h6 style={heading6}>{children}</h6>
+                      ),
+                      ol: ({ children }) => (
+                        <ol style={orderedListStyle}>{children}</ol>
+                      ),
+                      ul: ({ children }) => (
+                        <ul style={unorderedListStyle}>{children}</ul>
+                      ),
 
-                  <Box>{renderMarkdownToHtml(entry?.body)}</Box>
+                      code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            {...props}
+                            // children={String(children).replace(/\n$/, "")}
+                            // eslint-disable-next-line react/no-children-prop
+                            children={children}
+                            style={atomDark}
+                            // language={language}
+                            PreTag="div"
+                          />
+                        ) : (
+                          // {entry?.body}
+                          // </ReactMarkdown>
+
+                          <code
+                            {...props}
+                            className={` bg-gray-200 p-4 text-black-900`}
+                          >
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  />
                 </Box>
+                {/* <Box>{renderMarkdownToHtml(entry?.body)}</Box> */}
               </Stack>
             </Box>
           </ModalBody>

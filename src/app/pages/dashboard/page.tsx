@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Flex,
@@ -20,8 +20,6 @@ import Button from "../../components/button";
 import { FaPencilAlt } from "react-icons/fa";
 import Feeds from "@/app/components/feeds";
 import { BlogContext } from "../../../../context/blog-context";
-import Link from "next/link";
-import Loader from "@/app/components/utils/spinner";
 import Sidebar from "../../../app/components/sidebar";
 import { useAuth } from "@/app/hooks/auth";
 
@@ -109,7 +107,7 @@ const Dashboard = () => {
             />
             <TabPanels>
               <TabPanel p="0">
-                {!posts?.length ? (
+                {!posts ? (
                   <Center>
                     <Text pb="20rem" pt="10rem">
                       No posts to display
@@ -134,7 +132,7 @@ const Dashboard = () => {
                 )}
               </TabPanel>
               <TabPanel p="0">
-                {posts && posts.length > 0 ? (
+                {posts ? (
                   posts
                     .filter((post) => post?.data?.author === user?.email)
                     .map((post) => (
@@ -155,7 +153,7 @@ const Dashboard = () => {
                 ) : (
                   <Center>
                     <Text pb="20rem" pt="10rem">
-                      No posts to display
+                      You have no published posts
                     </Text>
                   </Center>
                 )}

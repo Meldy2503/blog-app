@@ -17,26 +17,16 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
-
 import "react-markdown-editor-lite/lib/index.css";
 import { BlogContext } from "../../../../../context/blog-context";
-// import PreviewModal from "./PreviewModal";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useAuth } from "@/app/hooks/auth";
 import { db } from "../../../../../firebase";
 import Wrapper from "@/app/components/wrapper";
-import UserNavbar from "@/app/components/user-nav";
 import PreviewModal from "@/app/components/preview-modal";
-
-// import {
-//   collection,
-//   addDoc,
-//   doc,
-//   setDoc,
-//   serverTimestamp,
-// } from "firebase/firestore";
-
+import Navbar from "@/app/components/navbar";
+import { ErrorToast, SuccessToast } from "@/app/components/utils/toast";
 const categories = [
   { value: "technology", label: "Technology" },
   { value: "science", label: "Science" },
@@ -53,6 +43,7 @@ const categories = [
 const LiteEditor: React.FC = () => {
   const { user } = useAuth();
   const { currentUser } = useContext(BlogContext);
+  const [showCategory, setShowCategory] = useState(false);
 
   const { entry, setEntry } = useContext(BlogContext);
   const { colorMode } = useColorMode();
@@ -62,7 +53,6 @@ const LiteEditor: React.FC = () => {
   const [draftLoading, setDraftLoading] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
-  // const { addPost, publishLoading } = useAddPost();
   const {
     register,
     handleSubmit,
@@ -76,11 +66,19 @@ const LiteEditor: React.FC = () => {
     return readTime;
   }
 
+  const handleShowCategory = () => {
+    setShowCategory(!showCategory);
+  };
+
   const handleEditorChange = ({ text }: { text: string }) => {
     setEntry((prevEntry) => ({
       ...prevEntry,
       body: text,
     }));
+  };
+
+  const handleGoBack = () => {
+    router.back();
   };
 
   useEffect(() => {
@@ -114,14 +112,7 @@ const LiteEditor: React.FC = () => {
     try {
       const articlesRef = collection(db, "articles");
       await addDoc(articlesRef, entry);
-      toast({
-        title: "Article Published Successfully!",
-        // description: "Your article has been .",
-        status: "success",
-        isClosable: true,
-        position: "top-right",
-        duration: 5000,
-      });
+      SuccessToast("Article Published Successfully!");
 
       router.push("/pages/dashboard");
       setEntry({
@@ -134,14 +125,7 @@ const LiteEditor: React.FC = () => {
         postLength: 0,
       });
     } catch (error) {
-      toast({
-        title: "Error Publishing Article",
-        // description: "We've created your account for you.",
-        status: "success",
-        isClosable: true,
-        position: "top-right",
-        duration: 5000,
-      });
+      ErrorToast("Error Publishing Article!");
     }
   };
 
@@ -151,14 +135,8 @@ const LiteEditor: React.FC = () => {
     try {
       const draftRef = collection(db, "draft");
       await addDoc(draftRef, entry);
-      toast({
-        title: "Article Saved to Drafts!",
-        // description: "We've created your account for you.",
-        status: "success",
-        isClosable: true,
-        position: "top-right",
-        duration: 5000,
-      });
+      SuccessToast("Article successfully saved to Drafts!");
+
       setDraftLoading(false);
       router.push("/pages/dashboard/drafts");
       setEntry({
@@ -170,79 +148,58 @@ const LiteEditor: React.FC = () => {
         postLength: 0,
       });
     } catch (error) {
-      toast({
-        title: "Error Publishing Article",
-        // description: "We've created your account for you.",
-        status: "success",
-        isClosable: true,
-        position: "top-right",
-        duration: 5000,
-      });
+      ErrorToast("Article not saved to Drafts!");
     }
   };
 
   return (
     <>
-      <UserNavbar />
+      <Navbar />
       <Wrapper>
         <form>
           <Flex flexDir={"column"} justify={"flex-end"}>
-            <HStack justify={"space-between"} w={"100%"}>
-              {/* <Box /> */}
-              {/* <Button onClick={onOpen}>Preview</Button> */}
-              {/* <PreviewModal isOpen={isOpen} onClose={onClose}> */}
+            <HStack justify={"space-between"} w={"100%"} mb="2rem">
               <PreviewModal />
-              {/* fffffff */}
-              {/* </PreviewModal> */}
-              <ButtonGroup as={Flex} mb={"10px"} justifySelf={"flex-end"}>
-                <Button
-                  type="submit"
-                  bg="#543EE0"
-                  _hover={{ bg: "#715fe3" }}
-                  color={"white"}
-                  onClick={handleSaveToDraft}
-                  isLoading={draftLoading}
-                >
-                  Save to draft
-                </Button>
-                <Button
-                  type="submit"
-                  bg="#543EE0"
-                  _hover={{ bg: "#715fe3" }}
-                  color={"white"}
-                  onClick={handlePublish}
-                  isLoading={publishLoading}
-                >
-                  Publish
-                </Button>
-              </ButtonGroup>
+              <Button onClick={handleGoBack}>Go Back</Button>
             </HStack>
             <Input
               placeholder="Title"
               type="text"
               name="title"
-              fontSize="2xl"
+              py="2.5rem"
+              fontSize={{ base: "2rem", md: "3rem" }}
+              border="none"
+              focusBorderColor="none"
+              _placeholder={{ letterSpacing: "0.2rem" }}
               onChange={handleInputChange}
               value={entry.title}
               fontWeight={600}
             />
             <Input
-              placeholder="Brief"
+              placeholder="Write a brief description..."
+              fontSize={"1.2rem"}
+              mt="1rem"
               type="text"
+              border="none"
+              focusBorderColor="none"
               name="brief"
               onChange={handleInputChange}
               value={entry.brief}
             />
             <Input
-              placeholder="Cover Image URL"
+              placeholder="Add cover image URL"
               type="text"
+              border="none"
+              mt="1.5rem"
+              fontSize={"1.2rem"}
+              focusBorderColor="none"
               name="bannerImage"
               onChange={handleInputChange}
               value={entry.bannerImage}
             />
 
-            <Select
-              // {...register("joiningAs")}
+            {/* <Select
+              {...register("joiningAs")}
               placeholder="Select Category"
               name="category"
               border="1px solid"
@@ -250,13 +207,68 @@ const LiteEditor: React.FC = () => {
               value={entry.category}
               onChange={handleCategoryChange}
             >
-              {/* <option value="">Select Category</option> */}
+              <option value="">Select Category</option>
               {categories.map((category) => (
-                <option key={category.value} value={category.value}>
-                  {category.label}
-                </option>
+                <Box as="option" key={category.value} value={category.value}>
+                  <Box bg="red" p="1rem" borderRadius={"50%"}>
+                    {category.label}
+                  </Box>
+                </Box>
               ))}
-            </Select>
+            </Select> */}
+
+            <Flex
+              my="2rem"
+              gap={{ base: "1rem", md: "3rem" }}
+              justify={"space-between"}
+              direction={{ base: "column", md: "row" }}
+            >
+              <Box
+                onClick={handleShowCategory}
+                cursor={"pointer"}
+                w={{ base: "100%", md: "20%" }}
+              >
+                <Text
+                  w="10rem"
+                  borderRadius={"7rem"}
+                  bg="red"
+                  px=".8rem"
+                  py=".4rem"
+                  // h="3rem"
+                >
+                  Select Category
+                </Text>
+              </Box>
+              {showCategory && (
+                <Flex
+                  columnGap="1.5rem"
+                  flexWrap="wrap"
+                  rowGap={"1rem"}
+                  py={{ base: "1rem", md: "0" }}
+                  w={{ base: "100%", md: "75%" }}
+                  h={{ base: "10rem", md: "fit-content" }}
+                  overflowY="auto"
+                  className="side-nav"
+
+                  // justify={"center"}
+                  // align={"center"}
+                >
+                  {categories?.map((category) => (
+                    <Box
+                      key={category.value}
+                      bg="red"
+                      px=".8rem"
+                      py=".3rem"
+                      w="fit-content"
+                      borderRadius={"6rem"}
+                      cursor={"pointer"}
+                    >
+                      {category.label} +
+                    </Box>
+                  ))}
+                </Flex>
+              )}
+            </Flex>
           </Flex>
           <MdEditor
             style={{ height: "500px" }}
@@ -264,8 +276,61 @@ const LiteEditor: React.FC = () => {
             onChange={handleEditorChange}
             view={{ menu: true, md: true, html: false }}
             // onImageUpload={onImageUpload}
+            value={entry.body}
+            shortcuts={true}
+            // canView={{
+            //   menu: true,
+            //   md: true,
+            //   html: false,
+            //   both: false,
+            //   fullScreen: false,
+            //   hideMenu: false,
+            // }}
           />
+          {/* <MdEditor
+               className="ms-[250px] h-[400px] tabletS:ms-0"
+               renderHTML={(text) => mdParser.render(text)}
+               onChange={handleEditorChange}
+               value={body}
+               shortcuts={true}
+               view={{ menu: true, md: true, html: false }}
+               canView={{
+                  menu: true,
+                  md: true,
+                  html: false,
+                  both: false,
+                  fullScreen: false,
+                  hideMenu: false,
+               }}
+            /> */}
         </form>
+        <ButtonGroup
+          as={Flex}
+          mt={"3rem"}
+          justifyContent={"flex-end"}
+          gap="2rem"
+        >
+          <Button
+            type="submit"
+            bg="#543EE0"
+            _hover={{ bg: "#715fe3" }}
+            color={"white"}
+            onClick={handleSaveToDraft}
+            isLoading={draftLoading}
+          >
+            Save to draft
+          </Button>
+          <Button
+            type="submit"
+            bg="#543EE0"
+            _hover={{ bg: "#715fe3" }}
+            color={"white"}
+            onClick={handlePublish}
+            isLoading={publishLoading}
+          >
+            Publish
+          </Button>
+        </ButtonGroup>
       </Wrapper>
     </>
   );

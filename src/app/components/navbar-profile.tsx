@@ -52,7 +52,7 @@ const NavProfile = () => {
           </Flex>
           <MenuItem
             as={NextLink}
-            href={"/pages/dashboard/profile"}
+            href={`/pages/profile/${user?.email}`}
             fontWeight={"normal"}
           >
             Profile

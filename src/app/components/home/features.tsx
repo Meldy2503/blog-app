@@ -1,6 +1,5 @@
 import React from "react";
 import Wrapper from "../wrapper";
-import Image from "next/image";
 import { Box, Flex, Heading, Icon, Text, useColorMode } from "@chakra-ui/react";
 import { BsGraphUpArrow, BsNewspaper } from "react-icons/bs";
 import { IoIosPeople } from "react-icons/io";
