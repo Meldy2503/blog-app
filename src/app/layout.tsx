@@ -1,9 +1,4 @@
-"use client";
 import "./globals.css";
-import Navbar from "./components/navbar";
-import Footer from "./components/footer";
-import theme from "@/app/components/utils/theme";
-import { ColorModeScript } from "@chakra-ui/react";
 
 import { Providers } from "../app/providers";
 import { BlogProvider } from "../../context/blog-context";
@@ -22,10 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <BlogProvider>
-          <Providers>
-            <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </BlogProvider>
       </body>
     </html>
