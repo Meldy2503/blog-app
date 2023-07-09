@@ -66,7 +66,9 @@ const EditProfileModal = () => {
       });
       SuccessToast("Profile updated successfully!");
       onClose();
-      window.location.reload(); // Refresh the page
+      // if (typeof window !== "undefined") {
+      //   window.location.reload(); // Refresh the page
+      // }
     } catch (error) {
       ErrorToast("Error updating user profile");
     }
