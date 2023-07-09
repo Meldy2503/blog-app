@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { db, auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
-import { useAuth } from "@/app/hooks/auth";
+import { useAuth } from "../hooks/auth";
 
 export const BlogContext = createContext<{
   posts: Posts[];
