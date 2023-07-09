@@ -78,7 +78,7 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
     const id = url.split("/").pop()?.replace("?", "");
     const selectedPost = posts.find((post) => post.id === id);
     setPost(selectedPost);
-  }, [posts, post, pathname, searchParams]);
+  }, [posts, post, pathname, searchParams, setPost]);
 
   if (!posts || !authorData) {
     return <Loader />;

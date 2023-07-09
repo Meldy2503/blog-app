@@ -23,8 +23,8 @@ import MarkdownIt from "markdown-it";
 import { VscBook } from "react-icons/vsc";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+// import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import {
   paragraphStyle,
@@ -120,9 +120,9 @@ const PreviewModal = () => {
                     )}
                   </Flex>
                 </>
-                <Box>
+                {/* <Box>
                   <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
+                    // remarkPlugins={[remarkGfm]}
                     // children={entry?.body}
                     className=" break-words"
                     components={{
@@ -180,8 +180,8 @@ const PreviewModal = () => {
                       },
                     }}
                   />
-                </Box>
-                {/* <Box>{renderMarkdownToHtml(entry?.body)}</Box> */}
+                </Box> */}
+                <Box>{renderMarkdownToHtml(entry?.body)}</Box>
               </Stack>
             </Box>
           </ModalBody>
