@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Wrapper from "@/app/components/wrapper";
 import {
   Avatar,
@@ -14,13 +14,14 @@ import {
 } from "@chakra-ui/react";
 import EditProfileModal from "@/app/components/edit-profile-modal";
 import Navbar from "@/app/components/navbar";
-import SideNav from "@/app/components/side-nav";
 import { useAuth } from "@/app/hooks/auth";
 import Loader from "@/app/components/utils/spinner";
 import { BlogContext, Users } from "../../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/app/components/utils/format-date";
+import Feeds from "@/app/components/feeds";
+import { capitalizeName, handleGoBack } from "@/app/components/utils/functions";
 
 const AllProfile = () => {
   const { colorMode } = useColorMode();
@@ -28,7 +29,7 @@ const AllProfile = () => {
   const searchParams = useSearchParams();
   const { user } = useAuth();
   const [userProfile, setUserProfile] = useState<Users | any>(null);
-  const { users } = useContext(BlogContext);
+  const { users, posts } = useContext(BlogContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,16 +41,25 @@ const AllProfile = () => {
     setUserProfile(selectedUser);
   }, [pathname, router, searchParams, userProfile, users]);
 
-  const handleGoBack = () => {
-    router.back();
-  };
+  const userProfilePosts = posts
+    .filter((post) => post?.data?.author === userProfile?.data?.email)
+    .map((post) => (
+      <Box key={post.id}>
+        <Feeds
+          post={post}
+          px={{ base: "1rem", xl: "1.5rem" }}
+          href={user ? `/pages/dashboard/${post.id}` : `/pages/feed/${post.id}`}
+          pb={user ? "0" : "3.5rem"}
+          borderBottom={`1px solid ${
+            colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+          }`}
+        />
+      </Box>
+    ));
 
-  const capitalizedName = userProfile?.data?.name?.replace(
-    /\b\w/g,
-    (letter: any) => letter.toUpperCase()
-  );
+  const capitalizedName = capitalizeName(userProfile?.data?.name);
 
-  if (!userProfile || !user) {
+  if (!userProfile) {
     return <Loader />;
   }
 
@@ -101,82 +111,83 @@ const AllProfile = () => {
             </Box>
             <Flex gap={"1.5rem"}>
               {user?.email === userProfile?.data?.email && <EditProfileModal />}{" "}
-              <Button onClick={handleGoBack}>Go Back</Button>
+              <Button onClick={() => handleGoBack(router)}>Go Back</Button>
             </Flex>
           </Flex>
         </Center>
         <Flex
           justify={{ base: "center", md: "space-between" }}
           mt="2rem"
-          direction={{ base: "column", md: "row" }}
-          gap="2rem"
+          direction={{ base: "column", lg: "row" }}
+          gap={{ base: "0", lg: "2rem" }}
+          overflow={"auto"}
         >
           <Box
             bg={colorMode === "light" ? "white" : "#2d3748"}
-            w={{ base: "100%", md: "50%" }}
+            w={{ base: "100%", lg: "22rem" }}
             p="2rem"
+            mb="2rem"
+            h={{ base: "fit-content", lg: "100vh" }}
+            overflow={"auto"}
+            className="side-nav"
           >
-            <Flex
-              gap="1rem"
-              w="100%"
-              justify={"space-between"}
-              align={"center"}
-              flexWrap={"wrap"}
-              m="auto"
-            ></Flex>
-            <Flex justify="space-between" align={"center"} mb=".6rem">
-              <Flex fontSize="1rem" direction="column" gap="2rem">
-                <Text fontSize={"1.1rem"} fontWeight={"bold"}>
-                  ABOUT
+            <Flex fontSize="1rem" direction="column" gap="2rem">
+              <Text fontSize={"1.1rem"} fontWeight={"bold"}>
+                ABOUT
+              </Text>
+              <Box gap="1.2rem">
+                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                  Email:
                 </Text>
-                <Flex gap="1rem">
-                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                    Email:
-                  </Text>
-                  <Text fontWeight={"bold"}>{userProfile?.data?.email}</Text>
-                </Flex>
-                <Flex gap="1rem">
-                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                    Username:
-                  </Text>
-                  <Text fontWeight={"bold"}>{userProfile?.data?.username}</Text>
-                </Flex>
-                <Flex gap="1rem">
-                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                    Occupation:
-                  </Text>
-                  <Text fontWeight={"bold"}>
-                    {userProfile?.data?.occupation}
-                  </Text>
-                </Flex>
-                <Flex gap="1rem">
-                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                    Posts:
-                  </Text>
-                  <Text fontWeight={"bold"}>0</Text>
-                </Flex>
-                <Flex gap="1rem">
-                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                    Comments:
-                  </Text>
-                  <Text fontWeight={"bold"}>0</Text>
-                </Flex>
-                <Flex gap="1rem">
-                  <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                    Followers:
-                  </Text>
-                  <Text fontWeight={"bold"}>
-                    {userProfile?.data?.followerCount ?? 0}{" "}
-                  </Text>
-                </Flex>
-              </Flex>
+                <Text fontWeight={"bold"}>{userProfile?.data?.email}</Text>
+              </Box>
+              <Box gap="1.2rem">
+                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                  Username:
+                </Text>
+                <Text fontWeight={"bold"}>
+                  {userProfile?.data?.username || "N/A"}
+                </Text>
+              </Box>
+              <Box gap="1.2rem">
+                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                  Occupation:
+                </Text>
+                <Text fontWeight={"bold"}>
+                  {userProfile?.data?.occupation || "N/A"}
+                </Text>
+              </Box>
+              <Box gap="1.2rem">
+                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                  Posts:
+                </Text>
+                <Text fontWeight={"bold"}>{userProfilePosts.length || 0}</Text>
+              </Box>
+              <Box gap="1.2rem">
+                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                  Followers:
+                </Text>
+                <Text fontWeight={"bold"}>
+                  {userProfile?.data?.followerCount ?? 0}{" "}
+                </Text>
+              </Box>
             </Flex>
           </Box>
-          <SideNav
+
+          <Box
+            h="100vh"
+            overflow={"auto"}
+            className="side-nav"
             bg={colorMode === "light" ? "white" : "#2d3748"}
-            px="2rem"
-            btnBg={colorMode === "dark" ? "#171923" : "#f5f4f4"}
-          />
+            w={{ base: "100%", lg: "70%" }}
+            mb="2rem"
+          >
+            {userProfilePosts.length ? (
+              userProfilePosts
+            ) : (
+              <Center mt="10rem">No published posts yet</Center>
+            )}
+          </Box>
         </Flex>
       </Wrapper>
     </>

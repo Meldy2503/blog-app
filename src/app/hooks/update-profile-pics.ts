@@ -28,6 +28,7 @@ export function useUpdateAvatar(email: string) {
     setFile,
     updateAvatar,
     isLoading,
+    file,
     fileURL: file && URL.createObjectURL(file),
   };
 }

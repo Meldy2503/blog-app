@@ -16,14 +16,15 @@ import {
 import { FiChevronDown } from "react-icons/fi";
 import NextLink from "next/link";
 import { useAuth, useLogout } from "../hooks/auth";
+import { capitalizeName } from "./utils/functions";
 
 const NavProfile = () => {
   const { user } = useAuth();
   const { logout } = useLogout();
   const { colorMode } = useColorMode();
-  const capitalizedName = user?.name?.replace(/\b\w/g, (letter: any) =>
-    letter.toUpperCase()
-  );
+
+  const capitalizedName = capitalizeName(user?.name);
+
   return (
     <Box zIndex="100">
       <Menu>

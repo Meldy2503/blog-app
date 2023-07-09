@@ -20,6 +20,7 @@ import { useAuth } from "../hooks/auth";
 import { useComments, useToggleLike } from "../hooks/likes-comments";
 import Link from "next/link";
 import AuthorData from "./author-data";
+import { capitalizeName } from "./utils/functions";
 
 export const Feeds = ({
   post,
@@ -67,9 +68,7 @@ export const Feeds = ({
     return <Loader />;
   }
 
-  const capitalizedName = authorData?.name?.replace(/\b\w/g, (letter: any) =>
-    letter.toUpperCase()
-  );
+  const capitalizedName = capitalizeName(authorData?.name);
 
   return (
     <Box

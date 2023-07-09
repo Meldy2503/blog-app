@@ -28,6 +28,58 @@ const Dashboard = () => {
   const { posts } = useContext(BlogContext);
   const { user } = useAuth();
 
+  // to get all posts
+  const allPosts = posts?.map((post) => (
+    <Box key={post.id}>
+      <Feeds
+        post={post}
+        borderRadius={"6px"}
+        border={`1px solid ${
+          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+        }`}
+        px={{ base: "1rem", xl: "1.5rem" }}
+        href={`/pages/dashboard/${post.id}`}
+      />
+    </Box>
+  ));
+
+  // to get loged in user posts
+
+  const userPosts = posts
+    .filter((post) => post?.data?.author === user?.email)
+    .map((post) => (
+      <Box key={post.id}>
+        <Feeds
+          post={post}
+          borderRadius={"6px"}
+          border={`1px solid ${
+            colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+          }`}
+          px={{ base: "1rem", xl: "1.5rem" }}
+          href={`/pages/dashboard/${post.id}`}
+        />
+      </Box>
+    ));
+
+  // to get recent featured posts
+
+  const sortedPosts = posts?.sort(
+    (a, b) => b?.data?.postedOn - a?.data?.postedOn
+  );
+  const recentPosts = sortedPosts?.slice(0, 5).map((post) => (
+    <Box key={post.id}>
+      <Feeds
+        post={post}
+        borderRadius={"6px"}
+        border={`1px solid ${
+          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+        }`}
+        px={{ base: "1rem", xl: "1.5rem" }}
+        href={`/pages/dashboard/${post.id}`}
+      />
+    </Box>
+  ));
+
   return (
     <Sidebar>
       <Box
@@ -114,62 +166,22 @@ const Dashboard = () => {
                     </Text>
                   </Center>
                 ) : (
-                  posts?.map((post) => (
-                    <Box key={post.id}>
-                      <Feeds
-                        post={post}
-                        borderRadius={"6px"}
-                        border={`1px solid ${
-                          colorMode === "dark"
-                            ? "rgb(255, 255, 255, .2)"
-                            : "#d0d0d0"
-                        }`}
-                        px={{ base: "1rem", xl: "1.5rem" }}
-                        href={`/pages/dashboard/${post.id}`}
-                      />
-                    </Box>
-                  ))
+                  allPosts
                 )}
               </TabPanel>
               <TabPanel p="0">
-                {posts ? (
-                  posts
-                    .filter((post) => post?.data?.author === user?.email)
-                    .map((post) => (
-                      <Box key={post.id}>
-                        <Feeds
-                          post={post}
-                          borderRadius={"6px"}
-                          border={`1px solid ${
-                            colorMode === "dark"
-                              ? "rgb(255, 255, 255, .2)"
-                              : "#d0d0d0"
-                          }`}
-                          px={{ base: "1rem", xl: "1.5rem" }}
-                          href={`/pages/dashboard/${post.id}`}
-                        />
-                      </Box>
-                    ))
+                {userPosts.length ? (
+                  userPosts
                 ) : (
                   <Center>
                     <Text pb="20rem" pt="10rem">
-                      You have no published posts
+                      You have no published posts yet
                     </Text>
                   </Center>
                 )}
               </TabPanel>
 
-              <TabPanel>
-                {!posts?.length ? (
-                  <Center>
-                    <Text pb="20rem" pt="10rem">
-                      No posts to display
-                    </Text>
-                  </Center>
-                ) : (
-                  <p>Recent</p>
-                )}
-              </TabPanel>
+              <TabPanel p="0">{recentPosts}</TabPanel>
             </TabPanels>
           </Tabs>
         </Box>

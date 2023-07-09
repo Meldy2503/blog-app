@@ -18,6 +18,7 @@ import MarkdownIt from "markdown-it";
 import { BlogContext, Posts } from "../../../context/blog-context";
 import { db } from "../../../firebase";
 import AuthorData from "./author-data";
+import { capitalizeName } from "./utils/functions";
 
 interface Props {
   post: Posts;
@@ -36,9 +37,7 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
   const { posts } = useContext(BlogContext);
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
-  const capitalizedName = authorData?.name?.replace(/\b\w/g, (letter: any) =>
-    letter.toUpperCase()
-  );
+  const capitalizedName = capitalizeName(authorData?.name);
 
   function renderMarkdownToHtml(markdownText: string): React.ReactNode {
     const md = new MarkdownIt();
@@ -68,7 +67,7 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
     };
 
     fetchAuthorData();
-  }, [post?.data?.author]);
+  }, [post?.data?.author, setAuthorData]);
 
   useEffect(() => {
     if (posts.length === 0) {

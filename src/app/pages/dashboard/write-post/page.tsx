@@ -27,6 +27,7 @@ import Wrapper from "@/app/components/wrapper";
 import PreviewModal from "@/app/components/preview-modal";
 import Navbar from "@/app/components/navbar";
 import { ErrorToast, SuccessToast } from "@/app/components/utils/toast";
+import { handleGoBack } from "@/app/components/utils/functions";
 const categories = [
   { value: "technology", label: "Technology" },
   { value: "science", label: "Science" },
@@ -75,10 +76,6 @@ const LiteEditor: React.FC = () => {
       ...prevEntry,
       body: text,
     }));
-  };
-
-  const handleGoBack = () => {
-    router.back();
   };
 
   useEffect(() => {
@@ -160,7 +157,7 @@ const LiteEditor: React.FC = () => {
           <Flex flexDir={"column"} justify={"flex-end"}>
             <HStack justify={"space-between"} w={"100%"} mb="2rem">
               <PreviewModal />
-              <Button onClick={handleGoBack}>Go Back</Button>
+              <Button onClick={() => handleGoBack(router)}>Go Back</Button>
             </HStack>
             <Input
               placeholder="Title"

@@ -20,6 +20,7 @@ import { updateDoc, doc } from "firebase/firestore";
 import { db } from "../../../firebase";
 import { ErrorToast, SuccessToast } from "./utils/toast";
 import { useUpdateAvatar } from "../hooks/update-profile-pics";
+import { capitalizeName } from "./utils/functions";
 
 const EditProfileModal = () => {
   const { onClose, isOpen, onOpen } = useDisclosure();
@@ -33,36 +34,36 @@ const EditProfileModal = () => {
     updateAvatar,
     isLoading: fileLoading,
     fileURL,
+    file,
   } = useUpdateAvatar(user?.email);
 
-  const capitalizedName = user?.name?.replace(/\b\w/g, (letter: any) =>
-    letter.toUpperCase()
-  );
-  console.log(user, "user");
+  const capitalizedName = capitalizeName(user?.name);
 
   useEffect(() => {
     if (user) {
       setName(capitalizedName || "");
-      setUsername(user.username || "");
-      setOccupation(user.occupation || "");
+      setUsername(user?.username || "");
+      setOccupation(user?.occupation || "");
     }
   }, [capitalizedName, user]);
 
   const handleUserEdit = async () => {
     try {
+      updateAvatar();
       const userRef = doc(db, "users", user?.email);
       await updateDoc(userRef, {
         name,
         username,
         occupation,
+        file,
       });
       setEditUser({
         ...editUser,
         name,
         username,
         occupation,
+        file,
       });
-      updateAvatar();
       SuccessToast("Profile updated successfully!");
       onClose();
       window.location.reload(); // Refresh the page
@@ -70,10 +71,6 @@ const EditProfileModal = () => {
       ErrorToast("Error updating user profile");
     }
   };
-
-  // const onSubmit = () => {
-  //   handleUserEdit();
-  // };
 
   const handleProfileChange = (e: any) => {
     setFile(e.target.files[0]);
@@ -108,7 +105,6 @@ const EditProfileModal = () => {
               <Input
                 type="file"
                 border="none"
-                // onChange={(e) => setFile(e.target.files[0])}
                 onChange={handleProfileChange}
                 accept="image/*"
               />
