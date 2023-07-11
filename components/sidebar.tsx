@@ -67,6 +67,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { colorMode } = useColorMode();
   const currentRoute = usePathname();
   const { logout, isLoading } = useLogout();
+  const activeColor = colorMode === "dark" ? "#d0d0d0" : "#626262";
 
   return (
     <Box
@@ -98,7 +99,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((item, index) => (
-        <Flex direction={"column"} key={index} mb="3rem" ml="2rem">
+        <Flex direction={"column"} key={index} mb="2rem" ml="2rem">
           <Flex align={"center"} gap=".5rem">
             <Text color={colorMode === "dark" ? "#f5f6f6" : "#000"}>
               {item.name}
@@ -110,13 +111,10 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
               {item.children?.map((child, childIndex) => (
                 <Link key={childIndex} href={child.href ?? "#"}>
                   <Box
-                    color={currentRoute === child.href ? "white" : "default"}
                     bg={currentRoute === child.href ? "brand.600" : "none"}
                     px={"15px"}
                     pb={"10px"}
-                    pt={"0.3px"}
-                    // pl={2}
-                    // pr={4}
+                    pt={"0.1px"}
                     borderRadius={"md"}
                     width={"fit-content"}
                     transition={"0.3s ease"}
@@ -124,19 +122,23 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                     <Flex
                       color="transparent"
                       gap=".5rem"
-                      mt="1.2rem"
+                      mt="1rem"
                       align={"center"}
                       fontSize={".94rem"}
                     >
                       {child.subIcon && (
                         <Icon
                           as={child.subIcon}
-                          color={colorMode === "dark" ? "#d0d0d0" : "#626262"}
+                          color={
+                            currentRoute === child.href ? "#fff" : activeColor
+                          }
                         />
                       )}
 
                       <Text
-                        color={colorMode === "dark" ? "#d0d0d0" : "#626262"}
+                        color={
+                          currentRoute === child.href ? "#fff" : activeColor
+                        }
                       >
                         {child.subName}
                       </Text>

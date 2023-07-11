@@ -1,14 +1,18 @@
 "use client";
 
-import { Center } from "@chakra-ui/react";
 import React from "react";
-import Wrapper from "../../../../components/wrapper";
+import { Center, useColorMode } from "@chakra-ui/react";
+import Sidebar from "../../../../components/sidebar";
 
 const Drafts = () => {
+  const { colorMode } = useColorMode();
   return (
-    <Wrapper>
-      <Center>Comming soon</Center>;
-    </Wrapper>
+    <Sidebar>
+      <Center mt="15rem" color={colorMode === "dark" ? "#f5f6f6" : "#000"}>
+        Coming soon
+      </Center>
+      ;
+    </Sidebar>
   );
 };
 
