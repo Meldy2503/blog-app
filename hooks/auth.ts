@@ -1,4 +1,3 @@
-import { useToast } from "@chakra-ui/react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -55,7 +54,6 @@ interface SignUpProps {
   email: string;
   password: string;
   name: string;
-  joiningAs: string;
   redirectTo: string;
 }
 interface SignInProps {
@@ -76,7 +74,7 @@ export function useLogin() {
   async function login({
     email,
     password,
-    redirectTo = "/pages/dashboard",
+    redirectTo = "/dashboard",
   }: SignInProps) {
     setLoading(true);
 
@@ -105,11 +103,10 @@ export function useRegister() {
 
   async function register({
     name,
-    joiningAs,
     username,
     email,
     password,
-    redirectTo = "/pages/dashboard",
+    redirectTo = "/auth/sign-in",
   }: SignUpProps) {
     setLoading(true);
 
@@ -127,7 +124,6 @@ export function useRegister() {
           username: username?.toLowerCase(),
           name,
           email,
-          joiningAs,
           avatar: "",
           date: Date.now(),
         });

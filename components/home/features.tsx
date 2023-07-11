@@ -46,7 +46,8 @@ const Features = () => {
             textAlign={"center"}
             mb={"2rem"}
           >
-            Why you should join chatter
+            Why you Should Join{" "}
+            <span style={{ color: "#543EE0" }}>Chatter</span>
           </Heading>
           <Text>
             Our goal is to make writers and readers see our platform as their

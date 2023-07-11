@@ -12,70 +12,29 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useAuth } from "../hooks/auth";
+import { category, follow } from "./utils/constants";
 
 const SideNav = ({ bg, px, btnBg }: any) => {
   const { colorMode } = useColorMode();
   const { user } = useAuth();
 
-  const data = [
-    {
-      id: 1,
-      name: "Politics",
-    },
-    {
-      id: 2,
-      name: "Programming",
-    },
-    {
-      id: 3,
-      name: "Data Science",
-    },
-    {
-      id: 4,
-      name: "Relationships",
-    },
-    {
-      id: 5,
-      name: "Technology",
-    },
-    {
-      id: 6,
-      name: "Artificial Intelligence",
-    },
-  ];
-
-  const follow = [
-    {
-      id: 1,
-      name: "Anthony Smith",
-      title: "programmer",
-      src: "/assets/face-1.jpg",
-    },
-    {
-      id: 2,
-      name: "Mary Megan",
-      title: "Writer",
-      src: "/assets/face-5.jpg",
-    },
-    {
-      id: 3,
-      name: "Victor Omondi",
-      title: "Architect",
-      src: "/assets/face-6.jpg",
-    },
-  ];
-
   return (
     <Box
       bg={bg}
       color={colorMode === "dark" ? "#bdbbbb" : "#737373"}
-      w={{ base: "100%", md: "45%" }}
+      w={{ base: "100%", md: "40%" }}
       py="1rem"
       px={px}
       pl={{ base: "1rem", md: "2rem" }}
       position="sticky"
       top="0px"
       h="100%"
+      borderLeft={{
+        base: "none",
+        md: `1px solid ${
+          colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#e0dede"
+        }`,
+      }}
     >
       <Flex align={"center"} justify={"center"}>
         <Input
@@ -101,7 +60,7 @@ const SideNav = ({ bg, px, btnBg }: any) => {
           Recommended topics
         </Text>
         <Flex gap="1rem" flexWrap={"wrap"}>
-          {data.map((item) => {
+          {category.map((item) => {
             return (
               <Text
                 key={item.id}

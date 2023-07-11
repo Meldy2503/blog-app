@@ -12,7 +12,7 @@ import {
 import Button from "../button";
 
 const Join = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
 
   return (
     <Wrapper
@@ -58,7 +58,12 @@ const Join = () => {
               Software developer at Apple
             </Text>
           </Flex>
-          <Button href="/sign-up" bg="#543EE0" color="#fff">
+          <Button
+            href="/auth/sign-in"
+            bg="#543EE0"
+            color="#fff"
+            w="fit-content"
+          >
             Join chatter
           </Button>
         </Box>

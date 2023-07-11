@@ -10,3 +10,12 @@ export const capitalizeName = (name: string | undefined): string => {
   }
   return name.replace(/\b\w/g, (letter) => letter.toUpperCase());
 };
+
+export const formatDate = (date: number) => {
+  const newDate = new Date(date);
+  return newDate.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};

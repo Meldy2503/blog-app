@@ -1,0 +1,177 @@
+import React from "react";
+import { BsLayoutWtf, BsBookmarks } from "react-icons/bs";
+import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
+import { IconType } from "react-icons";
+import { FiTrendingUp } from "react-icons/fi";
+
+export interface NavItem {
+  label: string;
+  subLabel?: string;
+  children?: Array<NavItem>;
+  href?: string | any;
+}
+
+interface LinkItemProps {
+  name: string;
+  icon?: IconType;
+  children?: { subIcon?: IconType; subName?: string; href?: string | any }[];
+}
+
+export const categories = [
+  { value: "technology", label: "Technology" },
+  { value: "science", label: "Science" },
+  { value: "health", label: "Health" },
+  { value: "business", label: "Business" },
+  { value: "politics", label: "Politics" },
+  { value: "sports", label: "Sports" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "travel", label: "Travel" },
+  { value: "lifestyle", label: "Lifestyle" },
+  { value: "food", label: "Food" },
+];
+
+export const avatars = [
+  {
+    name: "Ryan Florence",
+    url: "https://bit.ly/ryan-florence",
+  },
+  {
+    name: "Segun Adebayo",
+    url: "https://bit.ly/sage-adebayo",
+  },
+  {
+    name: "Kent Dodds",
+    url: "https://bit.ly/kent-c-dodds",
+  },
+  {
+    name: "Prosper Otemuyiwa",
+    url: "https://bit.ly/prosper-baba",
+  },
+  {
+    name: "Christian Nwamba",
+    url: "https://bit.ly/code-beast",
+  },
+];
+
+export const NAV_ITEMS: NavItem[] = [
+  {
+    label: "Home",
+    children: [
+      {
+        label: "Join our community",
+        subLabel: "Be a part of our community today",
+        href: "/",
+      },
+    ],
+    href: "/",
+  },
+  {
+    label: "Feed",
+    children: [
+      {
+        label: "Explore our feed",
+        subLabel: "Explore our feed and get inspired",
+        href: "/feed",
+      },
+    ],
+    href: "/feed",
+  },
+];
+
+export const category = [
+  {
+    id: 1,
+    name: "Politics",
+  },
+  {
+    id: 2,
+    name: "Programming",
+  },
+  {
+    id: 3,
+    name: "Data Science",
+  },
+  {
+    id: 4,
+    name: "Relationships",
+  },
+  {
+    id: 5,
+    name: "Technology",
+  },
+  {
+    id: 6,
+    name: "Artificial Intelligence",
+  },
+];
+
+export const follow = [
+  {
+    id: 1,
+    name: "Anthony Smith",
+    title: "programmer",
+    src: "/assets/face-1.jpg",
+  },
+  {
+    id: 2,
+    name: "Mary Megan",
+    title: "Writer",
+    src: "/assets/face-5.jpg",
+  },
+  {
+    id: 3,
+    name: "Victor Omondi",
+    title: "Architect",
+    src: "/assets/face-6.jpg",
+  },
+];
+
+export const LinkItems: Array<LinkItemProps> = [
+  {
+    name: "Overview",
+    children: [
+      {
+        subIcon: BsLayoutWtf,
+        subName: "Feed",
+        href: "/dashboard",
+      },
+      {
+        subIcon: BsBookmarks,
+        subName: "Bookmarks",
+        href: "/dashboard/bookmarks",
+      },
+
+      {
+        subIcon: MdOutlineDrafts,
+        subName: "Drafts",
+        href: "/dashboard/drafts",
+      },
+      {
+        subIcon: MdOutlineAnalytics,
+        subName: "Analytics",
+        href: "/dashboard/analytics",
+      },
+    ],
+  },
+  {
+    name: "Trending Tags",
+    icon: FiTrendingUp,
+    children: [
+      {
+        subName: "Programming",
+      },
+      {
+        subName: "Data science",
+      },
+      {
+        subName: "Technology ",
+      },
+      {
+        subName: "Machine learning",
+      },
+      {
+        subName: "Politics",
+      },
+    ],
+  },
+];

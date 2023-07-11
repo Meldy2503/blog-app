@@ -7,10 +7,6 @@ export const nameValidate = {
     value: 3,
     message: "name must be at least 3 characters long",
   },
-  pattern: {
-    value: /^[a-zA-Z]+$/,
-    message: "name must not be alphanumeric",
-  },
 };
 export const emailValidate = {
   required: {

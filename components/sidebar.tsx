@@ -1,8 +1,7 @@
 "use client";
-import React, { ReactNode, useContext } from "react";
+import React, { ReactNode } from "react";
 import {
   IconButton,
-  Avatar,
   Box,
   CloseButton,
   Flex,
@@ -15,89 +14,18 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
   Input,
   Button,
   useColorMode,
 } from "@chakra-ui/react";
-import {
-  FiTrendingUp,
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-  FiLogOut,
-} from "react-icons/fi";
-import { BsLayoutWtf, BsBookmarks, BsPerson } from "react-icons/bs";
-import { AiOutlineTeam } from "react-icons/ai";
-import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
-import { IconType } from "react-icons";
+import { FiMenu, FiBell, FiLogOut } from "react-icons/fi";
+
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-import { useRouter } from "next/navigation";
 import { useAuth, useLogout } from "../hooks/auth";
 import Link from "next/link";
-import { BlogContext } from "../context/blog-context";
 import NavProfile from "./navbar-profile";
-
-interface LinkItemProps {
-  name: string;
-  icon?: IconType;
-  children?: { subIcon?: IconType; subName?: string; href?: string | any }[];
-}
-
-const LinkItems: Array<LinkItemProps> = [
-  {
-    name: "Overview",
-    children: [
-      {
-        subIcon: BsLayoutWtf,
-        subName: "Feed",
-        href: "/dashboard",
-      },
-      {
-        subIcon: BsBookmarks,
-        subName: "Bookmarks",
-      },
-      {
-        subIcon: AiOutlineTeam,
-        subName: "Team blogs",
-      },
-      {
-        subIcon: MdOutlineDrafts,
-        subName: "Drafts",
-      },
-      {
-        subIcon: MdOutlineAnalytics,
-        subName: "Analytics",
-        href: "/dashboard/analytics",
-      },
-    ],
-  },
-  {
-    name: "Trending Tags",
-    icon: FiTrendingUp,
-    children: [
-      {
-        subName: "Programming",
-      },
-      {
-        subName: "Data science",
-      },
-      {
-        subName: "Technology ",
-      },
-      {
-        subName: "Machine learning",
-      },
-      {
-        subName: "Politics",
-      },
-    ],
-  },
-];
+import { usePathname } from "next/navigation";
+import { LinkItems } from "./utils/constants";
 
 export default function SidebarWithHeader({
   children,
@@ -137,7 +65,7 @@ interface SidebarProps extends BoxProps {
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { colorMode } = useColorMode();
-  // const router = useRouter();
+  const currentRoute = usePathname();
   const { logout, isLoading } = useLogout();
 
   return (
@@ -181,23 +109,39 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             <Flex direction={"column"} ml="1.7rem">
               {item.children?.map((child, childIndex) => (
                 <Link key={childIndex} href={child.href ?? "#"}>
-                  <Flex
-                    color="transparent"
-                    gap=".5rem"
-                    mt="1.2rem"
-                    align={"center"}
-                    fontSize={".94rem"}
+                  <Box
+                    color={currentRoute === child.href ? "white" : "default"}
+                    bg={currentRoute === child.href ? "brand.600" : "none"}
+                    px={"15px"}
+                    pb={"10px"}
+                    pt={"0.3px"}
+                    // pl={2}
+                    // pr={4}
+                    borderRadius={"md"}
+                    width={"fit-content"}
+                    transition={"0.3s ease"}
                   >
-                    {child.subIcon && (
-                      <Icon
-                        as={child.subIcon}
+                    <Flex
+                      color="transparent"
+                      gap=".5rem"
+                      mt="1.2rem"
+                      align={"center"}
+                      fontSize={".94rem"}
+                    >
+                      {child.subIcon && (
+                        <Icon
+                          as={child.subIcon}
+                          color={colorMode === "dark" ? "#d0d0d0" : "#626262"}
+                        />
+                      )}
+
+                      <Text
                         color={colorMode === "dark" ? "#d0d0d0" : "#626262"}
-                      />
-                    )}
-                    <Text color={colorMode === "dark" ? "#d0d0d0" : "#626262"}>
-                      {child.subName}
-                    </Text>
-                  </Flex>
+                      >
+                        {child.subName}
+                      </Text>
+                    </Flex>
+                  </Box>
                 </Link>
               ))}
             </Flex>

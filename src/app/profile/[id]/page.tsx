@@ -19,7 +19,7 @@ import Loader from "../../../../components/utils/spinner";
 import { BlogContext, Users } from "../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { formatDate } from "../../../../components/utils/format-date";
+import { formatDate } from "../../../../components/utils/functions";
 import Feeds from "../../../../components/feeds";
 import {
   capitalizeName,
@@ -69,7 +69,11 @@ const AllProfile = () => {
   return (
     <>
       <Navbar />
-      <Wrapper bg={colorMode === "light" ? "#f7f6f6" : "#171923"} py="0">
+      <Wrapper
+        bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
+        color={colorMode === "light" ? "#111" : "#d0d0d0"}
+        py="0"
+      >
         <Box
           style={{
             backgroundImage:
@@ -113,7 +117,9 @@ const AllProfile = () => {
               <Text>Joined on {formatDate(userProfile?.data?.joinedOn)}</Text>
             </Box>
             <Flex gap={"1.5rem"}>
-              {user?.email === userProfile?.data?.email && <EditProfileModal />}{" "}
+              {user?.email === userProfile?.data?.email && <EditProfileModal />}
+
+              <EditProfileModal />
               <Button onClick={() => handleGoBack(router)}>Go Back</Button>
             </Flex>
           </Flex>

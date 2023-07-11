@@ -9,7 +9,7 @@ import {
   useColorMode,
   Avatar,
 } from "@chakra-ui/react";
-import { formatDate } from "../utils/format-date";
+import { formatDate } from "../utils/functions";
 import { useAuth } from "../../hooks/auth";
 import Loader from "../utils/spinner";
 

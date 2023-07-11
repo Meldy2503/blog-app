@@ -1,10 +1,8 @@
 "use client";
 
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import {
-  Stack,
   Heading,
-  Select,
   Button,
   VStack,
   InputGroup,
@@ -18,9 +16,6 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import { FcGoogle } from "react-icons/fc";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
 import { useForm } from "react-hook-form";
 import {
   emailValidate,
@@ -30,15 +25,12 @@ import {
 } from "./utils/form.-validate";
 import { FiEye } from "react-icons/fi";
 import { RiEyeCloseLine } from "react-icons/ri";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { SuccessToast, ErrorToast } from "./utils/toast";
 import { useRegister } from "../hooks/auth";
-import { BlogContext } from "../context/blog-context";
+import GoogleButton from "./google-button";
 
 interface SignUpForm {
   name: string;
-  joiningAs: string;
   email: string;
   username: string;
   password: string;
@@ -47,10 +39,7 @@ interface SignUpForm {
 export default function SignUp() {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
-  const { handleUserAuth, currentUser } = useContext(BlogContext);
   const { register: signup, isLoading } = useRegister();
-
-  const router = useRouter();
 
   const {
     register,
@@ -65,18 +54,10 @@ export default function SignUp() {
       email: data.email,
       password: data.password,
       name: data.name,
-      joiningAs: data.joiningAs,
       username: data.username,
-      redirectTo: "/pages/auth/sign-in",
+      redirectTo: "/auth/sign-in",
     });
   }
-
-  useEffect(() => {
-    if (currentUser) {
-      router.push("/pages/dashboard");
-      SuccessToast("Login Successful!");
-    }
-  }, [currentUser, router]);
 
   return (
     <Box color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}>
@@ -90,22 +71,20 @@ export default function SignUp() {
         Register as a Writer/Reader
       </Heading>
       <form onSubmit={handleSubmit(handleRegister)}>
-        <Stack direction={{ base: "column", lg: "row" }}>
-          <FormControl mb="1rem">
-            <FormLabel>Full name</FormLabel>
-            <Input
-              placeholder="Full name"
-              focusBorderColor="none"
-              {...register("name", nameValidate)}
-            />
-            {errors.name && (
-              <Text color="red" fontSize=".8rem" mt=".2rem">
-                {errors.name.message}
-              </Text>
-            )}
-          </FormControl>
-        </Stack>
-        <FormControl mb="1rem">
+        <FormControl mb=".8rem">
+          <FormLabel>Full name</FormLabel>
+          <Input
+            placeholder="Full name"
+            focusBorderColor="none"
+            {...register("name", nameValidate)}
+          />
+          {errors.name && (
+            <Text color="red" fontSize=".8rem" mt=".2rem">
+              {errors.name.message}
+            </Text>
+          )}
+        </FormControl>
+        <FormControl mb=".8rem">
           <FormLabel>Username</FormLabel>
           <Input
             placeholder="Username"
@@ -118,14 +97,7 @@ export default function SignUp() {
             </Text>
           )}
         </FormControl>
-        <FormControl mb="1rem">
-          <FormLabel>You are joining as?</FormLabel>
-          <Select focusBorderColor="none" {...register("joiningAs")}>
-            <option>Writer</option>
-            <option>Reader</option>
-          </Select>
-        </FormControl>
-        <FormControl mb="1rem">
+        <FormControl mb=".8rem">
           <FormLabel>Email</FormLabel>
           <Input
             placeholder="marysmith@gmail.com"
@@ -138,7 +110,7 @@ export default function SignUp() {
             </Text>
           )}
         </FormControl>
-        <FormControl mb="1rem">
+        <FormControl mb=".8rem">
           <FormLabel>Password</FormLabel>
           <InputGroup size="md">
             <Input
@@ -175,20 +147,8 @@ export default function SignUp() {
         </Button>
       </form>
       <VStack gap="1.2rem" mt="1.5rem">
-        <Button
-          type="submit"
-          onClick={handleUserAuth}
-          w="100%"
-          bg={colorMode === "light" ? "#f6f5f5" : "dark"}
-          color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
-          border={`1px solid ${
-            colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#cedada"
-          }`}
-        >
-          <Icon as={FcGoogle} mr=".5rem" />
-          Sign up with google
-        </Button>
-        <Flex mt="2rem" gap=".5rem">
+        <GoogleButton>Sign up with google</GoogleButton>
+        <Flex mt=".5rem" gap=".5rem">
           <Text>Already have an account? </Text>
           <Link href="/auth/sign-in">
             <Text color="#543EE0" textDecoration={"underline"}>

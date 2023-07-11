@@ -15,29 +15,14 @@ import {
   Stack,
   Text,
   useColorMode,
+  HStack,
 } from "@chakra-ui/react";
 import React from "react";
 import { BlogContext } from "../context/blog-context";
 import { useContext } from "react";
-import MarkdownIt from "markdown-it";
 import { VscBook } from "react-icons/vsc";
 import Image from "next/image";
-import ReactMarkdown from "react-markdown";
-// import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-// import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-import {
-  paragraphStyle,
-  heading1,
-  heading2,
-  heading3,
-  heading4,
-  heading5,
-  heading6,
-  orderedListStyle,
-  unorderedListStyle,
-} from "./editor-style";
-import remarkGfm from "remark-gfm";
+import { MarkdownRenderer } from "./markdown-styles";
 
 const PreviewModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -51,23 +36,23 @@ const PreviewModal = () => {
     return readTime;
   }
 
-  function renderMarkdownToHtml(markdownText: string): React.ReactNode {
-    const md = new MarkdownIt();
-    const html = md.render(markdownText);
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
-  }
-
   return (
     <>
-      <Button onClick={onOpen} colorScheme="blue">
+      <Button onClick={onOpen} bg="#aadfdf" shadow={"md"} color="#333">
         Preview
       </Button>
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered size={"3xl"}>
         <ModalOverlay bgGradient="linear(to-l,rgb(0, 0, 0, 0.4),rgb(0, 0, 0, 0.4))" />
         <ModalContent>
-          <ModalHeader>Post Preview</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader
+            color={colorMode === "light" ? "brand.800" : "brand.400"}
+          >
+            Post Preview
+          </ModalHeader>
+          <ModalCloseButton
+            color={colorMode === "light" ? "brand.800" : "brand.400"}
+          />
           <ModalBody>
             <Box
               borderRadius={"lg"}
@@ -90,15 +75,22 @@ const PreviewModal = () => {
                         py=".7rem"
                         w="100%"
                         align={"center"}
-                        gap={"1rem"}
+                        gap={"2rem"}
                         borderY={`1px solid ${
                           colorMode === "dark"
                             ? "rgb(255, 255, 255, .1)"
                             : "#d0d0d0"
                         }`}
                       >
-                        <Icon as={VscBook} />
-                        <Text>{calculateReadTime(entry?.body)} mins read</Text>
+                        <HStack>
+                          <Icon as={VscBook} />
+                          <Text>
+                            {calculateReadTime(entry?.body)} mins read
+                          </Text>
+                        </HStack>
+                        <Button borderRadius={"50px"} py="0">
+                          {entry?.category}
+                        </Button>
                       </Flex>
                       <Text>{entry?.brief}</Text>
                     </Flex>
@@ -120,68 +112,8 @@ const PreviewModal = () => {
                     )}
                   </Flex>
                 </>
-                {/* <Box>
-                  <ReactMarkdown
-                    // remarkPlugins={[remarkGfm]}
-                    // children={entry?.body}
-                    className=" break-words"
-                    components={{
-                      p: ({ children }) => (
-                        <p style={paragraphStyle}>{children}</p>
-                      ),
-                      h1: ({ children }) => (
-                        <h1 style={heading1}>{children}</h1>
-                      ),
-                      h2: ({ children }) => (
-                        <h2 style={heading2}>{children}</h2>
-                      ),
-                      h3: ({ children }) => (
-                        <h3 style={heading3}>{children}</h3>
-                      ),
-                      h4: ({ children }) => (
-                        <h4 style={heading4}>{children}</h4>
-                      ),
-                      h5: ({ children }) => (
-                        <h5 style={heading5}>{children}</h5>
-                      ),
-                      h6: ({ children }) => (
-                        <h6 style={heading6}>{children}</h6>
-                      ),
-                      ol: ({ children }) => (
-                        <ol style={orderedListStyle}>{children}</ol>
-                      ),
-                      ul: ({ children }) => (
-                        <ul style={unorderedListStyle}>{children}</ul>
-                      ),
 
-                      code({ node, inline, className, children, ...props }) {
-                        const match = /language-(\w+)/.exec(className || "");
-                        return !inline && match ? (
-                          <SyntaxHighlighter
-                            {...props}
-                            // children={String(children).replace(/\n$/, "")}
-                            // eslint-disable-next-line react/no-children-prop
-                            children={children}
-                            style={atomDark}
-                            // language={language}
-                            PreTag="div"
-                          />
-                        ) : (
-                          // {entry?.body}
-                          // </ReactMarkdown>
-
-                          <code
-                            {...props}
-                            className={` bg-gray-200 p-4 text-black-900`}
-                          >
-                            {children}
-                          </code>
-                        );
-                      },
-                    }}
-                  />
-                </Box> */}
-                <Box>{renderMarkdownToHtml(entry?.body)}</Box>
+                <MarkdownRenderer markdownContent={entry?.body} />
               </Stack>
             </Box>
           </ModalBody>

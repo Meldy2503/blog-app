@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -7,20 +7,16 @@ import {
   Icon,
   useColorMode,
   useMediaQuery,
-  IconButton,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
-import { BsChatDots } from "react-icons/bs";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import Loader from "./utils/spinner";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { useAuth } from "../hooks/auth";
-import { useComments, useToggleLike } from "../hooks/likes-comments";
 import Link from "next/link";
 import AuthorData from "./author-data";
 import { capitalizeName } from "./utils/functions";
+import PostActions from "./post-actions";
 
 export const Feeds = ({
   post,
@@ -28,19 +24,12 @@ export const Feeds = ({
   border,
   borderRadius,
   px,
-  pb,
   href,
 }: any) => {
   const { colorMode } = useColorMode();
   const [isMobile] = useMediaQuery("(max-width: 480px)");
   const [loading, setLoading] = useState<boolean>(false);
   const [authorData, setAuthorData] = useState<any>(null);
-  const { user, isLoading } = useAuth();
-  const isLiked = post?.data?.likes?.includes(user?.email);
-  const config = { email: user?.email, isLiked, id: post?.id };
-  const { toggleLike, isLoading: likeLoading } = useToggleLike(config);
-  const { comments } = useComments(post?.id);
-  console.log(isLiked, "isLiked");
 
   useEffect(() => {
     const fetchAuthorData = async () => {
@@ -93,7 +82,7 @@ export const Feeds = ({
           align={"center"}
           direction={{ base: "column", sm: "row" }}
           px={px}
-          pb={pb}
+          pb=".1rem"
           gap="2rem"
         >
           <Box w={{ base: "100%", md: "67%", xl: "60%" }}>
@@ -159,37 +148,9 @@ export const Feeds = ({
           </Box>
         </Flex>
       </Link>
-      {user && (
-        <Flex
-          align={"center"}
-          flexWrap="wrap"
-          gap={{ base: "1rem", sm: "2.5rem" }}
-          px={px}
-          py="1rem"
-          justify={{ base: "space-between", sm: "flex-end" }}
-        >
-          <Flex cursor="pointer" align={"center"}>
-            <IconButton
-              onClick={toggleLike}
-              isLoading={likeLoading || isLoading}
-              icon={isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
-              color={isLiked ? "red" : undefined}
-              variant={"ghost"}
-              aria-label={"like"}
-            />
-            <Text fontSize={".95rem"}>{post?.data?.likes?.length} </Text>
-          </Flex>
-          <Link href={href}>
-            <Flex align={"center"} gap=".5rem" cursor="pointer">
-              <Icon
-                as={BsChatDots}
-                color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-              />
-              <Text fontSize={".8rem"}>{comments?.length}</Text>
-            </Flex>
-          </Link>
-        </Flex>
-      )}
+      <Box mb="1rem">
+        <PostActions post={post} />
+      </Box>
 
       <hr />
     </Box>

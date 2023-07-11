@@ -66,7 +66,7 @@ const Connect = () => {
             fontWeight={600}
             color={colorMode === "dark" ? "#e3e2e2" : "black"}
           >
-            Write, read and connect with great minds on chatter
+            Write, read and connect with great minds on Chatter
           </Heading>
           <Text py="2rem">
             Share your breakthrough concepts and revolutionary ideas with a
@@ -77,7 +77,12 @@ const Connect = () => {
             and ambitions, forging lifelong connections and collaborations that
             will drive you towards mutual success.
           </Text>
-          <Button href="/sign-up" bg="#543EE0" color="#fff">
+          <Button
+            href="/auth/sign-in"
+            bg="#543EE0"
+            color="#fff"
+            w="fit-content"
+          >
             Get started{" "}
           </Button>
         </Box>

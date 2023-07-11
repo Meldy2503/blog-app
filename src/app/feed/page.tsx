@@ -14,10 +14,6 @@ const Posts = () => {
   const { posts } = useContext(BlogContext);
   const { user } = useAuth();
 
-  if (!posts.length) {
-    return <Loader />;
-  }
-
   return (
     <>
       <Navbar />
@@ -29,15 +25,7 @@ const Posts = () => {
         direction={{ base: "column", md: "row" }}
         justify={"space-between"}
       >
-        <Box
-          borderRight={{
-            base: "none",
-            md: `1px solid ${
-              colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#e0dede"
-            }`,
-          }}
-          pr={{ base: 0, md: "3rem" }}
-        >
+        <Box pr={{ base: 0, md: "3rem" }}>
           {posts.map((post) => (
             <Box key={post.id}>
               <Feeds
@@ -46,7 +34,6 @@ const Posts = () => {
                 borderBottom={`1px solid ${
                   colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
                 }`}
-                pb={user ? "0" : "2rem"}
                 href={`/feed/${post.id}`}
               />
             </Box>

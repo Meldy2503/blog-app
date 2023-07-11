@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useAddComment } from "../../hooks/likes-comments";
+import { useAddComment } from "../../hooks/comments";
 import TextareaAutoSize from "react-textarea-autosize";
 import { Posts } from "../../context/blog-context";
 

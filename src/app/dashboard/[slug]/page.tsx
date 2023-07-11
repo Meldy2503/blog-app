@@ -34,7 +34,6 @@ const ViewPostId = () => {
               Comments
             </Heading>
             <NewComment post={post} />
-            {/* <CommentList post={post} /> */}
             {post && <CommentList post={post} />}
           </Box>
         </Box>

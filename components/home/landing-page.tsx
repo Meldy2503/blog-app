@@ -67,7 +67,7 @@ const LandingPage = () => {
             Writers
           </Text>
           <Flex gap="1rem" justify={{ base: "center", lg: "flex-start" }}>
-            <Button href="auth/sign-up" bg="#543EE0" color="#fff" w="8rem">
+            <Button href="auth/sign-in" bg="#543EE0" color="#fff" w="8rem">
               Get started{" "}
             </Button>
             <Button href="/feed" bg="#543EE0" color="#fff" w="8rem">

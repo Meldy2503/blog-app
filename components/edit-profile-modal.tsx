@@ -14,6 +14,7 @@ import {
   Avatar,
   Flex,
   Modal,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useAuth } from "../hooks/auth";
 import { updateDoc, doc } from "firebase/firestore";
@@ -24,6 +25,8 @@ import { capitalizeName } from "./utils/functions";
 
 const EditProfileModal = () => {
   const { onClose, isOpen, onOpen } = useDisclosure();
+  const { colorMode } = useColorMode();
+
   const { user } = useAuth();
   const [editUser, setEditUser] = useState(user);
   const [name, setName] = useState("");
@@ -34,7 +37,6 @@ const EditProfileModal = () => {
     updateAvatar,
     isLoading: fileLoading,
     fileURL,
-    file,
   } = useUpdateAvatar(user?.email);
 
   const capitalizedName = capitalizeName(user?.name);
@@ -55,14 +57,12 @@ const EditProfileModal = () => {
         name,
         username,
         occupation,
-        file,
       });
       setEditUser({
         ...editUser,
         name,
         username,
         occupation,
-        file,
       });
       SuccessToast("Profile updated successfully!");
       onClose();
@@ -80,10 +80,9 @@ const EditProfileModal = () => {
       <Button onClick={onOpen} colorScheme="blue">
         Edit
       </Button>
-
       <Modal onClose={onClose} isOpen={isOpen} isCentered size="xl">
         <ModalOverlay bgGradient="linear(to-l,rgb(0, 0, 0, 0.4),rgb(0, 0, 0, 0.4))" />
-        <ModalContent>
+        <ModalContent color={colorMode === "light" ? "#111" : "#d0d0d0"}>
           <ModalHeader>My Profile</ModalHeader>
           <ModalCloseButton />
           <Flex

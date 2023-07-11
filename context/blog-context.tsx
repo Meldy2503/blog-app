@@ -9,7 +9,6 @@ import {
 } from "firebase/firestore";
 import { db, auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
-import { useAuth } from "../hooks/auth";
 
 export const BlogContext = createContext<{
   posts: Posts[];
@@ -76,7 +75,6 @@ export interface Entry {
 }
 
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth();
   const [posts, setPosts] = useState<Posts[]>([]);
   const [users, setUsers] = useState<Users[]>([]);
   const [currentUser, setCurrentUser] = useState<any>(null);
@@ -114,7 +112,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchUsers();
-  }, []);
+  }, [users]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -140,7 +138,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchPosts();
-  }, []);
+  }, [posts]);
 
   const addUserToFirebase = async (user: any) => {
     await setDoc(doc(db, "users", user.email), {
@@ -148,7 +146,6 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
       followerCount: 0,
       imageUrl: user.photoURL,
       name: user.displayName,
-      joiningAs: "writer",
       username: user.displayName,
       occupation: "writer",
       joinedOn: Date.now(),

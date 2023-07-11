@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Posts } from "../../context/blog-context";
-import { useComments } from "../../hooks/likes-comments";
+import { useComments } from "../../hooks/comments";
 import Comment from "./comments";
 import { Stack } from "@chakra-ui/react";
 

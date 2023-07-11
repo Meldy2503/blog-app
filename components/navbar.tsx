@@ -22,6 +22,7 @@ import { useAuth } from "../hooks/auth";
 import NavProfile from "./navbar-profile";
 import { FaPencilAlt } from "react-icons/fa";
 import Link from "next/link";
+import { NAV_ITEMS, NavItem } from "./utils/constants";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -264,46 +265,3 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
     </Stack>
   );
 };
-
-interface NavItem {
-  label: string;
-  subLabel?: string;
-  children?: Array<NavItem>;
-  href?: string | any;
-}
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    label: "Home",
-    children: [
-      {
-        label: "Join our community",
-        subLabel: "Be a part of our community today",
-        href: "/",
-      },
-    ],
-    href: "/",
-  },
-  {
-    label: "Feed",
-    children: [
-      {
-        label: "Explore our feed",
-        subLabel: "Explore our feed and get inspired",
-        href: "/feed",
-      },
-    ],
-    href: "/feed",
-  },
-  {
-    label: "Contact us",
-    children: [
-      {
-        label: "We are here to help you",
-        subLabel: "Reach out to us for any assistance",
-        href: "#",
-      },
-    ],
-    href: "#",
-  },
-];

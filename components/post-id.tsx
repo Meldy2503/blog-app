@@ -19,6 +19,8 @@ import { db } from "../firebase";
 import AuthorData from "./author-data";
 import { capitalizeName } from "./utils/functions";
 import Loader from "./utils/spinner";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { MarkdownRenderer } from "./markdown-styles";
 
 interface Props {
   post: Posts;
@@ -38,12 +40,6 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
   const [isMobile] = useMediaQuery("(max-width: 500px)");
 
   const capitalizedName = capitalizeName(authorData?.name);
-
-  function renderMarkdownToHtml(markdownText: string): React.ReactNode {
-    const md = new MarkdownIt();
-    const html = md.render(markdownText);
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
-  }
 
   useEffect(() => {
     const fetchAuthorData = async () => {
@@ -130,7 +126,7 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
           })}
         </Text>
       </Flex>
-      <Box mt="2rem">
+      <Box my="2rem">
         {post?.data?.bannerImage && (
           <Image
             src={post?.data?.bannerImage}
@@ -147,11 +143,8 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
             width={300}
           />
         )}
-        <Text fontSize="1.2rem" lineHeight={1.65} mt="2rem">
-          {post?.data?.body}
-        </Text>
-        {/* <Box>{renderMarkdownToHtml(entry?.body)}</Box> */}
       </Box>
+      <MarkdownRenderer markdownContent={post?.data?.body} />
     </>
   );
 };

@@ -27,7 +27,7 @@ const AboutUs = () => {
             color={colorMode === "dark" ? "#e3e2e2" : "black"}
             mb={"1rem"}
           >
-            About Chatter
+            About <span style={{ color: "#543EE0" }}>Chatter</span>
           </Heading>
           <Text>
             Chatter is a multi-functional platform where authors and readers can

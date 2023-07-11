@@ -12,23 +12,28 @@ export function useUpdateAvatar(email: string) {
       return;
     }
 
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const fileRef = ref(storage, `profilePictures/${email}`);
-    await uploadBytes(fileRef, file);
+      const fileRef = ref(storage, `profilePictures/${email}`);
+      await uploadBytes(fileRef, file);
 
-    const avatarURL = await getDownloadURL(fileRef);
-    const docRef = doc(db, "users", email);
-    await updateDoc(docRef, { imageUrl: avatarURL });
+      const avatarURL = await getDownloadURL(fileRef);
 
-    setLoading(false);
+      const docRef = doc(db, "users", email);
+      await updateDoc(docRef, { imageUrl: avatarURL });
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+    window.location.reload();
   }
 
   return {
     setFile,
     updateAvatar,
     isLoading,
-    file,
     fileURL: file && URL.createObjectURL(file),
   };
 }
