@@ -45,13 +45,13 @@ To run the development server locally, follow these steps:
    ```bash
       cd blog-app
 
-   npm install
+      npm install
    ```
 
 3. Start the development server:
 
    ```bash
-   npm run dev
+      npm run dev
    ```
 
 4. Open http://localhost:3000 in your browser to see the application.
