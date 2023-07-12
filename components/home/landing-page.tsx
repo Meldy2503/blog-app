@@ -38,6 +38,7 @@ const LandingPage = () => {
         <Box
           w={{ base: "100%", lg: "45%" }}
           textAlign={{ base: "center", lg: "left" }}
+          className="slide-in-from-right"
         >
           <Heading
             as={"h5"}

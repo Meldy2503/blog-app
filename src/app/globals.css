@@ -45,8 +45,22 @@ a {
     opacity: 1;
   }
 }
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(-150%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 
 .slide-in-from-left {
   animation: slideInFromBottom 0.5s ease-in-out forwards;
+  transition: all 0.1s ease-in-out;
+}
+.slide-in-from-right {
+  animation: slideInFromLeft 0.5s ease-in-out forwards;
   transition: all 0.1s ease-in-out;
 }
