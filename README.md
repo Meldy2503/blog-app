@@ -1,190 +1,95 @@
-# Chatter App
+# Chatter - Blog App
 
-This is a blog application built with Next.js, TypeScript, and Chakra UI. It provides features for authentication, reading published posts, viewing author profiles, writing and publishing new posts using React Markdown, updating user profiles, liking and commenting on posts, bookmarking and saving posts as drafts, analytics, categorizing posts, unit tests, searching posts, and changing the view mode between light and dark.
+## Project Overview
 
-# Chatter App
+Chatter is a haven for text-based content enthusiasts, offering a multi-functional platform where authors and readers can create and access their own contents.
 
-This is a blog application built with Next.js, TypeScript, and Chakra UI. It provides features for authentication, reading published posts, viewing author profiles, writing and publishing new posts using React Markdown, updating user profiles, liking and commenting on posts, bookmarking and saving posts as drafts, analytics, categorizing posts, unit tests, searching posts, and changing the view mode between light and dark.
+The website was built with Next.js, TypeScript and Chakra UI CSS framework. It provides features for authentication, reading published posts, viewing author profiles, writing and publishing new posts using React Markdown, updating user profiles, liking and commenting on posts, bookmarking and saving posts as drafts, analytics, categorizing posts, unit tests, searching posts, and changing the view mode between light and dark.
 
-## Getting Started
+## Features
+
+- **User Registration and Authentication**: Chatter allows users to register and create their own accounts on the platform. Users can sign up using their email address or social media accounts like Google.
+
+- **Content Creation**: Chatter provides a rich text editor that allows users to create and publish their own content easily. Users can write blog posts or any other content, and add images or videos to enhance their content. The blog posts will be written and saved in Markdown, then it gets displayed as HTML when the posts are viewed.
+
+- **Content Discovery**: Chatter provides a personalized feed based on the user's interests and reading history, making it easier for users to discover new content. Users can also browse and search for other users’ content. Users can explore different categories and tags to find content that interests them.
+
+- **Social Features**: Chatter provides social features like commenting and liking that allow users to interact with each other and engage in discussions.
+
+- **Analytics**: Chatter provides detailed analytics that allows users to track their content's performance. Users can see how many views, likes, and comments their content has received and how many users have bookmarked their content.
+
+- **Published Posts**: Users can read published posts created by other users.
+
+- **Author Profiles**: Users can view each author's profile, including their information and published posts.
+
+- **Updating User Profiles**: Users can update their own profile information.
+
+- **Bookmarking and Drafts**: Users can bookmark posts to save them for later. They can also save posts as drafts before publishing.
+
+- **Unit Tests**: The application includes unit tests to ensure the correctness of critical functionality.
+
+- **View Mode**: Users can switch between light and dark themes for a personalized experience.
+
+## Installation and Usage
 
 To run the development server locally, follow these steps:
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Meldy2503/blog-app.git
+   git clone git@github.com:ebokes/chatter-blog.git
    ```
 
 2. Install the dependencies:
 
    ```bash
-   cd blog-app
+   cd chatter-blog
    npm install
-   # or
-   yarn
-   # or
-   pnpm install
    ```
 
 3. Start the development server:
-   To run the development server locally, follow these steps:
-
-4. Clone the repository:
-
-   ```bash
-   git clone https://github.com/Meldy2503/blog-app.git
-   ```
-
-5. Install the dependencies:
-
-   ```bash
-   cd blog-app
-   npm install
-   # or
-   yarn
-   # or
-   pnpm install
-   ```
 
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
    ```
 
-6. Start the development server:
+4. Open http://localhost:3000 in your browser to see the application.
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
+## Technologies Used
 
-7. Start the development server:
+- Next.js: The foundation of the application.
+- Chakra UI: The UI component library for building the user interface.
+- TypeScript: The programming language used to write type-safe code.
+- React Hooks: A feature in React that allows functional components to use state and lifecycle methods.
+- Context API: A feature in React that provides a way to share data across the component tree without prop drilling.
+- Markdown: The format used for authoring blog posts.
+- Firebase: The database used to store user information and content data
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
+## Contributing
 
-8. Start the development server:
+Contributions to Chatter - Blog App are welcome! If you want to contribute to the project, please follow these steps:
 
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
-   ```
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes and push them to your forked repository.
+4. Submit a pull request describing your changes.
 
-9. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+## Deployment
 
-## Features
-
-- **Authentication**: Users can sign up and log in using email and password. They can also log in with Google.
-- **Published Posts**: Users can read published posts created by other users.
-- **Author Profiles**: Users can view the profile of each author, including their basic details and published posts.
-- **Writing and Publishing Posts**: Users can create new posts using React Markdown and publish them.
-- **Updating User Profiles**: Users can update their own profile information.
-- **Liking and Commenting**: Users can like posts and leave comments on them.
-- **Bookmarking and Drafts**: Users can bookmark posts to save them for later. They can also save posts as drafts before publishing.
-- **Analytics**: The application provides analytics to track post views and user engagement.
-- **Categorizing Posts**: Posts can be categorized into different categories for easy navigation.
-- **Unit Tests**: The application includes unit tests to ensure the correctness of critical functionality.
-- **Search**: Users can search for posts based on keywords.
-- **View Mode**: Users can switch between light and dark themes for a personalized experience.
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the Vercel platform, created by the Next.js creators. To deploy your blog application on Vercel, follow these steps:
-
-1. Sign up for a Vercel account at [https://vercel.com/signup](https://vercel.com/signup).
-
-2. Install the Vercel CLI globally:
-   <<<<<<< HEAD
-
-=======
-
-> > > > > > > d01e532fef45ca00bb9257869934d2a785d3daa5
-
-```bash
-npm install -g vercel
-```
-
-3. Log in to your Vercel account using the CLI:
-   <<<<<<< HEAD
-
-=======
-
-> > > > > > > d01e532fef45ca00bb9257869934d2a785d3daa5
-
-```bash
-vercel login
-```
-
-4. In the root directory of your project, deploy the application:
-   <<<<<<< HEAD
-
-=======
-
-> > > > > > > d01e532fef45ca00bb9257869934d2a785d3daa5
-
-```bash
-vercel
-```
-
-5. Follow the instructions provided by the Vercel CLI to set up your deployment configuration.
-
-6. Once the deployment is complete, Vercel will provide you with a URL where your blog app is accessible.
-
-For more details on deploying Next.js applications on Vercel, refer to the [Next.js deployment documentation](https://nextjs.org/docs/deployment).
+The application has been deployed using Vercel and can be found => [Chatter-blog](https://blog-app-two-psi.vercel.app)
 
 ## Resources
 
-- [Next.js Documentation](https://nextjs.org/docs) - Learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - An interactive Next.js tutorial.
-- [Chakra UI Documentation](https://chakra-ui.com/docs) - Explore Chakra UI components and their usage.
-- [React Markdown Documentation](https://www.npmjs.com/package/react-markdown) - Reference for React Markdown library.
+- [Next.js Documentation](https://nextjs.org/docs): Learn about Next.js features and API.
+- [Chakra UI Documentation](https://chakra-ui.com/docs): Explore Chakra UI components and their usage.
+- [React Markdown Documentation](https://www.npmjs.com/package/react-markdown): Reference for React Markdown library.
+- [Firebase Documentation](https://firebase.google.com/docs): Learn about Firebase and its features for backend and database integration.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-## Contribution
-
-Contributions to the project are welcome. If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request.
-
-Thank you for using the Blog App! We hope you enjoy using it and find it helpful for your blogging needs.
-
-## Contribution
-
-Deployed Link: [blog-app-two-psi.vercel.app](https://blog-app-two-psi.vercel.app)
-Contributions to the project are welcome. If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request.
-
-```
-Thank you for using the Blog App! We hope you enjoy using it and find it helpful for your blogging needs.
+Happy reading and writing on Chatter!
 
 ```
 
-Deployed Link: [blog-app-two-psi.vercel.app](https://blog-app-two-psi.vercel.app)
-Contributions to the project are welcome. If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request.
-
-```
-Thank you for using the Blog App! We hope you enjoy using it and find it helpful for your blogging needs.
-
-```
-
-Deployed Link: [blog-app-two-psi.vercel.app](https://blog-app-two-psi.vercel.app)
-
-```
 
 ```
