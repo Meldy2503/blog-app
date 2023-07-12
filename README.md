@@ -77,7 +77,7 @@ Contributions to Chatter - Blog App are welcome! If you want to contribute to th
 
 ## Deployment
 
-The application has been deployed using Vercel and can be found => [Chatter-blog](https://blog-app-two-psi.vercel.app)
+The application has been deployed using Vercel and can be found => [Chatter-Blog-App](https://blog-app-two-psi.vercel.app)
 
 ## Resources
 
@@ -90,7 +90,4 @@ The application has been deployed using Vercel and can be found => [Chatter-blog
 
 Happy reading and writing on Chatter!
 
-```
 
-
-```
