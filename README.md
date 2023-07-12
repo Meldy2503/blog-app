@@ -43,7 +43,8 @@ To run the development server locally, follow these steps:
 2. Install the dependencies:
 
    ```bash
-   cd chatter-blog
+      cd blog-app
+
    npm install
    ```
 
