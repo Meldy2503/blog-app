@@ -128,7 +128,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
             category: doc.data().category,
             likes: doc.data().likes,
             title: doc.data().title,
-            postedOn: doc.data().postedOn.toDate(),
+            postedOn: doc.data().postedOn,
             bannerImage: doc.data().bannerImage,
             postLength: doc.data().postLength,
           },

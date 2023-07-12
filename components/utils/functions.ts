@@ -4,6 +4,7 @@ export const handleGoBack = (router: AppRouterInstance) => {
   router.back();
 };
 
+// to capitalize names
 export const capitalizeName = (name: string | undefined): string => {
   if (!name) {
     return "";
@@ -11,6 +12,7 @@ export const capitalizeName = (name: string | undefined): string => {
   return name.replace(/\b\w/g, (letter) => letter.toUpperCase());
 };
 
+// to format date
 export const formatDate = (date: number) => {
   const newDate = new Date(date);
   return newDate.toLocaleDateString("en-US", {
@@ -19,3 +21,11 @@ export const formatDate = (date: number) => {
     year: "numeric",
   });
 };
+
+// to calculate read time
+export function calculateReadTime(content: string) {
+  const wordCount = content.trim().split(/\s+/).length;
+  const averageReadingSpeed = 100;
+  const readTime = Math.ceil(wordCount / averageReadingSpeed);
+  return readTime;
+}

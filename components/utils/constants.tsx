@@ -28,6 +28,18 @@ export const categories = [
   { value: "travel", label: "Travel" },
   { value: "lifestyle", label: "Lifestyle" },
   { value: "food", label: "Food" },
+  { value: "programming", label: "Programming" },
+  { value: "health", label: "Health" },
+  { value: "crypto", label: "Crypto" },
+  { value: "marketing", label: "Marketing" },
+  { value: "design", label: "Design" },
+  { value: "productivity", label: "Productivity" },
+  { value: "motivation", label: "Motivation" },
+  { value: "psychology", label: "Psychology" },
+  { value: "entertainment", label: "Entertainment" },
+  { value: "food", label: "Food" },
+  { value: "education", label: "Education" },
+  { value: "culture", label: "Culture" },
 ];
 
 export const avatars = [

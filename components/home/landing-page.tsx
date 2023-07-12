@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import Button from "../button";
 import { Blur } from "../utils/blur-icon";
-import Image from "next/image";
 import Wrapper from "../wrapper";
 import { HeroImg } from "./hero-img";
 
@@ -25,14 +24,7 @@ const LandingPage = () => {
       <Blur
         position={"absolute"}
         zIndex="-1"
-        top={-60}
-        left={-50}
-        style={{ filter: "blur(60px)" }}
-      />
-      <Blur
-        position={"absolute"}
-        zIndex="-1"
-        top={200}
+        top={300}
         right={-0}
         style={{ filter: "blur(60px)" }}
       />

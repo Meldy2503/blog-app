@@ -107,22 +107,17 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
             {item.icon && <Icon as={item.icon} />}
           </Flex>
           {item.children && item.children.length > 0 && (
-            <Flex direction={"column"} ml="1.7rem">
+            <Flex direction={"column"} ml="1rem">
               {item.children?.map((child, childIndex) => (
                 <Link key={childIndex} href={child.href ?? "#"}>
-                  <Box
-                    bg={currentRoute === child.href ? "brand.600" : "none"}
-                    px={"15px"}
-                    pb={"10px"}
-                    pt={"0.1px"}
-                    borderRadius={"md"}
-                    width={"fit-content"}
-                    transition={"0.3s ease"}
-                  >
+                  <Box width={"fit-content"} transition={"0.3s ease"}>
                     <Flex
-                      color="transparent"
+                      borderRadius={"md"}
+                      bg={currentRoute === child.href ? "brand.600" : "none"}
                       gap=".5rem"
-                      mt="1rem"
+                      mt=".5rem"
+                      px={"12px"}
+                      py={"8px"}
                       align={"center"}
                       fontSize={".94rem"}
                     >

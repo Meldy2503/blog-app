@@ -5,14 +5,12 @@ import { Box, Flex, useColorMode } from "@chakra-ui/react";
 import { BlogContext } from "../../../context/blog-context";
 import SideNav from "../../../components/side-nav";
 import Navbar from "../../../components/navbar";
-import Loader from "../../../components/utils/spinner";
 import Feeds from "../../../components/feeds";
 import { useAuth } from "../../../hooks/auth";
 
 const Posts = () => {
   const { colorMode } = useColorMode();
   const { posts } = useContext(BlogContext);
-  const { user } = useAuth();
 
   return (
     <>

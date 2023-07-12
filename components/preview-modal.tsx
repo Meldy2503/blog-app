@@ -23,18 +23,12 @@ import { useContext } from "react";
 import { VscBook } from "react-icons/vsc";
 import Image from "next/image";
 import { MarkdownRenderer } from "./markdown-styles";
+import { calculateReadTime } from "./utils/functions";
 
 const PreviewModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const { entry } = useContext(BlogContext);
-
-  function calculateReadTime(content: string) {
-    const wordCount = content.trim().split(/\s+/).length;
-    const averageReadingSpeed = 50;
-    const readTime = Math.ceil(wordCount / averageReadingSpeed);
-    return readTime;
-  }
 
   return (
     <>

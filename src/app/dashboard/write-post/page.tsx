@@ -22,7 +22,10 @@ import Wrapper from "../../../../components/wrapper";
 import PreviewModal from "../../../../components/preview-modal";
 import Navbar from "../../../../components/navbar";
 import { ErrorToast, SuccessToast } from "../../../../components/utils/toast";
-import { handleGoBack } from "../../../../components/utils/functions";
+import {
+  calculateReadTime,
+  handleGoBack,
+} from "../../../../components/utils/functions";
 import { BsArrowLeftSquare } from "react-icons/bs";
 import { categories } from "../../../../components/utils/constants";
 
@@ -37,13 +40,6 @@ const LiteEditor: React.FC = () => {
   const [publishLoading, setPublishLoading] = useState(false);
   const [draftLoading, setDraftLoading] = useState(false);
   const router = useRouter();
-
-  function calculateReadTime(content: string) {
-    const wordCount = content.trim().split(/\s+/).length;
-    const averageReadingSpeed = 100;
-    const readTime = Math.ceil(wordCount / averageReadingSpeed);
-    return readTime;
-  }
 
   const handleShowCategory = () => {
     setShowCategory(!showCategory);
@@ -76,24 +72,33 @@ const LiteEditor: React.FC = () => {
 
   const handlePublish = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    setPublishLoading(true);
-    try {
-      const articlesRef = collection(db, "articles");
-      await addDoc(articlesRef, entry);
-      SuccessToast("Article Published Successfully!");
-
-      router.push("/dashboard");
-      setEntry({
-        title: "",
-        brief: "",
-        bannerImage: "",
-        category: "",
-        body: "",
-        postedOn: "",
-        postLength: 0,
-      });
-    } catch (error) {
-      ErrorToast("Error Publishing Article!");
+    if (
+      entry.title === "" ||
+      entry.body === "" ||
+      entry.category === "" ||
+      entry.brief === "" ||
+      entry.bannerImage === ""
+    ) {
+      ErrorToast("Please fill all the fields!");
+      setPublishLoading(false);
+    } else {
+      try {
+        setPublishLoading(true);
+        const articlesRef = collection(db, "articles");
+        await addDoc(articlesRef, entry);
+        SuccessToast("Article Published Successfully!");
+        setEntry({
+          title: "",
+          brief: "",
+          bannerImage: "",
+          category: "",
+          body: "",
+          postLength: 0,
+        });
+      } catch (error) {
+        ErrorToast("Error Publishing Article!");
+        setPublishLoading(false);
+      }
     }
   };
 
@@ -112,7 +117,7 @@ const LiteEditor: React.FC = () => {
         bannerImage: "",
         body: "",
         category: "",
-        postedOn: "",
+        postedOn: Date.now(),
         postLength: 0,
       });
     } catch (error) {
@@ -123,7 +128,7 @@ const LiteEditor: React.FC = () => {
   useEffect(() => {
     setEntry((prevEntry) => ({
       ...prevEntry,
-      postLength: calculateReadTime(entry.body),
+      postLength: calculateReadTime(entry?.body),
       postedOn: serverTimestamp(),
       author: currentUser?.email || user?.email,
     }));
@@ -151,10 +156,10 @@ const LiteEditor: React.FC = () => {
           </Box>
           <ButtonGroup as={Flex} justifyContent={"flex-end"} gap="1rem">
             <Button
+              isDisabled={true}
               type="submit"
               onClick={handleSaveToDraft}
               isLoading={draftLoading}
-              _hover={{ bg: "#9a9c9b" }}
               bg={colorMode === "light" ? "#d0d0d0" : "#424660"}
               shadow={"md"}
               color={colorMode === "light" ? "dark" : "#d0d0d0"}

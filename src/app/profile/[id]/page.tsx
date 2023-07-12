@@ -118,8 +118,6 @@ const AllProfile = () => {
             </Box>
             <Flex gap={"1.5rem"}>
               {user?.email === userProfile?.data?.email && <EditProfileModal />}
-
-              <EditProfileModal />
               <Button onClick={() => handleGoBack(router)}>Go Back</Button>
             </Flex>
           </Flex>

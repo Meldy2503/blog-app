@@ -17,7 +17,7 @@ import MarkdownIt from "markdown-it";
 import { BlogContext, Posts } from "../context/blog-context";
 import { db } from "../firebase";
 import AuthorData from "./author-data";
-import { capitalizeName } from "./utils/functions";
+import { capitalizeName, formatDate } from "./utils/functions";
 import Loader from "./utils/spinner";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { MarkdownRenderer } from "./markdown-styles";
@@ -118,13 +118,7 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
 
           <Text>{post?.data?.postLength} mins read</Text>
         </Flex>
-        <Text>
-          {new Date(post?.data?.postedOn).toLocaleString("en-US", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-          })}
-        </Text>
+        <Text>{formatDate(post?.data?.postedOn)}</Text>
       </Flex>
       <Box my="2rem">
         {post?.data?.bannerImage && (

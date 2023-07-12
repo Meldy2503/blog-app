@@ -15,7 +15,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import Link from "next/link";
 import AuthorData from "./author-data";
-import { capitalizeName } from "./utils/functions";
+import { capitalizeName, formatDate } from "./utils/functions";
 import PostActions from "./post-actions";
 
 export const Feeds = ({
@@ -100,13 +100,7 @@ export const Feeds = ({
 
                 <Text>{post?.data?.postLength} mins read</Text>
               </Flex>
-              <Text mr="1.5rem">
-                {new Date(post?.data?.postedOn).toLocaleString("en-US", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </Text>
+              <Text mr="1.5rem">{formatDate(post?.data?.postedOn)}</Text>
               <Box
                 bg={colorMode === "dark" ? "#2d3748" : "#d0d0d0"}
                 py=".1rem"
