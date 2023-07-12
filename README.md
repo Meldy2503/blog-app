@@ -2,6 +2,10 @@
 
 This is a blog application built with Next.js, TypeScript, and Chakra UI. It provides features for authentication, reading published posts, viewing author profiles, writing and publishing new posts using React Markdown, updating user profiles, liking and commenting on posts, bookmarking and saving posts as drafts, analytics, categorizing posts, unit tests, searching posts, and changing the view mode between light and dark.
 
+# Chatter App
+
+This is a blog application built with Next.js, TypeScript, and Chakra UI. It provides features for authentication, reading published posts, viewing author profiles, writing and publishing new posts using React Markdown, updating user profiles, liking and commenting on posts, bookmarking and saving posts as drafts, analytics, categorizing posts, unit tests, searching posts, and changing the view mode between light and dark.
+
 ## Getting Started
 
 To run the development server locally, follow these steps:
@@ -24,6 +28,24 @@ To run the development server locally, follow these steps:
    ```
 
 3. Start the development server:
+   To run the development server locally, follow these steps:
+
+4. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Meldy2503/blog-app.git
+   ```
+
+5. Install the dependencies:
+
+   ```bash
+   cd blog-app
+   npm install
+   # or
+   yarn
+   # or
+   pnpm install
+   ```
 
    ```bash
    npm run dev
@@ -33,7 +55,37 @@ To run the development server locally, follow these steps:
    pnpm dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+6. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+7. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+8. Start the development server:
+
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+9. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
 ## Features
 
@@ -57,22 +109,37 @@ The easiest way to deploy your Next.js app is to use the Vercel platform, create
 1. Sign up for a Vercel account at [https://vercel.com/signup](https://vercel.com/signup).
 
 2. Install the Vercel CLI globally:
+   <<<<<<< HEAD
 
-   ```bash
-   npm install -g vercel
-   ```
+=======
+
+> > > > > > > d01e532fef45ca00bb9257869934d2a785d3daa5
+
+```bash
+npm install -g vercel
+```
 
 3. Log in to your Vercel account using the CLI:
+   <<<<<<< HEAD
 
-   ```bash
-   vercel login
-   ```
+=======
+
+> > > > > > > d01e532fef45ca00bb9257869934d2a785d3daa5
+
+```bash
+vercel login
+```
 
 4. In the root directory of your project, deploy the application:
+   <<<<<<< HEAD
 
-   ```bash
-   vercel
-   ```
+=======
+
+> > > > > > > d01e532fef45ca00bb9257869934d2a785d3daa5
+
+```bash
+vercel
+```
 
 5. Follow the instructions provided by the Vercel CLI to set up your deployment configuration.
 
@@ -97,6 +164,24 @@ To learn more about Next.js, take a look at the following resources:
 Contributions to the project are welcome. If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request.
 
 Thank you for using the Blog App! We hope you enjoy using it and find it helpful for your blogging needs.
+
+## Contribution
+
+Deployed Link: [blog-app-two-psi.vercel.app](https://blog-app-two-psi.vercel.app)
+Contributions to the project are welcome. If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request.
+
+```
+Thank you for using the Blog App! We hope you enjoy using it and find it helpful for your blogging needs.
+
+```
+
+Deployed Link: [blog-app-two-psi.vercel.app](https://blog-app-two-psi.vercel.app)
+Contributions to the project are welcome. If you find any issues or have suggestions for improvement, please create a new issue or submit a pull request.
+
+```
+Thank you for using the Blog App! We hope you enjoy using it and find it helpful for your blogging needs.
+
+```
 
 Deployed Link: [blog-app-two-psi.vercel.app](https://blog-app-two-psi.vercel.app)
 
