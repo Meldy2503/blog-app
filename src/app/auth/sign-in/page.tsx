@@ -33,7 +33,8 @@ export default function JoinOurTeam() {
             rounded={"xl"}
             w={{ base: "100%", md: "50%" }}
             mt={{ base: "2rem", md: "1.5rem" }}
-            p="3rem"
+            py="3rem"
+            px={{ base: "1rem", sm: "2rem", md: "3rem" }}
             spacing={{ base: 8 }}
           >
             <LogIn />
