@@ -37,7 +37,7 @@ To run the development server locally, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone git@github.com:ebokes/chatter-blog.git
+      git clone https://github.com/Meldy2503/blog-app.git
    ```
 
 2. Install the dependencies:
