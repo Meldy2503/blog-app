@@ -24,10 +24,8 @@ export const categories = [
   { value: "business", label: "Business" },
   { value: "politics", label: "Politics" },
   { value: "sports", label: "Sports" },
-  { value: "entertainment", label: "Entertainment" },
   { value: "travel", label: "Travel" },
   { value: "lifestyle", label: "Lifestyle" },
-  { value: "food", label: "Food" },
   { value: "programming", label: "Programming" },
   { value: "health", label: "Health" },
   { value: "crypto", label: "Crypto" },
@@ -40,6 +38,9 @@ export const categories = [
   { value: "food", label: "Food" },
   { value: "education", label: "Education" },
   { value: "culture", label: "Culture" },
+  { value: "coding", label: "Coding" },
+  { value: "nature", label: "Nature" },
+  { value: "fitness", label: "Fitness" },
 ];
 
 export const avatars = [

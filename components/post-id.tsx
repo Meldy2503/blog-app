@@ -51,12 +51,12 @@ const ViewPost = ({ post, setPost }: Props) => {
   }
 
   return (
-    <>
+    <Box color={colorMode === "dark" ? "#d0d0d0" : "#333"}>
       <Heading
         as={"h1"}
         fontSize={{ base: "2rem", md: "2.5rem", lg: "3rem" }}
         fontWeight={550}
-        color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
+        color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
         mb="2rem"
       >
         {post?.title}
@@ -109,7 +109,7 @@ const ViewPost = ({ post, setPost }: Props) => {
         )}
       </Box>
       <MarkdownRenderer markdownContent={post?.body} />
-    </>
+    </Box>
   );
 };
 

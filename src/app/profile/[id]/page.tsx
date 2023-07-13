@@ -154,7 +154,7 @@ const AllProfile = () => {
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
                   Occupation:
                 </Text>
-                <Text fontWeight={"bold"}>{users?.occupation || "N/A"}</Text>
+                <Text fontWeight={"bold"}>{users?.occupation || "Writer"}</Text>
               </Box>
               <Box gap="1.2rem">
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>

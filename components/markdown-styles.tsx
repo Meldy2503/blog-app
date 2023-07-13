@@ -47,7 +47,9 @@ export const MarkdownRenderer: React.FC<{ markdownContent: string }> = ({
           </h3>
         ),
         p: ({ children }: any) => (
-          <p style={{ marginBottom: "1rem" }}>{children}</p>
+          <p style={{ marginBottom: "1rem", lineHeight: "1.6rem" }}>
+            {children}
+          </p>
         ),
         ul: ({ children }: any) => (
           <ul style={{ paddingLeft: "2rem", marginBottom: "1rem" }}>

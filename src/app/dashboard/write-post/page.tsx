@@ -9,7 +9,6 @@ import {
   useColorMode,
   Icon,
 } from "@chakra-ui/react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
@@ -21,10 +20,7 @@ import Wrapper from "../../../../components/wrapper";
 import PreviewModal from "../../../../components/preview-modal";
 import Navbar from "../../../../components/navbar";
 import { ErrorToast } from "../../../../components/utils/toast";
-import {
-  calculateReadTime,
-  handleGoBack,
-} from "../../../../components/utils/functions";
+import { calculateReadTime } from "../../../../components/utils/functions";
 import { BsArrowLeftSquare } from "react-icons/bs";
 import { categories } from "../../../../components/utils/constants";
 import { useAddPost } from "../../../../hooks/posts";
@@ -41,6 +37,9 @@ const LiteEditor: React.FC = () => {
   const { addPost, isLoading: publishingPost } = useAddPost();
   const id = uuidv4();
 
+  const handleGoBacK = () => {
+    router.push("/dashboard");
+  };
   const handleShowCategory = () => {
     setShowCategory(!showCategory);
   };
@@ -118,7 +117,7 @@ const LiteEditor: React.FC = () => {
           }`}
         >
           <Box
-            onClick={() => handleGoBack(router)}
+            onClick={handleGoBacK}
             color={colorMode === "light" ? "#2a2929" : "#d0d0d0"}
           >
             <Icon as={BsArrowLeftSquare} boxSize={"2rem"} />

@@ -30,7 +30,9 @@ export const AuthorData = ({ size, href, px, name, src, occupation }: any) => {
             {name}
           </Heading>
           <Flex align={"center"} gap=".5rem" mt="-.4rem">
-            <Text _hover={{ textDecoration: "underline" }}>{occupation}</Text>
+            <Text _hover={{ textDecoration: "underline" }}>
+              {occupation ?? "Writer"}
+            </Text>
             <Button
               color="#1c9334"
               fontSize={".9rem"}

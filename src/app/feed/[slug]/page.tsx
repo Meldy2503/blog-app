@@ -3,13 +3,11 @@ import React, { useState } from "react";
 import { Box, useColorMode } from "@chakra-ui/react";
 import Navbar from "../../../../components/navbar";
 import ViewPost from "../../../../components/post-id";
-import { DocumentData } from "firebase/firestore";
 import { Posts } from "../../../../context/blog-context";
 
 const FeedPostId = () => {
   const { colorMode } = useColorMode();
   const [post, setPost] = useState<Posts | any>([]);
-  // const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   return (
     <>
@@ -22,12 +20,7 @@ const FeedPostId = () => {
         py={{ base: "1rem", lg: "2rem" }}
       >
         <Box>
-          <ViewPost
-            post={post}
-            setPost={setPost}
-            // authorData={authorData}
-            // setAuthorData={setAuthorData}
-          />
+          <ViewPost post={post} setPost={setPost} />
         </Box>
       </Box>
     </>
