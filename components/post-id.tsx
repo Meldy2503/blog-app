@@ -42,8 +42,6 @@ const ViewPost = ({ post, setPost }: Props) => {
     const id = url.split("/").pop()?.replace("?", "");
     const selectedPost = posts?.find((post) => post?.id === id);
     setPost(selectedPost);
-    console.log(selectedPost, "selectedPost");
-    console.log(id, "id");
   }, [posts, setPost, pathname, searchParams]);
 
   if (postsLoading || userLoading) {

@@ -10,23 +10,22 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import { formatDate } from "../utils/functions";
-import { useAuth } from "../../hooks/auth";
-import Loader from "../utils/spinner";
+import { useUsers } from "../../hooks/users";
 
 const Comment = ({ comment }: any) => {
   const { text, date, email, id, postID } = comment;
   const { colorMode } = useColorMode();
-  const { user } = useAuth();
+  const { users } = useUsers(email);
 
   return (
     <Flex gap={"10px"}>
-      <Avatar src={user?.imagUrl} name={user?.name} size="sm" />
+      <Avatar src={users?.imageUrl} name={users?.name} size="sm" />
 
       <Flex justify={"space-between"} w={"full"}>
         <Box>
           <Flex align={"center"}>
             <Heading fontSize={"16px"} fontWeight={600}>
-              {user?.name}
+              {users?.name}
             </Heading>
             <Box
               bg={colorMode === "light" ? "brand.800" : "brand.400"}

@@ -1,14 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Heading, useColorMode } from "@chakra-ui/react";
 import Sidebar from "../../../../components/sidebar";
 import ViewPost from "../../../../components/post-id";
 import NewComment from "../../../../components/comments/write-comment";
 import { Posts } from "../../../../context/blog-context";
-import { DocumentData } from "firebase/firestore";
 import CommentList from "../../../../components/comments/comment-list";
-import { useUsers } from "../../../../hooks/users";
-import { usePosts } from "../../../../hooks/posts";
 
 const ViewPostId = () => {
   const { colorMode } = useColorMode();
@@ -24,12 +21,7 @@ const ViewPostId = () => {
         py={{ base: "1rem", lg: "2rem" }}
       >
         <Box w={{ base: "100%", lg: "70%" }} m="auto" pt="2rem">
-          <ViewPost
-            post={post}
-            setPost={setPost}
-            // authorData={authorData}
-            // setAuthorData={setAuthorData}
-          />
+          <ViewPost post={post} setPost={setPost} />
           <Box>
             <Heading fontSize={"1.6rem"} mt="4rem" mb="1rem">
               Comments
