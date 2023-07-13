@@ -81,8 +81,8 @@ export const NAV_ITEMS: NavItem[] = [
     label: "Feed",
     children: [
       {
-        label: "Explore our feed",
-        subLabel: "Explore our feed and get inspired",
+        label: "Explore our feeds",
+        subLabel: "Checkout our feeds and get inspired",
         href: "/feed",
       },
     ],

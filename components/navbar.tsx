@@ -23,6 +23,7 @@ import NavProfile from "./navbar-profile";
 import { FaPencilAlt } from "react-icons/fa";
 import Link from "next/link";
 import { NAV_ITEMS, NavItem } from "./utils/constants";
+import { usePathname } from "next/navigation";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
@@ -147,7 +148,7 @@ export default function WithSubnavigation() {
 
 const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
-  const { colorMode } = useColorMode();
+  const currentRoute = usePathname();
 
   return (
     <Stack direction={"row"} spacing={4} zIndex={10}>
@@ -156,15 +157,24 @@ const DesktopNav = () => {
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
               <Box
-                p={2}
+                px={2}
+                py={1}
                 fontSize={"sm"}
-                color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+                color={currentRoute === navItem.href ? "#543EE0" : "default"}
+                borderBottom={
+                  currentRoute === navItem.href ? "2px solid #543EE0" : "none"
+                }
                 fontWeight={600}
                 _hover={{
                   textDecoration: "none",
                 }}
               >
-                <Link href={navItem.href ?? "#"}>{navItem.label}</Link>
+                <Link
+                  href={navItem.href ?? "#"}
+                  color={currentRoute === navItem.href ? "default" : "#543EE0"}
+                >
+                  {navItem.label}
+                </Link>
               </Box>
             </PopoverTrigger>
 
@@ -176,6 +186,7 @@ const DesktopNav = () => {
                 p={4}
                 rounded={"xl"}
                 w="fit-content"
+                mt="1rem"
               >
                 <Stack>
                   {navItem.children.map((child) => (
@@ -193,17 +204,17 @@ const DesktopNav = () => {
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
-    <Link href={href ?? "#"}>
-      <Stack
-        direction={"row"}
-        align={"center"}
-        role={"group"}
-        display={"block"}
-        p={2}
-        rounded={"md"}
-        _hover={{ bg: useColorModeValue("#543ee010", "gray.900") }}
-        zIndex={10}
-      >
+    <Stack
+      direction={"row"}
+      align={"center"}
+      role={"group"}
+      display={"block"}
+      p={2}
+      rounded={"md"}
+      _hover={{ bg: useColorModeValue("#543ee010", "gray.900") }}
+      zIndex={10}
+    >
+      <Link href={href ?? "#"}>
         <Box>
           <Text
             transition={"all .3s ease"}
@@ -224,9 +235,10 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
           justify={"flex-end"}
           align={"center"}
           flex={1}
+          bg="red"
         ></Flex>
-      </Stack>
-    </Link>
+      </Link>
+    </Stack>
   );
 };
 

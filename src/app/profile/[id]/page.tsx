@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import Wrapper from "../../../../components/wrapper";
 import {
   Avatar,
@@ -15,8 +15,6 @@ import {
 import EditProfileModal from "../../../../components/edit-profile-modal";
 import Navbar from "../../../../components/navbar";
 import { useAuth } from "../../../../hooks/auth";
-import Loader from "../../../../components/utils/spinner";
-import { BlogContext, Users } from "../../../../context/blog-context";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { formatDate } from "../../../../components/utils/functions";
@@ -25,44 +23,40 @@ import {
   capitalizeName,
   handleGoBack,
 } from "../../../../components/utils/functions";
+import { usePostsUid } from "../../../../hooks/posts";
+import { useUsers } from "../../../../hooks/users";
+import Loader from "../../../../components/utils/spinner";
 
 const AllProfile = () => {
   const { colorMode } = useColorMode();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const { user } = useAuth();
-  const [userProfile, setUserProfile] = useState<Users | any>(null);
-  const { users, posts } = useContext(BlogContext);
+  const url = `${pathname}?${searchParams}`;
+  const email = url.split("/").pop()?.replace("?", "");
+  const { users, isLoading: usersLoading } = useUsers(email);
+  const { userPosts, isLoading: userPostLoading } = usePostsUid(email);
   const router = useRouter();
 
-  useEffect(() => {
-    const url = `${pathname}?${searchParams}`;
-    const email = url.split("/").pop()?.replace("?", "");
-    const selectedUser = users.find(
-      (userEmail) => userEmail?.data?.email === email
-    );
-    setUserProfile(selectedUser);
-  }, [pathname, router, searchParams, userProfile, users]);
+  console.log(userPosts, "userPosts");
+  console.log(users, "users");
+  const capitalizedName = capitalizeName(users?.name);
 
-  const userProfilePosts = posts
-    .filter((post) => post?.data?.author === userProfile?.data?.email)
-    .map((post) => (
-      <Box key={post.id}>
-        <Feeds
-          post={post}
-          px={{ base: "1rem", xl: "1.5rem" }}
-          href={user ? `/dashboard/${post.id}` : `/feed/${post.id}`}
-          pb={user ? "0" : "3.5rem"}
-          borderBottom={`1px solid ${
-            colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
-          }`}
-        />
-      </Box>
-    ));
+  const userProfilePosts = userPosts?.map((post) => (
+    <Box key={post.id}>
+      <Feeds
+        post={post}
+        px={{ base: "1rem", xl: "1.5rem" }}
+        href={user ? `/dashboard/${post.id}` : `/feed/${post.id}`}
+        pb={user ? "0" : "3.5rem"}
+        borderBottom={`1px solid ${
+          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
+        }`}
+      />
+    </Box>
+  ));
 
-  const capitalizedName = capitalizeName(userProfile?.data?.name);
-
-  if (!userProfile) {
+  if (userPostLoading || usersLoading) {
     return <Loader />;
   }
 
@@ -86,12 +80,12 @@ const AllProfile = () => {
           w="100%"
         ></Box>
         <Avatar
-          name={userProfile?.data?.name}
+          name={users?.name}
           size={"2xl"}
           mt={"-120px"}
           ml={{ base: "20px", sm: "40px", lg: "50px" }}
           border={"5px solid #1f222f"}
-          src={userProfile?.data?.imageUrl}
+          src={users?.imageUrl}
         />
 
         <Center
@@ -114,10 +108,12 @@ const AllProfile = () => {
               <Heading fontSize="2xl" color="#543ee0" letterSpacing={".1rem"}>
                 {capitalizedName}
               </Heading>
-              <Text>Joined on {formatDate(userProfile?.data?.joinedOn)}</Text>
+              <Text>
+                Joined on {formatDate(users?.joinedOn || users?.date)}
+              </Text>
             </Box>
             <Flex gap={"1.5rem"}>
-              {user?.email === userProfile?.data?.email && <EditProfileModal />}
+              {user?.email === users?.email && <EditProfileModal />}
               <Button onClick={() => handleGoBack(router)}>Go Back</Button>
             </Flex>
           </Flex>
@@ -146,37 +142,31 @@ const AllProfile = () => {
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
                   Email:
                 </Text>
-                <Text fontWeight={"bold"}>{userProfile?.data?.email}</Text>
+                <Text fontWeight={"bold"}>{users?.email}</Text>
               </Box>
               <Box gap="1.2rem">
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
                   Username:
                 </Text>
-                <Text fontWeight={"bold"}>
-                  {userProfile?.data?.username || "N/A"}
-                </Text>
+                <Text fontWeight={"bold"}>{users?.username || "N/A"}</Text>
               </Box>
               <Box gap="1.2rem">
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
                   Occupation:
                 </Text>
-                <Text fontWeight={"bold"}>
-                  {userProfile?.data?.occupation || "N/A"}
-                </Text>
+                <Text fontWeight={"bold"}>{users?.occupation || "N/A"}</Text>
               </Box>
               <Box gap="1.2rem">
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
                   Posts:
                 </Text>
-                <Text fontWeight={"bold"}>{userProfilePosts.length || 0}</Text>
+                <Text fontWeight={"bold"}>{userPosts?.length || 0}</Text>
               </Box>
               <Box gap="1.2rem">
                 <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
                   Followers:
                 </Text>
-                <Text fontWeight={"bold"}>
-                  {userProfile?.data?.followerCount ?? 0}{" "}
-                </Text>
+                <Text fontWeight={"bold"}>{users?.followerCount ?? 0} </Text>
               </Box>
             </Flex>
           </Box>
@@ -189,7 +179,7 @@ const AllProfile = () => {
             w={{ base: "100%", lg: "70%" }}
             mb="2rem"
           >
-            {userProfilePosts.length ? (
+            {userPosts?.length ? (
               userProfilePosts
             ) : (
               <Center mt="10rem">No published posts yet</Center>

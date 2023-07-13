@@ -20,7 +20,7 @@ interface NewCommentProps {
 }
 
 const NewComment: React.FC<NewCommentProps> = ({ post }) => {
-  const postID = post.id || "";
+  const postID = post?.id || "";
   const { user, isLoading: authLoading } = useAuth();
   const { addComment, isLoading: commentLoading } = useAddComment({
     postID,

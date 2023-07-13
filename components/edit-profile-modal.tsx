@@ -26,7 +26,6 @@ import { capitalizeName } from "./utils/functions";
 const EditProfileModal = () => {
   const { onClose, isOpen, onOpen } = useDisclosure();
   const { colorMode } = useColorMode();
-
   const { user } = useAuth();
   const [editUser, setEditUser] = useState(user);
   const [name, setName] = useState("");

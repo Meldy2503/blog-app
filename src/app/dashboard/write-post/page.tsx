@@ -14,36 +14,64 @@ import React, { useContext, useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
-import { BlogContext } from "../../../../context/blog-context";
+import { BlogContext, Entry } from "../../../../context/blog-context";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../hooks/auth";
-import { db } from "../../../../firebase";
 import Wrapper from "../../../../components/wrapper";
 import PreviewModal from "../../../../components/preview-modal";
 import Navbar from "../../../../components/navbar";
-import { ErrorToast, SuccessToast } from "../../../../components/utils/toast";
+import { ErrorToast } from "../../../../components/utils/toast";
 import {
   calculateReadTime,
   handleGoBack,
 } from "../../../../components/utils/functions";
 import { BsArrowLeftSquare } from "react-icons/bs";
 import { categories } from "../../../../components/utils/constants";
+import { useAddPost } from "../../../../hooks/posts";
+import { uuidv4 } from "@firebase/util";
 
 const LiteEditor: React.FC = () => {
   const { user } = useAuth();
   const { currentUser } = useContext(BlogContext);
   const [showCategory, setShowCategory] = useState(false);
-
   const { entry, setEntry } = useContext(BlogContext);
   const { colorMode } = useColorMode();
   const mdParser = new MarkdownIt();
-  const [publishLoading, setPublishLoading] = useState(false);
-  const [draftLoading, setDraftLoading] = useState(false);
   const router = useRouter();
+  const { addPost, isLoading: publishingPost } = useAddPost();
+  const id = uuidv4();
 
   const handleShowCategory = () => {
     setShowCategory(!showCategory);
   };
+
+  async function handlePublish(
+    entry: Entry,
+    event: React.MouseEvent<HTMLButtonElement>
+  ) {
+    event.preventDefault();
+    if (
+      entry.title === "" ||
+      entry.body === "" ||
+      entry.category === "" ||
+      entry.brief === "" ||
+      entry.bannerImage === ""
+    ) {
+      ErrorToast("Please fill all the fields!");
+    } else {
+      addPost({
+        author: currentUser?.email || user?.email,
+        title: entry.title,
+        bannerImage: entry.bannerImage,
+        body: entry.body,
+        category: entry.category,
+        postLength: entry.postLength,
+        postedOn: Date.now(),
+        brief: entry.brief,
+        id,
+      });
+    }
+  }
 
   const handleCategoryChange = (selectedCategory: any) => {
     setEntry((prevEntry) => ({
@@ -60,8 +88,6 @@ const LiteEditor: React.FC = () => {
     }));
   };
 
-  console.log(entry, "entry");
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setEntry((prevEntry) => ({
@@ -70,69 +96,12 @@ const LiteEditor: React.FC = () => {
     }));
   };
 
-  const handlePublish = async (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (
-      entry.title === "" ||
-      entry.body === "" ||
-      entry.category === "" ||
-      entry.brief === "" ||
-      entry.bannerImage === ""
-    ) {
-      ErrorToast("Please fill all the fields!");
-      setPublishLoading(false);
-    } else {
-      try {
-        setPublishLoading(true);
-        const articlesRef = collection(db, "articles");
-        await addDoc(articlesRef, entry);
-        SuccessToast("Article Published Successfully!");
-        setEntry({
-          title: "",
-          brief: "",
-          bannerImage: "",
-          category: "",
-          body: "",
-          postLength: 0,
-        });
-      } catch (error) {
-        ErrorToast("Error Publishing Article!");
-        setPublishLoading(false);
-      }
-    }
-  };
-
-  const handleSaveToDraft = async (e: React.FormEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    setDraftLoading(true);
-    try {
-      const draftRef = collection(db, "draft");
-      await addDoc(draftRef, entry);
-      SuccessToast("Article successfully saved to Drafts!");
-
-      setDraftLoading(false);
-      router.push("/dashboard/drafts");
-      setEntry({
-        title: "",
-        bannerImage: "",
-        body: "",
-        category: "",
-        postedOn: Date.now(),
-        postLength: 0,
-      });
-    } catch (error) {
-      ErrorToast("Article not saved to Drafts!");
-    }
-  };
-
   useEffect(() => {
     setEntry((prevEntry) => ({
       ...prevEntry,
       postLength: calculateReadTime(entry?.body),
-      postedOn: serverTimestamp(),
-      author: currentUser?.email || user?.email,
     }));
-  }, [entry.body, setEntry, currentUser?.email, user?.email]);
+  }, [entry?.body, setEntry]);
 
   return (
     <>
@@ -158,8 +127,6 @@ const LiteEditor: React.FC = () => {
             <Button
               isDisabled={true}
               type="submit"
-              onClick={handleSaveToDraft}
-              isLoading={draftLoading}
               bg={colorMode === "light" ? "#d0d0d0" : "#424660"}
               shadow={"md"}
               color={colorMode === "light" ? "dark" : "#d0d0d0"}
@@ -168,8 +135,8 @@ const LiteEditor: React.FC = () => {
             </Button>
             <Button
               type="submit"
-              onClick={handlePublish}
-              isLoading={publishLoading}
+              onClick={(event) => handlePublish(entry, event)}
+              isLoading={publishingPost}
               bg="#29a546"
               _hover={{ bg: "#308b45" }}
               color={"white"}

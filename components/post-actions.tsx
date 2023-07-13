@@ -15,11 +15,10 @@ import { useDeletePost, useToggleLike } from "../hooks/likes-delete";
 import { useComments } from "../hooks/comments";
 import { BsChatDots } from "react-icons/bs";
 
-const PostActions = ({ post, link }: any) => {
+const PostActions = ({ post }: any) => {
   const { colorMode } = useColorMode();
 
-  const { likes, author } = post?.data;
-  const { id } = post;
+  const { likes, author, id } = post;
   const { user, isLoading: userLoading } = useAuth();
   const isLiked = likes?.includes(user?.email);
   const config = { id, isLiked, email: user?.email };
@@ -41,7 +40,7 @@ const PostActions = ({ post, link }: any) => {
   return (
     <Flex justify={"flex-end"}>
       <HStack gap={"20px"} w={"full"} justify={"flex-end"}>
-        <HStack spacing={"1px"}>
+        <HStack spacing={"0px"}>
           <IconButton
             onClick={handleToggleLike}
             isLoading={likeLoading || userLoading}
@@ -68,7 +67,7 @@ const PostActions = ({ post, link }: any) => {
             user?.email === author &&
             path.includes("/profile/") && (
               <IconButton
-                ml="auto"
+                mr="10px"
                 aria-label="delete post"
                 onClick={deletePost}
                 isLoading={deleteLoading}

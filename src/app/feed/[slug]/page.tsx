@@ -9,7 +9,7 @@ import { Posts } from "../../../../context/blog-context";
 const FeedPostId = () => {
   const { colorMode } = useColorMode();
   const [post, setPost] = useState<Posts | any>([]);
-  const [authorData, setAuthorData] = useState<DocumentData | any>(null);
+  // const [authorData, setAuthorData] = useState<DocumentData | any>(null);
 
   return (
     <>
@@ -25,8 +25,8 @@ const FeedPostId = () => {
           <ViewPost
             post={post}
             setPost={setPost}
-            authorData={authorData}
-            setAuthorData={setAuthorData}
+            // authorData={authorData}
+            // setAuthorData={setAuthorData}
           />
         </Box>
       </Box>

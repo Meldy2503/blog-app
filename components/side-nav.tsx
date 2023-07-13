@@ -14,7 +14,7 @@ import React from "react";
 import { useAuth } from "../hooks/auth";
 import { category, follow } from "./utils/constants";
 
-const SideNav = ({ bg, px, btnBg }: any) => {
+const SideNav = ({ bg, btnBg }: any) => {
   const { colorMode } = useColorMode();
   const { user } = useAuth();
 
@@ -22,10 +22,10 @@ const SideNav = ({ bg, px, btnBg }: any) => {
     <Box
       bg={bg}
       color={colorMode === "dark" ? "#bdbbbb" : "#737373"}
-      w={{ base: "100%", md: "40%" }}
+      w={{ base: "100%", md: "35%" }}
       py="1rem"
-      px={px}
-      pl={{ base: "1rem", md: "2rem" }}
+      pr="1rem"
+      pl={{ base: "1rem", md: "1.5rem" }}
       position="sticky"
       top="0px"
       h="100%"
@@ -38,15 +38,13 @@ const SideNav = ({ bg, px, btnBg }: any) => {
     >
       <Flex align={"center"} justify={"center"}>
         <Input
-          display={{ base: "block", md: "none" }}
-          w="20rem"
+          w="25rem"
           placeholder="Search...."
           border={`1px solid ${
             colorMode === "dark" ? "rgb(255, 255, 255, .6)" : "#d0d0d0"
           }`}
           borderRadius="5px"
           focusBorderColor="none"
-          ml="1rem"
           mb="1.5rem"
         />
       </Flex>

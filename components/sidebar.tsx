@@ -19,9 +19,8 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { FiMenu, FiBell, FiLogOut } from "react-icons/fi";
-
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-import { useAuth, useLogout } from "../hooks/auth";
+import { useLogout } from "../hooks/auth";
 import Link from "next/link";
 import NavProfile from "./navbar-profile";
 import { usePathname } from "next/navigation";
@@ -167,7 +166,6 @@ interface MobileProps extends FlexProps {
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { user } = useAuth();
 
   return (
     <Flex

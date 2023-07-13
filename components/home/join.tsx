@@ -59,7 +59,7 @@ const Join = () => {
             </Text>
           </Flex>
           <Button
-            href="/auth/sign-in"
+            href="/auth/sign-up"
             bg="#543EE0"
             color="#fff"
             w="fit-content"

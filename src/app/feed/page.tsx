@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Box, Flex, useColorMode } from "@chakra-ui/react";
-import { BlogContext } from "../../../context/blog-context";
 import SideNav from "../../../components/side-nav";
 import Navbar from "../../../components/navbar";
 import Feeds from "../../../components/feeds";
-import { useAuth } from "../../../hooks/auth";
+import { usePosts } from "../../../hooks/posts";
 
 const Posts = () => {
   const { colorMode } = useColorMode();
-  const { posts } = useContext(BlogContext);
+  const { posts } = usePosts();
 
   return (
     <>
@@ -23,16 +22,16 @@ const Posts = () => {
         direction={{ base: "column", md: "row" }}
         justify={"space-between"}
       >
-        <Box pr={{ base: 0, md: "3rem" }}>
-          {posts.map((post) => (
-            <Box key={post.id}>
+        <Box pr={{ base: 0, md: "3rem" }} w={{ base: "100%", md: "65%" }}>
+          {posts?.map((post) => (
+            <Box key={post?.id}>
               <Feeds
                 post={post}
                 borderRadius="none"
                 borderBottom={`1px solid ${
                   colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
                 }`}
-                href={`/feed/${post.id}`}
+                href={`/feed/${post?.id}`}
               />
             </Box>
           ))}

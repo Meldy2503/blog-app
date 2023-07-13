@@ -19,6 +19,7 @@ import isUsernameExists from "../components/utils/user-exists";
 import { SuccessToast, ErrorToast } from "../components/utils/toast";
 import { Users } from "../context/blog-context";
 
+// to get a loged in user
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
   const [isLoading, setLoading] = useState(true);
@@ -62,11 +63,7 @@ interface SignInProps {
   redirectTo: string;
 }
 
-interface UserHookResult {
-  user: Users | null;
-  isLoading: boolean;
-}
-
+// to log in
 export function useLogin() {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -81,7 +78,6 @@ export function useLogin() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       SuccessToast("Login Successful!");
-
       router.push(redirectTo);
     } catch (error: any) {
       ErrorToast("Login Failed!");
@@ -97,6 +93,7 @@ export function useLogin() {
   return { login, isLoading };
 }
 
+// to register
 export function useRegister() {
   const [isLoading, setLoading] = useState(false);
   const router = useRouter();
@@ -142,14 +139,15 @@ export function useRegister() {
   return { register, isLoading };
 }
 
+// to log out
 export function useLogout() {
   const [signOut, isLoading, error] = useSignOut(auth);
   const router = useRouter();
 
   async function logout() {
     if (await signOut()) {
-      SuccessToast("Successfully logged out!");
       router.push("/");
+      SuccessToast("Successfully logged out!");
     }
   }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Box,
   Flex,
@@ -11,12 +11,11 @@ import {
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
 import Loader from "./utils/spinner";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
 import Link from "next/link";
 import AuthorData from "./author-data";
 import { capitalizeName, formatDate } from "./utils/functions";
 import PostActions from "./post-actions";
+import { useUsers } from "../hooks/users";
 
 export const Feeds = ({
   post,
@@ -28,36 +27,13 @@ export const Feeds = ({
 }: any) => {
   const { colorMode } = useColorMode();
   const [isMobile] = useMediaQuery("(max-width: 480px)");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [authorData, setAuthorData] = useState<any>(null);
+  const { users, isLoading } = useUsers(post?.author);
 
-  useEffect(() => {
-    const fetchAuthorData = async () => {
-      try {
-        setLoading(true);
-        const docRef = doc(db, "users", post?.data?.author);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const authorProfile = docSnap.data();
-          setAuthorData(authorProfile);
-          setLoading(false);
-        } else {
-          return;
-        }
-      } catch (error) {
-        setLoading(false);
-        return;
-      }
-    };
-
-    fetchAuthorData();
-  }, [post?.data?.author]);
-
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
-  const capitalizedName = capitalizeName(authorData?.name);
+  const capitalizedName = capitalizeName(users?.name);
 
   return (
     <Box
@@ -69,11 +45,11 @@ export const Feeds = ({
     >
       <AuthorData
         size="md"
-        href={`/profile/${authorData?.email}`}
+        href={`/profile/${users?.email}`}
         px={px}
         name={capitalizedName}
-        src={authorData?.imageUrl}
-        occupation={authorData?.occupation}
+        src={users?.imageUrl}
+        occupation={users?.occupation}
       />
 
       <Link href={href}>
@@ -98,9 +74,9 @@ export const Feeds = ({
                   color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
                 />
 
-                <Text>{post?.data?.postLength} mins read</Text>
+                <Text>{post?.postLength} mins read</Text>
               </Flex>
-              <Text mr="1.5rem">{formatDate(post?.data?.postedOn)}</Text>
+              <Text mr="1.5rem">{formatDate(post?.postedOn)}</Text>
               <Box
                 bg={colorMode === "dark" ? "#2d3748" : "#d0d0d0"}
                 py=".1rem"
@@ -108,7 +84,7 @@ export const Feeds = ({
                 borderRadius="20px"
                 mr="1.5rem"
               >
-                <Text>{post?.data?.category}</Text>
+                <Text>{post?.category}</Text>
               </Box>
             </Flex>
 
@@ -120,15 +96,15 @@ export const Feeds = ({
                 color={colorMode === "dark" ? "#e6e5e5" : "#111111"}
                 my=".5rem"
               >
-                {post?.data?.title}
+                {post?.title}
               </Heading>
-              <Text>{post?.data?.brief}</Text>
+              <Text>{post?.brief}</Text>
             </Box>
           </Box>
           <Box w={{ base: "100%", sm: "14rem" }}>
-            {post?.data?.bannerImage && (
+            {post?.bannerImage && (
               <Image
-                src={post?.data?.bannerImage}
+                src={post?.bannerImage}
                 alt="feed image"
                 style={{
                   objectFit: "cover",

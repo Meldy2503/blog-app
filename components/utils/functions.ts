@@ -25,7 +25,7 @@ export const formatDate = (date: number) => {
 // to calculate read time
 export function calculateReadTime(content: string) {
   const wordCount = content.trim().split(/\s+/).length;
-  const averageReadingSpeed = 100;
+  const averageReadingSpeed = 150;
   const readTime = Math.ceil(wordCount / averageReadingSpeed);
   return readTime;
 }

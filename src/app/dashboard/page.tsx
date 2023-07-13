@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from "react";
+import React from "react";
 import {
   Box,
   Flex,
@@ -19,66 +19,23 @@ import {
 import Button from "../../../components/button";
 import { FaPencilAlt } from "react-icons/fa";
 import Feeds from "../../../components/feeds";
-import { BlogContext } from "../../../context/blog-context";
 import Sidebar from "../../../components/sidebar";
 import { useAuth } from "../../../hooks/auth";
+import { usePosts, usePostsUid } from "../../../hooks/posts";
+import Loader from "../../../components/utils/spinner";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
-  const { posts } = useContext(BlogContext);
   const { user } = useAuth();
-
-  // to get all posts
-  const allPosts = posts?.map((post) => (
-    <Box key={post.id}>
-      <Feeds
-        post={post}
-        borderRadius={"6px"}
-        border={`1px solid ${
-          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
-        }`}
-        px={{ base: "1rem", xl: "1.5rem" }}
-        href={`/dashboard/${post.id}`}
-      />
-    </Box>
-  ));
-
-  // to get loged in user posts
-
-  const userPosts = posts
-    .filter((post) => post?.data?.author === user?.email)
-    .map((post) => (
-      <Box key={post.id}>
-        <Feeds
-          post={post}
-          borderRadius={"6px"}
-          border={`1px solid ${
-            colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
-          }`}
-          px={{ base: "1rem", xl: "1.5rem" }}
-          href={`/dashboard/${post.id}`}
-        />
-      </Box>
-    ));
+  const { posts, isLoading: postsLoading } = usePosts();
+  const { userPosts, isLoading: userLoading } = usePostsUid(user?.email);
 
   // to get recent featured posts
+  const sortedPosts = posts?.sort((a, b) => b?.postedOn - a?.postedOn);
 
-  const sortedPosts = posts?.sort(
-    (a, b) => b?.data?.postedOn - a?.data?.postedOn
-  );
-  const recentPosts = sortedPosts?.slice(0, 5).map((post) => (
-    <Box key={post.id}>
-      <Feeds
-        post={post}
-        borderRadius={"6px"}
-        border={`1px solid ${
-          colorMode === "dark" ? "rgb(255, 255, 255, .2)" : "#d0d0d0"
-        }`}
-        px={{ base: "1rem", xl: "1.5rem" }}
-        href={`/dashboard/${post.id}`}
-      />
-    </Box>
-  ));
+  if (postsLoading || userLoading) {
+    return <Loader />;
+  }
 
   return (
     <Sidebar>
@@ -155,19 +112,39 @@ const Dashboard = () => {
             />
             <TabPanels>
               <TabPanel p="0">
-                {!posts ? (
-                  <Center>
-                    <Text pb="20rem" pt="10rem">
-                      No posts to display
-                    </Text>
-                  </Center>
-                ) : (
-                  allPosts
-                )}
+                {posts?.map((post) => (
+                  <Box key={post.id}>
+                    <Feeds
+                      post={post}
+                      borderRadius={"6px"}
+                      border={`1px solid ${
+                        colorMode === "dark"
+                          ? "rgb(255, 255, 255, .2)"
+                          : "#d0d0d0"
+                      }`}
+                      px={{ base: "1rem", xl: "1.5rem" }}
+                      href={`/dashboard/${post.id}`}
+                    />
+                  </Box>
+                ))}
               </TabPanel>
               <TabPanel p="0">
-                {userPosts.length ? (
-                  userPosts
+                {userPosts?.length ? (
+                  userPosts?.map((post) => (
+                    <Box key={post.id}>
+                      <Feeds
+                        post={post}
+                        borderRadius={"6px"}
+                        border={`1px solid ${
+                          colorMode === "dark"
+                            ? "rgb(255, 255, 255, .2)"
+                            : "#d0d0d0"
+                        }`}
+                        px={{ base: "1rem", xl: "1.5rem" }}
+                        href={`/dashboard/${post.id}`}
+                      />
+                    </Box>
+                  ))
                 ) : (
                   <Center>
                     <Text pb="20rem" pt="10rem">
@@ -177,7 +154,23 @@ const Dashboard = () => {
                 )}
               </TabPanel>
 
-              <TabPanel p="0">{recentPosts}</TabPanel>
+              <TabPanel p="0">
+                {sortedPosts?.slice(0, 5).map((post) => (
+                  <Box key={post.id}>
+                    <Feeds
+                      post={post}
+                      borderRadius={"6px"}
+                      border={`1px solid ${
+                        colorMode === "dark"
+                          ? "rgb(255, 255, 255, .2)"
+                          : "#d0d0d0"
+                      }`}
+                      px={{ base: "1rem", xl: "1.5rem" }}
+                      href={`/dashboard/${post.id}`}
+                    />
+                  </Box>
+                ))}
+              </TabPanel>
             </TabPanels>
           </Tabs>
         </Box>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Flex,
@@ -12,71 +12,41 @@ import {
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
 import { usePathname, useSearchParams } from "next/navigation";
-import { doc, getDoc, DocumentData } from "firebase/firestore";
-import MarkdownIt from "markdown-it";
-import { BlogContext, Posts } from "../context/blog-context";
-import { db } from "../firebase";
+import { Posts } from "../context/blog-context";
 import AuthorData from "./author-data";
 import { capitalizeName, formatDate } from "./utils/functions";
 import Loader from "./utils/spinner";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { MarkdownRenderer } from "./markdown-styles";
+import { usePosts } from "../hooks/posts";
+import { useUsers } from "../hooks/users";
 
 interface Props {
   post: Posts;
   setPost: React.Dispatch<React.SetStateAction<Posts | any>>;
-  authorData: DocumentData | any;
-  setAuthorData: React.Dispatch<React.SetStateAction<DocumentData | any>>;
 }
 
-const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
+const ViewPost = ({ post, setPost }: Props) => {
+  const { colorMode } = useColorMode();
+  const [isMobile] = useMediaQuery("(max-width: 500px)");
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [loading, setLoading] = useState<boolean>(false);
-  const { entry } = useContext(BlogContext);
-
-  const { colorMode } = useColorMode();
-  const { posts } = useContext(BlogContext);
-  const [isMobile] = useMediaQuery("(max-width: 500px)");
-
-  const capitalizedName = capitalizeName(authorData?.name);
+  const { posts, isLoading: postsLoading } = usePosts();
+  const { users, isLoading: userLoading } = useUsers(post?.author);
+  const capitalizedName = capitalizeName(users?.name);
 
   useEffect(() => {
-    const fetchAuthorData = async () => {
-      try {
-        setLoading(true);
-
-        const docRef = doc(db, "users", post?.data?.author);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const authorProfile = docSnap.data();
-          setAuthorData(authorProfile);
-          setLoading(false);
-        } else {
-          return;
-        }
-      } catch (error) {
-        setLoading(false);
-
-        return;
-      }
-    };
-
-    fetchAuthorData();
-  }, [post?.data?.author, setAuthorData]);
-
-  useEffect(() => {
-    if (posts.length === 0) {
+    if (posts?.length === 0) {
       return;
     }
-
     const url = `${pathname}?${searchParams}`;
     const id = url.split("/").pop()?.replace("?", "");
-    const selectedPost = posts.find((post) => post.id === id);
+    const selectedPost = posts?.find((post) => post?.id === id);
     setPost(selectedPost);
-  }, [posts, post, pathname, searchParams, setPost]);
+    console.log(selectedPost, "selectedPost");
+    console.log(id, "id");
+  }, [posts, setPost, pathname, searchParams]);
 
-  if (!posts || !authorData) {
+  if (postsLoading || userLoading) {
     return <Loader />;
   }
 
@@ -89,15 +59,15 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
         color={colorMode === "dark" ? "#d0d0d0" : "#111111"}
         mb="2rem"
       >
-        {post?.data?.title}
+        {post?.title}
       </Heading>
 
       <AuthorData
         size="lg"
-        href={`/profile/${authorData?.email}`}
+        href={`/profile/${users?.email}`}
         name={capitalizedName}
-        src={authorData?.imageUrl}
-        occupation={authorData?.occupation}
+        src={users?.imageUrl}
+        occupation={users?.occupation}
       />
 
       <Flex
@@ -116,14 +86,14 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
             color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
           />
 
-          <Text>{post?.data?.postLength} mins read</Text>
+          <Text>{post?.postLength} mins read</Text>
         </Flex>
-        <Text>{formatDate(post?.data?.postedOn)}</Text>
+        <Text>{formatDate(post?.postedOn)}</Text>
       </Flex>
       <Box my="2rem">
-        {post?.data?.bannerImage && (
+        {post?.bannerImage && (
           <Image
-            src={post?.data?.bannerImage}
+            src={post?.bannerImage}
             alt="feed image"
             style={{
               objectFit: "cover",
@@ -138,7 +108,7 @@ const ViewPost = ({ post, setPost, authorData, setAuthorData }: Props) => {
           />
         )}
       </Box>
-      <MarkdownRenderer markdownContent={post?.data?.body} />
+      <MarkdownRenderer markdownContent={post?.body} />
     </>
   );
 };

@@ -78,7 +78,7 @@ const Connect = () => {
             will drive you towards mutual success.
           </Text>
           <Button
-            href="/auth/sign-in"
+            href="/auth/sign-up"
             bg="#543EE0"
             color="#fff"
             w="fit-content"
