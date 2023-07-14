@@ -1,5 +1,8 @@
 # Chatter - Blog App
 
+![landing page](https://github.com/Meldy2503/blog-app/blob/master/landing-page.png?raw=true)
+
+
 ## Project Overview
 
 Chatter is a haven for text-based content enthusiasts, offering a multi-functional platform where authors and readers can create and access their own contents.
@@ -7,6 +10,7 @@ Chatter is a haven for text-based content enthusiasts, offering a multi-function
 The website was built with Next.js, TypeScript and Chakra UI CSS framework. It provides features for authentication, reading published posts, viewing author profiles, writing and publishing new posts using React Markdown, updating user profiles, liking and commenting on posts, bookmarking and saving posts as drafts, analytics, categorizing posts, unit tests, searching posts, and changing the view mode between light and dark.
 
 ## Features
+![feed page](https://github.com/Meldy2503/blog-app/blob/master/landingPage.png?raw=true)
 
 - **User Registration and Authentication**: Chatter allows users to register and create their own accounts on the platform. Users can sign up using their email address or social media accounts like Google.
 
