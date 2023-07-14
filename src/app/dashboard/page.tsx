@@ -72,7 +72,7 @@ const Dashboard = () => {
               href="/dashboard/write-post"
               bg="#543EE0"
               color="#fff"
-              w={{ base: "6rem", md: "7rem" }}
+              w="6.5rem"
             >
               <Icon as={FaPencilAlt} color="#fff" mr=".5rem" />
               Write
