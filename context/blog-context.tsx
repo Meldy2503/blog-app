@@ -3,14 +3,23 @@ import React, { createContext, useState } from "react";
 import { doc, setDoc } from "firebase/firestore";
 import { db, auth, provider } from "../firebase";
 import { signInWithPopup } from "firebase/auth";
+import { usePosts } from "../hooks/posts";
 
 export const BlogContext = createContext<{
   currentUser: null | any;
   handleUserAuth: React.Dispatch<React.SetStateAction<Users | any>>;
   entry: Entry | any;
+  searchResults: [] | any;
+  searchTerm: string;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string | any>>;
+  setSearchResults: React.Dispatch<React.SetStateAction<[] | any>>;
   setEntry: React.Dispatch<React.SetStateAction<Entry>>;
 }>({
   handleUserAuth: () => {},
+  searchResults: [],
+  searchTerm: "",
+  setSearchTerm: () => "",
+  setSearchResults: () => [],
   setEntry: () => [],
   currentUser: null,
   entry: {
@@ -62,7 +71,11 @@ export interface Entry {
 }
 
 export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
+  const [searchResults, setSearchResults] = useState<[] | any>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const { posts } = usePosts();
+
   const [entry, setEntry] = useState<Entry>({
     author: "",
     title: "",
@@ -98,6 +111,10 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         currentUser,
         handleUserAuth,
+        searchResults,
+        setSearchResults,
+        setSearchTerm,
+        searchTerm,
         entry,
         setEntry,
       }}

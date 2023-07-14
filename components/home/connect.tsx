@@ -16,8 +16,8 @@ const Connect = () => {
 
   return (
     <Wrapper
-      bg={colorMode === "light" ? "#fff" : "dark"}
-      color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
+      bg={colorMode === "light" ? "brand.100" : "dark"}
+      color={colorMode === "dark" ? "brand.150" : "brand.850"}
     >
       <Flex justify="space-between" direction={{ base: "column", md: "row" }}>
         <Flex
@@ -64,7 +64,7 @@ const Connect = () => {
             as={"h5"}
             fontSize={{ base: "1.9rem", md: "2.1rem", lg: "2.3rem" }}
             fontWeight={600}
-            color={colorMode === "dark" ? "#e3e2e2" : "black"}
+            color={colorMode === "dark" ? "brand.200" : "black"}
           >
             Write, read and connect with great minds on Chatter
           </Heading>
@@ -79,8 +79,8 @@ const Connect = () => {
           </Text>
           <Button
             href="/auth/sign-up"
-            bg="#543EE0"
-            color="#fff"
+            bg="brand.600"
+            color="brand.100"
             w="fit-content"
           >
             Get started{" "}

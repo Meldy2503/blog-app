@@ -8,8 +8,8 @@ const AboutUs = () => {
 
   return (
     <Wrapper
-      bg={colorMode === "light" ? "#F7f6f6" : "#171923"}
-      color={colorMode === "dark" ? "#bebbbb" : "#2b2b2b"}
+      bg={colorMode === "light" ? "brand.350" : "brand.800"}
+      color={colorMode === "dark" ? "brand.150" : "brand.850"}
     >
       <Flex
         justify={"space-between"}
@@ -24,7 +24,7 @@ const AboutUs = () => {
             as={"h5"}
             fontSize={{ base: "1.9rem", md: "2.1rem", lg: "2.3rem" }}
             fontWeight={600}
-            color={colorMode === "dark" ? "#e3e2e2" : "black"}
+            color={colorMode === "dark" ? "brand.200" : "black"}
             mb={"1rem"}
           >
             About <span style={{ color: "#543EE0" }}>Chatter</span>

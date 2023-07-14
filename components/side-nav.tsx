@@ -1,22 +1,24 @@
 "use client";
 
+import React from "react";
 import {
-  Input,
   useColorMode,
   Box,
   Text,
   Flex,
   Heading,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { useAuth } from "../hooks/auth";
 import { category, follow } from "./utils/constants";
+import SearchBar from "./search-bar";
 
 const SideNav = ({ bg, btnBg }: any) => {
   const { colorMode } = useColorMode();
   const { user } = useAuth();
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   return (
     <Box
@@ -36,18 +38,7 @@ const SideNav = ({ bg, btnBg }: any) => {
         }`,
       }}
     >
-      <Flex align={"center"} justify={"center"}>
-        <Input
-          w="25rem"
-          placeholder="Search...."
-          border={`1px solid ${
-            colorMode === "dark" ? "rgb(255, 255, 255, .6)" : "#d0d0d0"
-          }`}
-          borderRadius="5px"
-          focusBorderColor="none"
-          mb="1.5rem"
-        />
-      </Flex>
+      {!isMobile && <SearchBar mb="1.5rem" w={{ base: "20rem", md: "100%" }} />}{" "}
       <Box>
         <Text
           fontSize="1.2rem"

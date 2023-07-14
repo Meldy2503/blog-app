@@ -38,8 +38,6 @@ const AllProfile = () => {
   const { userPosts, isLoading: userPostLoading } = usePostsUid(email);
   const router = useRouter();
 
-  console.log(userPosts, "userPosts");
-  console.log(users, "users");
   const capitalizedName = capitalizeName(users?.name);
 
   const userProfilePosts = userPosts?.map((post) => (

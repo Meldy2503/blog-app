@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   setDoc,
   doc,
@@ -24,6 +24,8 @@ export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<DocumentData | null>(null);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     async function fetchData() {
@@ -39,6 +41,13 @@ export function useAuth() {
         }
       }
       setLoading(false);
+    }
+
+    if (!authUser) {
+      if (pathname.includes("/dashboard")) {
+        router.push("/");
+        return;
+      }
     }
 
     if (!authLoading) {

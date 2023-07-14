@@ -27,7 +27,7 @@ const Button = ({
       <Box
         textAlign="center"
         fontSize=".92rem"
-        px="1.1rem"
+        px="1rem"
         py=".7rem"
         w={w}
         borderRadius=".3rem"

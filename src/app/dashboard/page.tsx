@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Flex,
@@ -23,12 +23,14 @@ import Sidebar from "../../../components/sidebar";
 import { useAuth } from "../../../hooks/auth";
 import { usePosts, usePostsUid } from "../../../hooks/posts";
 import Loader from "../../../components/utils/spinner";
+import { BlogContext } from "../../../context/blog-context";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
   const { user } = useAuth();
   const { posts, isLoading: postsLoading } = usePosts();
   const { userPosts, isLoading: userLoading } = usePostsUid(user?.email);
+  const { searchResults } = useContext(BlogContext);
 
   // to get recent featured posts
   const sortedPosts = posts?.sort((a, b) => b?.postedOn - a?.postedOn);
@@ -66,7 +68,12 @@ const Dashboard = () => {
                 Explore different contents you’d love{" "}
               </Text>
             </Box>
-            <Button href="/dashboard/write-post" bg="#543EE0" color="#fff">
+            <Button
+              href="/dashboard/write-post"
+              bg="#543EE0"
+              color="#fff"
+              w={{ base: "6rem", md: "7rem" }}
+            >
               <Icon as={FaPencilAlt} color="#fff" mr=".5rem" />
               Write
             </Button>
@@ -112,21 +119,37 @@ const Dashboard = () => {
             />
             <TabPanels>
               <TabPanel p="0">
-                {posts?.map((post) => (
-                  <Box key={post.id}>
-                    <Feeds
-                      post={post}
-                      borderRadius={"6px"}
-                      border={`1px solid ${
-                        colorMode === "dark"
-                          ? "rgb(255, 255, 255, .2)"
-                          : "#d0d0d0"
-                      }`}
-                      px={{ base: "1rem", xl: "1.5rem" }}
-                      href={`/dashboard/${post.id}`}
-                    />
-                  </Box>
-                ))}
+                {searchResults.length
+                  ? searchResults?.map((post: any) => (
+                      <Box key={post?.id}>
+                        <Feeds
+                          post={post}
+                          borderRadius={"6px"}
+                          border={`1px solid ${
+                            colorMode === "dark"
+                              ? "rgb(255, 255, 255, .2)"
+                              : "#d0d0d0"
+                          }`}
+                          px={{ base: "1rem", xl: "1.5rem" }}
+                          href={`/dashboard/${post.id}`}
+                        />
+                      </Box>
+                    ))
+                  : posts?.map((post: any) => (
+                      <Box key={post?.id}>
+                        <Feeds
+                          post={post}
+                          borderRadius={"6px"}
+                          border={`1px solid ${
+                            colorMode === "dark"
+                              ? "rgb(255, 255, 255, .2)"
+                              : "#d0d0d0"
+                          }`}
+                          px={{ base: "1rem", xl: "1.5rem" }}
+                          href={`/dashboard/${post.id}`}
+                        />
+                      </Box>
+                    ))}
               </TabPanel>
               <TabPanel p="0">
                 {userPosts?.length ? (
@@ -178,5 +201,5 @@ const Dashboard = () => {
     </Sidebar>
   );
 };
-
 export default Dashboard;
+// export default ProtectedLayout(Dashboard);

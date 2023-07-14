@@ -33,8 +33,8 @@ const Features = () => {
 
   return (
     <Wrapper
-      bg={colorMode === "light" ? "#fff" : "#171923"}
-      color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+      bg={colorMode === "light" ? "brand.100" : "brand.800"}
+      color={colorMode === "dark" ? "brand.400" : "brand.850"}
     >
       <Box>
         <Box>
@@ -42,7 +42,7 @@ const Features = () => {
             as={"h5"}
             fontSize={{ base: "1.9rem", md: "2.1rem", lg: "2.3rem" }}
             fontWeight={600}
-            color={colorMode === "dark" ? "#fff" : "black"}
+            color={colorMode === "dark" ? "brand.100" : "black"}
             textAlign={"center"}
             mb={"2rem"}
           >
@@ -76,7 +76,7 @@ const Features = () => {
                   key={item.id}
                   padding="1rem"
                   margin="auto"
-                  bg={colorMode === "light" ? "#fff" : "#1a202c"}
+                  bg={colorMode === "light" ? "brand.100" : "brand.900"}
                 >
                   <Flex
                     justify={"center"}
@@ -84,11 +84,7 @@ const Features = () => {
                     borderRadius="50%"
                     h="4rem"
                     w="4rem"
-                    bg={
-                      colorMode === "light"
-                        ? "rgba(214, 209, 248, 0.2)"
-                        : "#2d3748"
-                    }
+                    bg={colorMode === "light" ? "brand.950" : "brand.750"}
                   >
                     <Icon as={item.icon} boxSize={7} />
                   </Flex>

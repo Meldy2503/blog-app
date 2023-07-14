@@ -5,7 +5,6 @@ import {
   Box,
   CloseButton,
   Flex,
-  HStack,
   Icon,
   useColorModeValue,
   Drawer,
@@ -14,17 +13,17 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  Input,
   Button,
   useColorMode,
 } from "@chakra-ui/react";
-import { FiMenu, FiBell, FiLogOut } from "react-icons/fi";
+import { FiMenu, FiLogOut } from "react-icons/fi";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
 import { useLogout } from "../hooks/auth";
 import Link from "next/link";
 import NavProfile from "./navbar-profile";
 import { usePathname } from "next/navigation";
 import { LinkItems } from "./utils/constants";
+import SearchBar from "./search-bar";
 
 export default function SidebarWithHeader({
   children,
@@ -187,16 +186,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         aria-label="open menu"
         icon={<FiMenu />}
       />
-      <Input
-        display={{ base: "none", md: "block" }}
-        w="20rem"
-        placeholder="Search...."
-        borderColor={useColorModeValue("gray.300", "gray.400")}
-        borderRadius="5px"
-        focusBorderColor="none"
-        ml={{ base: "1rem", md: "0rem" }}
-        mr={{ base: "0rem", md: "1rem" }}
-      />
+
+      <SearchBar w={{ base: "10rem", sm: "18rem" }} />
+
       <Button
         aria-label="Toggle Color Mode"
         onClick={toggleColorMode}
@@ -205,17 +197,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       >
         {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun />}
       </Button>
-      <HStack spacing={{ base: "0", md: "2" }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
-        <Flex alignItems={"center"}>
-          <NavProfile />
-        </Flex>
-      </HStack>
+
+      <Flex alignItems={"center"}>
+        <NavProfile />
+      </Flex>
     </Flex>
   );
 };
