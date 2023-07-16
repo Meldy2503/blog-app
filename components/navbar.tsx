@@ -80,8 +80,9 @@ export default function WithSubnavigation() {
           <Stack
             flex={{ base: 1, md: 0 }}
             justify={"flex-end"}
+            align={"center"}
             direction={"row"}
-            spacing={{ base: 2, md: 6 }}
+            spacing={{ base: 0.5, sm: 3, md: 6 }}
           >
             <Button
               aria-label="Toggle Color Mode"

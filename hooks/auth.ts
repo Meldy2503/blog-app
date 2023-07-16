@@ -43,13 +43,6 @@ export function useAuth() {
       setLoading(false);
     }
 
-    if (!authUser) {
-      if (pathname.includes("/dashboard")) {
-        router.push("/");
-        return;
-      }
-    }
-
     if (!authLoading) {
       if (authUser) fetchData();
       else setLoading(false); // Not signed in

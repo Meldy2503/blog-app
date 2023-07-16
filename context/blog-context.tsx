@@ -55,6 +55,7 @@ export interface Posts {
   title?: string;
   postedOn?: any;
   likes?: string[];
+  bookmarks?: string[];
   bannerImage: string;
   postLength?: number;
 }

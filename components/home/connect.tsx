@@ -81,7 +81,7 @@ const Connect = () => {
             href="/auth/sign-up"
             bg="brand.600"
             color="brand.100"
-            w="fit-content"
+            w="8rem"
           >
             Get started{" "}
           </Button>

@@ -14,7 +14,6 @@ import { HeroImg } from "./hero-img";
 
 const LandingPage = () => {
   const { colorMode } = useColorMode();
-  const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   return (
     <Wrapper

@@ -24,6 +24,7 @@ import { useAuth } from "../../../hooks/auth";
 import { usePosts, usePostsUid } from "../../../hooks/posts";
 import Loader from "../../../components/utils/spinner";
 import { BlogContext } from "../../../context/blog-context";
+import { ImFilesEmpty } from "react-icons/im";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
@@ -169,11 +170,17 @@ const Dashboard = () => {
                     </Box>
                   ))
                 ) : (
-                  <Center>
-                    <Text pb="20rem" pt="10rem">
-                      You have no published posts yet
-                    </Text>
-                  </Center>
+                  <Flex
+                    mt="8rem"
+                    mb="14rem"
+                    align={"center"}
+                    justify={"center"}
+                    direction={"column"}
+                    gap="2rem"
+                  >
+                    <Icon as={ImFilesEmpty} boxSize={36} />
+                    <Text>You have no Published Posts yet</Text>
+                  </Flex>
                 )}
               </TabPanel>
 

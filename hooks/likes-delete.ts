@@ -11,9 +11,7 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { uuidv4 } from "@firebase/util";
-import { ErrorToast, SuccessToast } from "../components/utils/toast";
+import { SuccessToast } from "../components/utils/toast";
 
 interface ToggleLikeProps {
   email: string;

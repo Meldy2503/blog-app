@@ -9,6 +9,7 @@ import {
   Center,
   Flex,
   Heading,
+  Icon,
   Text,
   useColorMode,
 } from "@chakra-ui/react";
@@ -26,6 +27,7 @@ import {
 import { usePostsUid } from "../../../../hooks/posts";
 import { useUsers } from "../../../../hooks/users";
 import Loader from "../../../../components/utils/spinner";
+import { ImFilesEmpty } from "react-icons/im";
 
 const AllProfile = () => {
   const { colorMode } = useColorMode();
@@ -180,7 +182,16 @@ const AllProfile = () => {
             {userPosts?.length ? (
               userProfilePosts
             ) : (
-              <Center mt="10rem">No published posts yet</Center>
+              <Flex
+                mt="12rem"
+                align={"center"}
+                justify={"center"}
+                direction={"column"}
+                gap="2rem"
+              >
+                <Icon as={ImFilesEmpty} boxSize={32} />
+                <Text>You have no Published Posts yet</Text>
+              </Flex>
             )}
           </Box>
         </Flex>

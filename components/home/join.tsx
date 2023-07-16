@@ -58,12 +58,7 @@ const Join = () => {
               Software developer at Apple
             </Text>
           </Flex>
-          <Button
-            href="/auth/sign-up"
-            bg="#543EE0"
-            color="#fff"
-            w="fit-content"
-          >
+          <Button href="/auth/sign-up" bg="#543EE0" color="#fff" w="8rem">
             Join chatter
           </Button>
         </Box>

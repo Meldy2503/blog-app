@@ -1,15 +1,10 @@
 import {
-  arrayRemove,
-  arrayUnion,
   doc,
-  updateDoc,
   collection,
-  deleteDoc,
   orderBy,
   query,
   setDoc,
   where,
-  getDoc,
 } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../firebase";
@@ -24,24 +19,7 @@ export interface Comment {
   date?: number;
   email?: string;
 }
-// for likes functionality
-// export function useToggleLike({ id, isLiked, email }: ToggleLikeProps) {
-//   const [isLoading, setLoading] = useState(false);
 
-//   async function toggleLike() {
-//     setLoading(true);
-
-//     const docRef = doc(db, "articles", id);
-//     await updateDoc(docRef, {
-//       likes: isLiked ? arrayRemove(email) : arrayUnion(email),
-//     });
-//     setLoading(false);
-//   }
-
-//   return { toggleLike, isLoading };
-// }
-
-// add comments functionality
 export function useAddComment({
   postID,
   email,
