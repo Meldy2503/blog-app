@@ -15,6 +15,7 @@ import {
   FlexProps,
   Button,
   useColorMode,
+  Skeleton,
 } from "@chakra-ui/react";
 import { FiMenu, FiLogOut } from "react-icons/fi";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
@@ -24,6 +25,10 @@ import NavProfile from "./navbar-profile";
 import { usePathname } from "next/navigation";
 import { LinkItems } from "./utils/constants";
 import SearchBar from "./search-bar";
+import { usePosts } from "../hooks/posts";
+import { FiTrendingUp } from "react-icons/fi";
+import { capitalizeName } from "./utils/functions";
+import ListSkeleton from "./utils/list=skeleton";
 
 export default function SidebarWithHeader({
   children,
@@ -65,6 +70,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
   const { colorMode } = useColorMode();
   const currentRoute = usePathname();
   const { logout, isLoading } = useLogout();
+  const { posts, isLoading: postLoading } = usePosts();
+
   const activeColor = colorMode === "dark" ? "#d0d0d0" : "#626262";
 
   return (
@@ -141,6 +148,24 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
               ))}
             </Flex>
           )}
+          <Flex mt="1.5rem" align="center" gap=".5rem">
+            <Text>Trending Tags</Text>
+            <Icon as={FiTrendingUp} />
+          </Flex>
+          {postLoading && <ListSkeleton />}
+          {Array.from(
+            new Set(posts?.slice(0, 7).map((post) => post?.category))
+          ).map((item) => {
+            return (
+              <Box key={item}>
+                <Box pl="2rem" fontSize="1rem" mt="1rem">
+                  <Link href={`/dashboard/category/${item}`}>
+                    {capitalizeName(item)}
+                  </Link>
+                </Box>
+              </Box>
+            );
+          })}
         </Flex>
       ))}
       <Flex

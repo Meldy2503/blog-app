@@ -11,40 +11,19 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { VscBook } from "react-icons/vsc";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Posts } from "../context/blog-context";
 import AuthorData from "./author-data";
 import { capitalizeName, formatDate } from "./utils/functions";
 import Loader from "./utils/spinner";
 import { MarkdownRenderer } from "./markdown-styles";
-import { usePosts } from "../hooks/posts";
 import { useUsers } from "../hooks/users";
 
-interface Props {
-  post: Posts;
-  setPost: React.Dispatch<React.SetStateAction<Posts | any>>;
-}
-
-const ViewPost = ({ post, setPost }: Props) => {
+const ViewPost = ({ post }: any) => {
   const { colorMode } = useColorMode();
   const [isMobile] = useMediaQuery("(max-width: 500px)");
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { posts, isLoading: postsLoading } = usePosts();
   const { users, isLoading: userLoading } = useUsers(post?.author);
   const capitalizedName = capitalizeName(users?.name);
 
-  useEffect(() => {
-    if (posts?.length === 0) {
-      return;
-    }
-    const url = `${pathname}?${searchParams}`;
-    const id = url.split("/").pop()?.replace("?", "");
-    const selectedPost = posts?.find((post) => post?.id === id);
-    setPost(selectedPost);
-  }, [posts, setPost, pathname, searchParams]);
-
-  if (postsLoading || userLoading) {
+  if (userLoading) {
     return <Loader />;
   }
 

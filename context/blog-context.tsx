@@ -51,12 +51,12 @@ export interface Posts {
   author: string;
   brief?: string;
   body: string;
-  category?: string;
+  category?: string | any;
   title?: string;
   postedOn?: any;
   likes?: string[];
   bookmarks?: string[];
-  bannerImage: string;
+  bannerImage?: File | any;
   postLength?: number;
 }
 
@@ -66,8 +66,8 @@ export interface Entry {
   body: string;
   category?: string;
   postedOn?: any;
-  title: string;
-  bannerImage?: string | any;
+  title?: string;
+  bannerImage?: File | any;
   postLength: number;
 }
 

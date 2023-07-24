@@ -4,12 +4,19 @@ import { Box, Heading, useColorMode } from "@chakra-ui/react";
 import Sidebar from "../../../../components/sidebar";
 import ViewPost from "../../../../components/post-id";
 import NewComment from "../../../../components/comments/write-comment";
-import { Posts } from "../../../../context/blog-context";
 import CommentList from "../../../../components/comments/comment-list";
+import { usePost } from "../../../../hooks/posts";
+import { useParams } from "next/navigation";
+import Loader from "../../../../components/utils/spinner";
 
 const ViewPostId = () => {
+  const { slug } = useParams();
   const { colorMode } = useColorMode();
-  const [post, setPost] = useState<Posts | any>([]);
+  const { singlePost: post, isLoading } = usePost(slug);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <Sidebar>
@@ -21,7 +28,7 @@ const ViewPostId = () => {
         py={{ base: "1rem", lg: "2rem" }}
       >
         <Box w={{ base: "100%", lg: "70%" }} m="auto" pt="2rem">
-          <ViewPost post={post} setPost={setPost} />
+          <ViewPost post={post} />
           <Box>
             <Heading fontSize={"1.6rem"} mt="4rem" mb="1rem">
               Comments

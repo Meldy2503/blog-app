@@ -6,11 +6,7 @@ import { useComments } from "../../hooks/comments";
 import Comment from "./comments";
 import { Stack } from "@chakra-ui/react";
 
-interface CommentListProps {
-  post: Posts;
-}
-
-const CommentList: React.FC<CommentListProps> = ({ post }) => {
+const CommentList = ({ post }: any) => {
   const { id } = post;
 
   const { comments, isLoading } = useComments(id?.toString() || "");

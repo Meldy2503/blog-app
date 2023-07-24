@@ -19,6 +19,7 @@ interface ToggleLikeProps {
   id: string;
 }
 
+// to toggle like icon
 export function useToggleLike({ id, isLiked, email }: ToggleLikeProps) {
   const [isLoading, setLoading] = useState(false);
 
@@ -35,6 +36,7 @@ export function useToggleLike({ id, isLiked, email }: ToggleLikeProps) {
   return { toggleLike, isLoading };
 }
 
+// to delete a user's post
 export function useDeletePost(id: string) {
   const [isLoading, setLoading] = useState(false);
 

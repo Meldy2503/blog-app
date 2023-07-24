@@ -48,7 +48,7 @@ const Dashboard = () => {
         py="1rem"
         color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
       >
-        <Box w={{ base: "100%", lg: "80%" }} m="auto" pt="2rem">
+        <Box w={{ base: "100%", lg: "80%", xl: "70%" }} m="auto" pt="2rem">
           <Flex
             justify={"space-between"}
             mb="2.5rem"
@@ -209,4 +209,3 @@ const Dashboard = () => {
   );
 };
 export default Dashboard;
-// export default ProtectedLayout(Dashboard);

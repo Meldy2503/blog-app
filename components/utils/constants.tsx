@@ -2,7 +2,6 @@ import React from "react";
 import { BsLayoutWtf, BsBookmarks } from "react-icons/bs";
 import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
 import { IconType } from "react-icons";
-import { FiTrendingUp } from "react-icons/fi";
 
 export interface NavItem {
   label: string;
@@ -91,33 +90,6 @@ export const NAV_ITEMS: NavItem[] = [
   },
 ];
 
-export const category = [
-  {
-    id: 1,
-    name: "Politics",
-  },
-  {
-    id: 2,
-    name: "Programming",
-  },
-  {
-    id: 3,
-    name: "Data Science",
-  },
-  {
-    id: 4,
-    name: "Relationships",
-  },
-  {
-    id: 5,
-    name: "Technology",
-  },
-  {
-    id: 6,
-    name: "Artificial Intelligence",
-  },
-];
-
 export const follow = [
   {
     id: 1,
@@ -163,27 +135,6 @@ export const LinkItems: Array<LinkItemProps> = [
         subIcon: MdOutlineAnalytics,
         subName: "Analytics",
         href: "/dashboard/analytics",
-      },
-    ],
-  },
-  {
-    name: "Trending Tags",
-    icon: FiTrendingUp,
-    children: [
-      {
-        subName: "Programming",
-      },
-      {
-        subName: "Data science",
-      },
-      {
-        subName: "Technology ",
-      },
-      {
-        subName: "Machine learning",
-      },
-      {
-        subName: "Politics",
       },
     ],
   },

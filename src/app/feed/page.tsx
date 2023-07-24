@@ -34,30 +34,12 @@ const Posts = () => {
             {searchResults.length
               ? searchResults?.map((post: any) => (
                   <Box key={post?.id}>
-                    <Feeds
-                      post={post}
-                      borderRadius="none"
-                      borderBottom={`1px solid ${
-                        colorMode === "dark"
-                          ? "rgb(255, 255, 255, .2)"
-                          : "#d0d0d0"
-                      }`}
-                      href={`/feed/${post?.id}`}
-                    />
+                    <Feeds post={post} href={`/feed/${post?.id}`} />
                   </Box>
                 ))
               : posts?.map((post: any) => (
                   <Box key={post?.id}>
-                    <Feeds
-                      post={post}
-                      borderRadius="none"
-                      borderBottom={`1px solid ${
-                        colorMode === "dark"
-                          ? "rgb(255, 255, 255, .2)"
-                          : "#d0d0d0"
-                      }`}
-                      href={`/feed/${post?.id}`}
-                    />
+                    <Feeds post={post} href={`/feed/${post?.id}`} />
                   </Box>
                 ))}
           </>

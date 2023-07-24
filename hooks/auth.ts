@@ -4,7 +4,7 @@ import {
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { auth, db } from "../firebase";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   setDoc,
   doc,
@@ -19,13 +19,24 @@ import isUsernameExists from "../components/utils/user-exists";
 import { SuccessToast, ErrorToast } from "../components/utils/toast";
 import { Users } from "../context/blog-context";
 
+interface SignUpProps {
+  username: string;
+  email: string;
+  password: string;
+  name: string;
+  redirectTo: string;
+}
+interface SignInProps {
+  email: string;
+  password: string;
+  redirectTo: string;
+}
+
 // to get a loged in user
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<DocumentData | null>(null);
-  const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     async function fetchData() {
@@ -50,19 +61,6 @@ export function useAuth() {
   }, [authLoading, authUser]);
 
   return { user, isLoading, error, setUser };
-}
-
-interface SignUpProps {
-  username: string;
-  email: string;
-  password: string;
-  name: string;
-  redirectTo: string;
-}
-interface SignInProps {
-  email: string;
-  password: string;
-  redirectTo: string;
 }
 
 // to log in

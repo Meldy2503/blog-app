@@ -8,6 +8,9 @@ import {
   Input,
   useColorMode,
   Icon,
+  Tooltip,
+  IconButton,
+  FormLabel,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
@@ -25,6 +28,8 @@ import { BsArrowLeftSquare } from "react-icons/bs";
 import { categories } from "../../../../components/utils/constants";
 import { useAddPost } from "../../../../hooks/posts";
 import { uuidv4 } from "@firebase/util";
+import Image from "next/image";
+import { FiImage } from "react-icons/fi";
 
 const LiteEditor: React.FC = () => {
   const { user } = useAuth();
@@ -34,7 +39,7 @@ const LiteEditor: React.FC = () => {
   const { colorMode } = useColorMode();
   const mdParser = new MarkdownIt();
   const router = useRouter();
-  const { addPost, isLoading: publishingPost } = useAddPost();
+  const { addPost, isLoading: publishingPost, fileURL, setFile } = useAddPost();
   const id = uuidv4();
 
   const handleGoBacK = () => {
@@ -53,8 +58,7 @@ const LiteEditor: React.FC = () => {
       entry.title === "" ||
       entry.body === "" ||
       entry.category === "" ||
-      entry.brief === "" ||
-      entry.bannerImage === ""
+      entry.brief === ""
     ) {
       ErrorToast("Please fill all the fields!");
     } else {
@@ -71,6 +75,10 @@ const LiteEditor: React.FC = () => {
       });
     }
   }
+
+  const handleBannerImgChange = (e: any) => {
+    setFile(e.target.files[0]);
+  };
 
   const handleCategoryChange = (selectedCategory: any) => {
     setEntry((prevEntry) => ({
@@ -178,19 +186,36 @@ const LiteEditor: React.FC = () => {
               value={entry.brief}
               required
             />
-            <Input
-              placeholder="Add cover image URL..."
-              type="text"
-              border="none"
-              mt="1rem"
-              px="0"
-              fontSize={"1.2rem"}
-              focusBorderColor="none"
-              name="bannerImage"
-              onChange={handleInputChange}
-              value={entry.bannerImage}
-              required
-            />
+            {fileURL && (
+              <Box mb={4}>
+                <Image
+                  src={fileURL}
+                  width={300}
+                  height={300}
+                  alt={"banner image"}
+                />
+              </Box>
+            )}
+            <HStack>
+              <Box>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleBannerImgChange}
+                  id="image-input"
+                  display={"none"}
+                />
+                <FormLabel htmlFor="image-input" m={0}>
+                  <Tooltip hasArrow label="Upload Image">
+                    <IconButton
+                      as={"span"}
+                      aria-label="Image Select"
+                      icon={<FiImage fontSize="25px" />}
+                    />
+                  </Tooltip>
+                </FormLabel>
+              </Box>
+            </HStack>
             <Flex
               my="1.8rem"
               gap="1rem"
@@ -236,7 +261,7 @@ const LiteEditor: React.FC = () => {
                       borderRadius={"6rem"}
                       cursor={"pointer"}
                       className="slide-in-from-left"
-                      onClick={() => handleCategoryChange(category.label)}
+                      onClick={() => handleCategoryChange(category.value)}
                     >
                       {category.label}+
                     </Button>

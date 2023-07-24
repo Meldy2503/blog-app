@@ -8,16 +8,19 @@ import {
   Flex,
   Heading,
   useMediaQuery,
+  Skeleton,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "../hooks/auth";
-import { category, follow } from "./utils/constants";
+import { follow } from "./utils/constants";
 import SearchBar from "./search-bar";
+import { usePosts } from "../hooks/posts";
 
 const SideNav = ({ bg, btnBg }: any) => {
   const { colorMode } = useColorMode();
   const { user } = useAuth();
+  const { posts, isLoading } = usePosts();
   const [isMobile] = useMediaQuery("(max-width: 768px)");
 
   return (
@@ -49,18 +52,21 @@ const SideNav = ({ bg, btnBg }: any) => {
           Recommended topics
         </Text>
         <Flex gap="1rem" flexWrap={"wrap"}>
-          {category.map((item) => {
+          {Array.from(
+            new Set(posts?.slice(0, 7).map((post) => post?.category))
+          ).map((item) => {
             return (
-              <Text
-                key={item.id}
-                bg={btnBg}
-                py=".2rem"
-                px=".9rem"
-                borderRadius="20px"
-                fontSize=".9rem"
-              >
-                {item.name}
-              </Text>
+              <Skeleton isLoaded={!isLoading} key={item}>
+                <Box
+                  bg={btnBg}
+                  py=".2rem"
+                  px=".9rem"
+                  borderRadius="20px"
+                  fontSize=".9rem"
+                >
+                  <Link href={`/categories/${item}`}>{item}</Link>
+                </Box>
+              </Skeleton>
             );
           })}
         </Flex>

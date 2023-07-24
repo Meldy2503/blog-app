@@ -15,11 +15,7 @@ import { useAddComment } from "../../hooks/comments";
 import TextareaAutoSize from "react-textarea-autosize";
 import { Posts } from "../../context/blog-context";
 
-interface NewCommentProps {
-  post: Posts;
-}
-
-const NewComment: React.FC<NewCommentProps> = ({ post }) => {
+const NewComment = ({ post }: any) => {
   const postID = post?.id || "";
   const { user, isLoading: authLoading } = useAuth();
   const { addComment, isLoading: commentLoading } = useAddComment({

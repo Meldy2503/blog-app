@@ -49,7 +49,7 @@ const BookMarks = () => {
         py="1rem"
         color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
       >
-        <Box w={{ base: "100%", lg: "80%" }} m="auto" pt="2rem">
+        <Box w={{ base: "100%", lg: "90%", xl: "75%" }} m="auto" pt="2rem">
           <Flex
             justify={"space-between"}
             mb="2.5rem"
