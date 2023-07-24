@@ -8,7 +8,6 @@ import {
   Input,
   useColorMode,
   Icon,
-  Tooltip,
   IconButton,
   FormLabel,
 } from "@chakra-ui/react";
@@ -26,10 +25,11 @@ import { ErrorToast } from "../../../../components/utils/toast";
 import { calculateReadTime } from "../../../../components/utils/functions";
 import { BsArrowLeftSquare } from "react-icons/bs";
 import { categories } from "../../../../components/utils/constants";
-import { useAddPost } from "../../../../hooks/posts";
+import { useAddSavePost } from "../../../../hooks/posts";
 import { uuidv4 } from "@firebase/util";
 import Image from "next/image";
 import { FiImage } from "react-icons/fi";
+import { Tooltip } from "react-tooltip";
 
 const LiteEditor: React.FC = () => {
   const { user } = useAuth();
@@ -39,7 +39,8 @@ const LiteEditor: React.FC = () => {
   const { colorMode } = useColorMode();
   const mdParser = new MarkdownIt();
   const router = useRouter();
-  const { addPost, isLoading: publishingPost, fileURL, setFile } = useAddPost();
+  const { isLoading, isDraftLoading, fileURL, setFile, addSavePost } =
+    useAddSavePost();
   const id = uuidv4();
 
   const handleGoBacK = () => {
@@ -49,36 +50,41 @@ const LiteEditor: React.FC = () => {
     setShowCategory(!showCategory);
   };
 
-  async function handlePublish(
-    entry: Entry,
-    event: React.MouseEvent<HTMLButtonElement>
-  ) {
-    event.preventDefault();
-    if (
-      entry.title === "" ||
-      entry.body === "" ||
-      entry.category === "" ||
-      entry.brief === ""
-    ) {
-      ErrorToast("Please fill all the fields!");
-    } else {
-      addPost({
-        author: currentUser?.email || user?.email,
-        title: entry.title,
-        bannerImage: entry.bannerImage,
-        body: entry.body,
-        category: entry.category,
-        postLength: entry.postLength,
-        postedOn: Date.now(),
-        brief: entry.brief,
-        id,
-      });
-    }
-  }
-
   const handleBannerImgChange = (e: any) => {
     setFile(e.target.files[0]);
   };
+
+  async function handleAddSave(
+    entry: Entry,
+    event: React.MouseEvent<HTMLButtonElement>,
+    isSave: boolean
+  ) {
+    event.preventDefault();
+
+    if (
+      !isSave &&
+      (entry.title === "" ||
+        entry.body === "" ||
+        entry.category === "" ||
+        entry.brief === "")
+    ) {
+      ErrorToast("Please fill all the fields");
+    } else {
+      addSavePost(
+        {
+          author: currentUser?.email || user?.email,
+          title: entry.title,
+          body: entry.body,
+          category: entry.category,
+          postLength: entry.postLength,
+          postedOn: Date.now(),
+          brief: entry.brief,
+          id,
+        },
+        isSave
+      );
+    }
+  }
 
   const handleCategoryChange = (selectedCategory: any) => {
     setEntry((prevEntry) => ({
@@ -132,7 +138,8 @@ const LiteEditor: React.FC = () => {
           </Box>
           <ButtonGroup as={Flex} justifyContent={"flex-end"} gap="1rem">
             <Button
-              isDisabled={true}
+              onClick={(event) => handleAddSave(entry, event, true)}
+              isLoading={isDraftLoading}
               type="submit"
               bg={colorMode === "light" ? "#d0d0d0" : "#424660"}
               shadow={"md"}
@@ -140,10 +147,11 @@ const LiteEditor: React.FC = () => {
             >
               Save to draft
             </Button>
+
             <Button
               type="submit"
-              onClick={(event) => handlePublish(entry, event)}
-              isLoading={publishingPost}
+              onClick={(event) => handleAddSave(entry, event, false)}
+              isLoading={isLoading}
               bg="#29a546"
               _hover={{ bg: "#308b45" }}
               color={"white"}
@@ -176,7 +184,7 @@ const LiteEditor: React.FC = () => {
             <Input
               placeholder="Write a brief description..."
               fontSize={"1.2rem"}
-              mt="1rem"
+              my="1rem"
               type="text"
               px="0"
               border="none"
@@ -190,52 +198,59 @@ const LiteEditor: React.FC = () => {
               <Box mb={4}>
                 <Image
                   src={fileURL}
-                  width={300}
+                  width={400}
                   height={300}
                   alt={"banner image"}
                 />
               </Box>
             )}
-            <HStack>
-              <Box>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleBannerImgChange}
-                  id="image-input"
-                  display={"none"}
-                />
-                <FormLabel htmlFor="image-input" m={0}>
-                  <Tooltip hasArrow label="Upload Image">
-                    <IconButton
-                      as={"span"}
-                      aria-label="Image Select"
-                      icon={<FiImage fontSize="25px" />}
-                    />
-                  </Tooltip>
-                </FormLabel>
-              </Box>
-            </HStack>
+
             <Flex
-              my="1.8rem"
+              mt="1.3rem"
+              mb="2rem"
               gap="1rem"
               justify={"space-between"}
               direction="column"
             >
               <HStack align={"center"} justify={"space-between"}>
-                <Button
-                  onClick={handleShowCategory}
-                  cursor={"pointer"}
-                  w="fit-content"
-                  borderRadius="7rem"
-                  px="1.2rem"
-                  py=".4rem"
-                  bg={colorMode === "light" ? "#d0d0d0" : "#424660"}
-                  shadow="md"
-                  color={colorMode === "light" ? "dark" : "#d0d0d0"}
-                >
-                  {entry.category || "Select Category"}
-                </Button>
+                <HStack gap="1rem">
+                  <Button
+                    onClick={handleShowCategory}
+                    cursor={"pointer"}
+                    w="fit-content"
+                    borderRadius="5px"
+                    px="1rem"
+                    py=".4rem"
+                    bg={colorMode === "light" ? "#d0d0d0" : "#424660"}
+                    shadow="md"
+                    color={colorMode === "light" ? "dark" : "#d0d0d0"}
+                  >
+                    {entry.category || "Select Category"}
+                  </Button>
+                  <Box>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleBannerImgChange}
+                      id="image-input"
+                      display={"none"}
+                    />
+                    <FormLabel htmlFor="image-input" m={0}>
+                      <Tooltip
+                        id="image-icon"
+                        place="right"
+                        variant={colorMode === "dark" ? "info" : "dark"}
+                        content="Upload Image"
+                      />
+                      <IconButton
+                        data-tooltip-id="image-icon"
+                        as={"span"}
+                        aria-label="Image Select"
+                        icon={<FiImage fontSize="25px" />}
+                      />
+                    </FormLabel>
+                  </Box>
+                </HStack>
                 <PreviewModal />
               </HStack>
 
@@ -270,6 +285,7 @@ const LiteEditor: React.FC = () => {
               )}
             </Flex>
           </Flex>
+
           <MdEditor
             style={{ height: "500px" }}
             renderHTML={(text) => mdParser.render(text)}

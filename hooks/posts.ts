@@ -20,7 +20,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 type FileURL = string | undefined;
 
-// to fetch a single posts
+// to fetch a single published-post/ draft-post
 export function usePost(id: string) {
   const q = doc(db, "articles", id);
   const [singlePost, isLoading] = useDocumentData(q);
@@ -49,42 +49,59 @@ export function usePosts() {
 }
 
 // to add a new created post
-export function useAddPost() {
+interface UseAddSavePostResult {
+  isLoading: boolean;
+  isDraftLoading: boolean;
+  fileURL: FileURL;
+  setFile: (file: File | null) => void;
+  addSavePost: (post: Posts, isSave: boolean) => void;
+}
+
+export function useAddSavePost(): UseAddSavePostResult {
   const [isLoading, setLoading] = useState(false);
+  const [isDraftLoading, setDraftLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const router = useRouter();
+  async function addSavePost(post: Posts, isSave: boolean) {
+    isSave ? setDraftLoading(true) : setLoading(true);
 
-  async function addPost(post: Posts) {
-    setLoading(true);
     try {
-      const fileRef = ref(storage, "bannerImg/" + Date.now());
-      if (!file) {
-        ErrorToast("Please Select a banner image!");
-        return;
-      } else {
+      const id = uuidv4();
+      if (file) {
+        const fileRef = ref(storage, "bannerImg/" + Date.now());
         await uploadBytes(fileRef, file);
         const bannerURL = await getDownloadURL(fileRef);
         post.bannerImage = bannerURL;
       }
 
-      const id = uuidv4();
-      await setDoc(doc(db, "articles", id), {
+      await setDoc(doc(db, isSave ? "drafts" : "articles", id), {
         ...post,
         id,
         likes: [],
+        bookmarks: [],
       });
-      SuccessToast("Article Published Successfully!");
-      router.push("/dashboard");
+      SuccessToast(
+        isSave ? "Article Saved to Drafts!" : "Article Published Successfully!"
+      );
+
       window.location.reload();
     } catch (error: any) {
-      ErrorToast("Error Publishing Article!");
+      ErrorToast(isSave ? "An error occurred" : "Error Publishing Article!");
     } finally {
       setLoading(false);
+      setDraftLoading(false);
     }
   }
+
   const fileURL: FileURL = file ? URL.createObjectURL(file) : undefined;
-  return { addPost, setFile, fileURL, isLoading };
+
+  return {
+    isLoading,
+    isDraftLoading,
+    fileURL,
+    setFile,
+    addSavePost,
+  };
 }
 
 // to fetch posts based on category

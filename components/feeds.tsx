@@ -119,7 +119,8 @@ export const Feeds = ({
         </Flex>
       </Link>
       <Box mb="1rem">
-        <PostActions post={post} />
+        {" "}
+        <PostActions post={post} />{" "}
       </Box>
 
       <hr />

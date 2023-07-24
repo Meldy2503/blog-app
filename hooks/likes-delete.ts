@@ -59,6 +59,24 @@ export function useDeletePost(id: string) {
       setLoading(false);
     }
   }
-
   return { deletePost, isLoading };
+}
+
+// to delete a user's draft post
+export function useDeleteDraftPost(id: string) {
+  const [isLoading, setLoading] = useState(false);
+
+  async function deleteDraftPost() {
+    const res = window.confirm("Are you sure you want to delete this draft?");
+
+    if (res) {
+      setLoading(true);
+      // Delete post document
+      await deleteDoc(doc(db, "drafts", id));
+      SuccessToast("Draft deleted!");
+      setLoading(false);
+    }
+  }
+
+  return { deleteDraftPost, isLoading };
 }

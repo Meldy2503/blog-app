@@ -15,7 +15,7 @@ import {
 import { usePosts } from "../../../../hooks/posts";
 import Feeds from "../../../../components/feeds";
 import { useAuth } from "../../../../hooks/auth";
-import { useBookmarkedPosts } from "../../../../hooks/bookmark";
+import { useBookmarkedPosts } from "../../../../hooks/bookmark-drafts";
 import Loader from "../../../../components/utils/spinner";
 import { FaPencilAlt } from "react-icons/fa";
 import { ImFilesEmpty } from "react-icons/im";
@@ -94,7 +94,7 @@ const BookMarks = () => {
                         : "#d0d0d0"
                     }`}
                     px={{ base: "1rem", xl: "1.5rem" }}
-                    href={`/dashboard/${post.id}`}
+                    href={`/dashboard/${post?.id}`}
                   />
                 </Box>
               ))

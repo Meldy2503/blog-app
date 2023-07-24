@@ -12,7 +12,10 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../firebase";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { uuidv4 } from "@firebase/util";
 
 interface ToggleBookmarkProps {
@@ -65,4 +68,24 @@ export function useBookmarkedPosts(email: string | null = null) {
   if (error) throw error;
 
   return { userBookmarks, isLoading };
+}
+
+// to fetch draft post(s) of a user
+export function useDrafts(author: string | null = null) {
+  const q = query(
+    collection(db, "drafts"),
+    orderBy("postedOn", "desc"),
+    where("author", "==", author)
+  );
+
+  const [userDrafts, isLoading, error] = useCollectionData(q);
+  if (error) throw error;
+  return { userDrafts, isLoading };
+}
+
+// to fetch a single draft post
+export function useDraftPost(id: string) {
+  const q = doc(db, "drafts", id);
+  const [singleDraftPost, isLoading] = useDocumentData(q);
+  return { singleDraftPost, isLoading };
 }

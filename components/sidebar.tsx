@@ -28,7 +28,7 @@ import SearchBar from "./search-bar";
 import { usePosts } from "../hooks/posts";
 import { FiTrendingUp } from "react-icons/fi";
 import { capitalizeName } from "./utils/functions";
-import ListSkeleton from "./utils/list=skeleton";
+import ListSkeleton from "./utils/skeleton";
 
 export default function SidebarWithHeader({
   children,

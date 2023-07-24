@@ -1,4 +1,3 @@
-import React from "react";
 import { BsLayoutWtf, BsBookmarks } from "react-icons/bs";
 import { MdOutlineDrafts, MdOutlineAnalytics } from "react-icons/md";
 import { IconType } from "react-icons";
@@ -87,27 +86,6 @@ export const NAV_ITEMS: NavItem[] = [
       },
     ],
     href: "/feed",
-  },
-];
-
-export const follow = [
-  {
-    id: 1,
-    name: "Anthony Smith",
-    title: "programmer",
-    src: "/assets/face-1.jpg",
-  },
-  {
-    id: 2,
-    name: "Mary Megan",
-    title: "Writer",
-    src: "/assets/face-5.jpg",
-  },
-  {
-    id: 3,
-    name: "Victor Omondi",
-    title: "Architect",
-    src: "/assets/face-6.jpg",
   },
 ];
 
