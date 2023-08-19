@@ -24,15 +24,23 @@ import { VscBook } from "react-icons/vsc";
 import Image from "next/image";
 import { MarkdownRenderer } from "./markdown-styles";
 import { calculateReadTime } from "./utils/functions";
+import { useAddSavePost } from "../hooks/posts";
 
 const PreviewModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
   const { entry } = useContext(BlogContext);
+  const { fileURL, setFile } = useAddSavePost();
 
   return (
     <>
-      <Button onClick={onOpen} bg="#aadfdf" shadow={"md"} color="#333">
+      <Button
+        onClick={onOpen}
+        bg={colorMode === "light" ? "transparent" : "#424660"}
+        shadow={"md"}
+        border="1px solid #424660"
+        color={colorMode === "light" ? "dark" : "#d0d0d0"}
+      >
         Preview
       </Button>
 
@@ -90,9 +98,9 @@ const PreviewModal = () => {
                     </Flex>
                   </Flex>
                   <Flex flex={0.7} mb="1.5rem">
-                    {entry?.bannerImage && (
+                    {fileURL && (
                       <Image
-                        src={entry?.bannerImage}
+                        src={fileURL}
                         alt="post image"
                         width={412}
                         height={142}

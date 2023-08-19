@@ -60,6 +60,34 @@ const AllProfile = () => {
     return <Loader />;
   }
 
+  const data = [
+    {
+      title: "Email",
+      value: users?.email,
+      default: "N/A",
+    },
+    {
+      title: "Username",
+      value: users?.username,
+      default: "N/A",
+    },
+    {
+      title: "Occupation",
+      value: users?.occupation,
+      default: "N/A",
+    },
+    {
+      title: "Posts",
+      value: userPosts?.length,
+      default: 0,
+    },
+    {
+      title: "Followers",
+      value: users?.followerCount,
+      default: 0,
+    },
+  ];
+
   return (
     <>
       <Navbar />
@@ -78,7 +106,7 @@ const AllProfile = () => {
           bgSize="cover"
           h="40vh"
           w="100%"
-        ></Box>
+        />
         <Avatar
           name={users?.name}
           size={"2xl"}
@@ -136,38 +164,20 @@ const AllProfile = () => {
           >
             <Flex fontSize="1rem" direction="column" gap="2rem">
               <Text fontSize={"1.1rem"} fontWeight={"bold"}>
-                ABOUT
+                PROFILE INFO
               </Text>
-              <Box gap="1.2rem">
-                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                  Email:
-                </Text>
-                <Text fontWeight={"bold"}>{users?.email}</Text>
-              </Box>
-              <Box gap="1.2rem">
-                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                  Username:
-                </Text>
-                <Text fontWeight={"bold"}>{users?.username || "N/A"}</Text>
-              </Box>
-              <Box gap="1.2rem">
-                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                  Occupation:
-                </Text>
-                <Text fontWeight={"bold"}>{users?.occupation || "Writer"}</Text>
-              </Box>
-              <Box gap="1.2rem">
-                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                  Posts:
-                </Text>
-                <Text fontWeight={"bold"}>{userPosts?.length || 0}</Text>
-              </Box>
-              <Box gap="1.2rem">
-                <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
-                  Followers:
-                </Text>
-                <Text fontWeight={"bold"}>{users?.followerCount ?? 0} </Text>
-              </Box>
+              {data.map((item, index) => {
+                return (
+                  <Box gap="1.2rem" key={index}>
+                    <Text color={colorMode === "dark" ? "#edeaea" : "#111"}>
+                      {item.title}:
+                    </Text>
+                    <Text fontWeight={"bold"}>
+                      {item.value || item.default}
+                    </Text>
+                  </Box>
+                );
+              })}
             </Flex>
           </Box>
 

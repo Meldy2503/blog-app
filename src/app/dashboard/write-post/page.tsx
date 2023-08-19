@@ -10,6 +10,7 @@ import {
   Icon,
   IconButton,
   FormLabel,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import MarkdownIt from "markdown-it";
@@ -30,6 +31,7 @@ import { uuidv4 } from "@firebase/util";
 import Image from "next/image";
 import { FiImage } from "react-icons/fi";
 import { Tooltip } from "react-tooltip";
+import ProtectedRoute from "../../../../components/protected-routes";
 
 const LiteEditor: React.FC = () => {
   const { user } = useAuth();
@@ -39,6 +41,7 @@ const LiteEditor: React.FC = () => {
   const { colorMode } = useColorMode();
   const mdParser = new MarkdownIt();
   const router = useRouter();
+  const [isMobile] = useMediaQuery("(max-width: 320px)");
   const { isLoading, isDraftLoading, fileURL, setFile, addSavePost } =
     useAddSavePost();
   const id = uuidv4();
@@ -70,7 +73,7 @@ const LiteEditor: React.FC = () => {
     ) {
       ErrorToast("Please fill all the fields");
     } else {
-      addSavePost(
+      await addSavePost(
         {
           author: currentUser?.email || user?.email,
           title: entry.title,
@@ -83,6 +86,14 @@ const LiteEditor: React.FC = () => {
         },
         isSave
       );
+      router.push("/dashboard");
+      setEntry({
+        title: "",
+        body: "",
+        category: "",
+        brief: "",
+        postLength: 0,
+      });
     }
   }
 
@@ -117,7 +128,7 @@ const LiteEditor: React.FC = () => {
   }, [entry?.body, setEntry]);
 
   return (
-    <>
+    <ProtectedRoute>
       <Navbar />
       <Wrapper>
         <HStack
@@ -129,6 +140,7 @@ const LiteEditor: React.FC = () => {
           borderBottom={`1px solid ${
             colorMode === "dark" ? "rgb(255, 255, 255, .1)" : "#d0d0d0"
           }`}
+          flexWrap={"wrap"}
         >
           <Box
             onClick={handleGoBacK}
@@ -136,20 +148,10 @@ const LiteEditor: React.FC = () => {
           >
             <Icon as={BsArrowLeftSquare} boxSize={"2rem"} />
           </Box>
-          <ButtonGroup as={Flex} justifyContent={"flex-end"} gap="1rem">
-            <Button
-              onClick={(event) => handleAddSave(entry, event, true)}
-              isLoading={isDraftLoading}
-              type="submit"
-              bg={colorMode === "light" ? "#d0d0d0" : "#424660"}
-              shadow={"md"}
-              color={colorMode === "light" ? "dark" : "#d0d0d0"}
-            >
-              Save to draft
-            </Button>
-
+          <ButtonGroup as={Flex} justifyContent={"flex-end"} gap=".5rem">
             <Button
               type="submit"
+              isDisabled={entry.body === ""}
               onClick={(event) => handleAddSave(entry, event, false)}
               isLoading={isLoading}
               bg="#29a546"
@@ -157,6 +159,18 @@ const LiteEditor: React.FC = () => {
               color={"white"}
             >
               Publish
+            </Button>
+            <Button
+              isDisabled={entry.body === ""}
+              onClick={(event) => handleAddSave(entry, event, true)}
+              isLoading={isDraftLoading}
+              type="submit"
+              bg={colorMode === "light" ? "transparent" : "#424660"}
+              shadow={"md"}
+              border="1px solid #424660"
+              color={colorMode === "light" ? "dark" : "#d0d0d0"}
+            >
+              Save as draft
             </Button>
           </ButtonGroup>
         </HStack>
@@ -194,16 +208,6 @@ const LiteEditor: React.FC = () => {
               value={entry.brief}
               required
             />
-            {fileURL && (
-              <Box mb={4}>
-                <Image
-                  src={fileURL}
-                  width={400}
-                  height={300}
-                  alt={"banner image"}
-                />
-              </Box>
-            )}
 
             <Flex
               mt="1.3rem"
@@ -212,7 +216,11 @@ const LiteEditor: React.FC = () => {
               justify={"space-between"}
               direction="column"
             >
-              <HStack align={"center"} justify={"space-between"}>
+              <HStack
+                align={"center"}
+                justify={"space-between"}
+                flexWrap={"wrap"}
+              >
                 <HStack gap="1rem">
                   <Button
                     onClick={handleShowCategory}
@@ -285,6 +293,22 @@ const LiteEditor: React.FC = () => {
               )}
             </Flex>
           </Flex>
+          {fileURL && (
+            <Box mb={4}>
+              <Image
+                src={fileURL}
+                width={800}
+                height={800}
+                alt={"banner image"}
+                style={{
+                  width: isMobile ? "100%" : "200px",
+                  height: isMobile ? "100%" : "200px",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                }}
+              />
+            </Box>
+          )}
 
           <MdEditor
             style={{ height: "500px" }}
@@ -303,7 +327,7 @@ const LiteEditor: React.FC = () => {
           />
         </form>
       </Wrapper>
-    </>
+    </ProtectedRoute>
   );
 };
 

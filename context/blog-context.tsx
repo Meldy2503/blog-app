@@ -29,7 +29,7 @@ export const BlogContext = createContext<{
     category: "",
     postedOn: Date.now(),
     title: "",
-    bannerImage: "",
+    bannerImage: File,
     postLength: 0,
   },
 });
@@ -75,7 +75,6 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchResults, setSearchResults] = useState<[] | any>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentUser, setCurrentUser] = useState<any>(null);
-  const { posts } = usePosts();
 
   const [entry, setEntry] = useState<Entry>({
     author: "",

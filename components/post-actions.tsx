@@ -146,8 +146,7 @@ const PostActions = ({ post }: any) => {
         />
 
         <HStack spacing={"0px"} data-tooltip-id="delete-icon">
-          {((!userLoading && user?.email === post?.author) ||
-            path.includes("/profile/")) && (
+          {!userLoading && user?.email === post?.author && (
             <IconButton
               mr="12px"
               aria-label="delete post"

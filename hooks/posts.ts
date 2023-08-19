@@ -83,8 +83,6 @@ export function useAddSavePost(): UseAddSavePostResult {
       SuccessToast(
         isSave ? "Article Saved to Drafts!" : "Article Published Successfully!"
       );
-
-      window.location.reload();
     } catch (error: any) {
       ErrorToast(isSave ? "An error occurred" : "Error Publishing Article!");
     } finally {

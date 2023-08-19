@@ -60,7 +60,7 @@ export function useAuth() {
     }
   }, [authLoading, authUser]);
 
-  return { user, isLoading, error, setUser };
+  return { user, authUser, isLoading, error, setUser };
 }
 
 // to log in
