@@ -25,7 +25,6 @@ export const categories = [
   { value: "travel", label: "Travel" },
   { value: "lifestyle", label: "Lifestyle" },
   { value: "programming", label: "Programming" },
-  { value: "health", label: "Health" },
   { value: "crypto", label: "Crypto" },
   { value: "marketing", label: "Marketing" },
   { value: "design", label: "Design" },
