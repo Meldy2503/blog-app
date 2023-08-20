@@ -128,7 +128,8 @@ const LiteEditor: React.FC = () => {
   }, [entry?.body, setEntry]);
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
+    <>
       <Navbar />
       <Wrapper>
         <HStack
@@ -327,7 +328,8 @@ const LiteEditor: React.FC = () => {
           />
         </form>
       </Wrapper>
-    </ProtectedRoute>
+    </>
+    // </ProtectedRoute>
   );
 };
 

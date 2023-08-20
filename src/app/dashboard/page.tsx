@@ -36,7 +36,7 @@ const Dashboard = () => {
   const sortedPosts = posts?.sort((a, b) => b?.postedOn - a?.postedOn);
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
       <Sidebar>
         <Box
           bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
@@ -202,7 +202,7 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Sidebar>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   );
 };
 export default Dashboard;

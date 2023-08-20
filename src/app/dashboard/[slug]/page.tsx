@@ -23,30 +23,30 @@ const ViewPostId = () => {
   }
 
   return (
-    <ProtectedRoute>
-      <Sidebar>
-        <Box
-          m="auto"
-          color={colorMode === "dark" ? "#b0afaf" : "#626262"}
-          bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
-          px={{ base: "1rem", xl: "2rem" }}
-          py={{ base: "1rem", lg: "2rem" }}
-        >
-          <Box w={{ base: "100%", lg: "70%" }} m="auto" pt="2rem">
-            <ViewPost post={post || draftPost} />
-            {!draftPost && (
-              <Box>
-                <Heading fontSize={"1.6rem"} mt="4rem" mb="1rem">
-                  Comments
-                </Heading>
-                <NewComment post={post} />
-                {post && <CommentList post={post} />}
-              </Box>
-            )}
-          </Box>
+    // <ProtectedRoute>
+    <Sidebar>
+      <Box
+        m="auto"
+        color={colorMode === "dark" ? "#b0afaf" : "#626262"}
+        bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
+        px={{ base: "1rem", xl: "2rem" }}
+        py={{ base: "1rem", lg: "2rem" }}
+      >
+        <Box w={{ base: "100%", lg: "70%" }} m="auto" pt="2rem">
+          <ViewPost post={post || draftPost} />
+          {!draftPost && (
+            <Box>
+              <Heading fontSize={"1.6rem"} mt="4rem" mb="1rem">
+                Comments
+              </Heading>
+              <NewComment post={post} />
+              {post && <CommentList post={post} />}
+            </Box>
+          )}
         </Box>
-      </Sidebar>
-    </ProtectedRoute>
+      </Box>
+    </Sidebar>
+    // </ProtectedRoute>
   );
 };
 
