@@ -8,32 +8,35 @@ import ProtectedRoute from "../../../../components/protected-routes";
 const Analytics = () => {
   const { colorMode } = useColorMode();
   return (
-    // <ProtectedRoute>
-    <Sidebar>
-      <Box
-        bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
-        px={{ base: "1rem", md: "2rem" }}
-        py="1rem"
-        color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
-        h="90vh"
-      >
-        <Box w={{ base: "100%", lg: "90%", xl: "75%" }} m="auto" pt="2rem">
-          <Heading
-            as={"h5"}
-            fontSize={{ base: "1.5rem", md: "1.7rem" }}
-            fontWeight={600}
-            color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
-            mb={".5rem"}
-          >
-            ANALYTICS{" "}
-          </Heading>
-          <Center mt="15rem" color={colorMode === "dark" ? "#f5f6f6" : "#000"}>
-            Coming soon
-          </Center>
+    <ProtectedRoute>
+      <Sidebar>
+        <Box
+          bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
+          px={{ base: "1rem", md: "2rem" }}
+          py="1rem"
+          color={colorMode === "dark" ? "#d0d0d0" : "#2b2b2b"}
+          h="90vh"
+        >
+          <Box w={{ base: "100%", lg: "90%", xl: "75%" }} m="auto" pt="2rem">
+            <Heading
+              as={"h5"}
+              fontSize={{ base: "1.5rem", md: "1.7rem" }}
+              fontWeight={600}
+              color={colorMode === "dark" ? "#f5f6f6" : "#111111"}
+              mb={".5rem"}
+            >
+              ANALYTICS{" "}
+            </Heading>
+            <Center
+              mt="15rem"
+              color={colorMode === "dark" ? "#f5f6f6" : "#000"}
+            >
+              Coming soon
+            </Center>
+          </Box>
         </Box>
-      </Box>
-    </Sidebar>
-    // </ProtectedRoute>
+      </Sidebar>
+    </ProtectedRoute>
   );
 };
 
