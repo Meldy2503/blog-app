@@ -29,7 +29,7 @@ export const BlogContext = createContext<{
     category: "",
     postedOn: Date.now(),
     title: "",
-    bannerImage: File,
+    bannerImage: "",
     postLength: 0,
   },
 });
