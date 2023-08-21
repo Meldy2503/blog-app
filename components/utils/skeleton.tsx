@@ -1,6 +1,12 @@
 "use client";
 
-import { Stack, Skeleton, HStack } from "@chakra-ui/react";
+import {
+  Stack,
+  Skeleton,
+  HStack,
+  SkeletonCircle,
+  Flex,
+} from "@chakra-ui/react";
 import React from "react";
 
 export const ListSkeleton = () => {
@@ -34,5 +40,13 @@ export const RecentPostsSkeleton = () => {
       <Skeleton height="50px" w={"100%"} />
       <Skeleton height="50px" w={"100%"} />
     </Stack>
+  );
+};
+export const ProfileImageSkeleton = () => {
+  return (
+    <Flex align={"flex-end"} gap=".2rem">
+      <SkeletonCircle size="10" />
+      <Skeleton height="10px" w={"15px"} />
+    </Flex>
   );
 };

@@ -1,5 +1,5 @@
 "use client";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useContext } from "react";
 import {
   IconButton,
   Box,
@@ -19,7 +19,7 @@ import {
 } from "@chakra-ui/react";
 import { FiMenu, FiLogOut } from "react-icons/fi";
 import { BsMoonStarsFill, BsSun } from "react-icons/bs";
-import { useLogout } from "../hooks/auth";
+import { useAuth, useLogout } from "../hooks/auth";
 import Link from "next/link";
 import NavProfile from "./navbar-profile";
 import { usePathname } from "next/navigation";
@@ -29,36 +29,44 @@ import { usePosts } from "../hooks/posts";
 import { FiTrendingUp } from "react-icons/fi";
 import { capitalizeName } from "./utils/functions";
 import { ListSkeleton } from "./utils/skeleton";
+import { BlogContext } from "../context/blog-context";
 
 export default function SidebarWithHeader({
   children,
 }: {
   children: ReactNode;
 }) {
+  const { currentUser } = useContext(BlogContext);
+  const { user, authUser } = useAuth();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { colorMode } = useColorMode();
 
   return (
-    <Box minH="100vh">
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-      >
-        <DrawerContent bg={colorMode === "light" ? "#fff" : "#171923"}>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }}>{children}</Box>
-    </Box>
+    <>
+      {authUser && (
+        <Box minH="100vh">
+          <SidebarContent
+            onClose={() => onClose}
+            display={{ base: "none", md: "block" }}
+          />
+          <Drawer
+            autoFocus={false}
+            isOpen={isOpen}
+            placement="left"
+            onClose={onClose}
+            returnFocusOnClose={false}
+            onOverlayClick={onClose}
+          >
+            <DrawerContent bg={colorMode === "light" ? "#fff" : "#171923"}>
+              <SidebarContent onClose={onClose} />
+            </DrawerContent>
+          </Drawer>
+          <MobileNav onOpen={onOpen} />
+          <Box ml={{ base: 0, md: 60 }}>{children}</Box>
+        </Box>
+      )}
+    </>
   );
 }
 

@@ -43,7 +43,7 @@ export function useAuth() {
       setLoading(true);
       if (authUser) {
         const ref = collection(db, "users");
-        const q = query(ref, where("email", "==", authUser.email));
+        const q = query(ref, where("email", "==", authUser?.email));
         const querySnapshot = await getDocs(q);
         const userDocs = querySnapshot.docs;
         if (userDocs.length > 0) {

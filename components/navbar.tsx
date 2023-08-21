@@ -24,11 +24,13 @@ import { FaPencilAlt } from "react-icons/fa";
 import Link from "next/link";
 import { NAV_ITEMS, NavItem } from "./utils/constants";
 import { usePathname } from "next/navigation";
+import { ProfileImageSkeleton } from "./utils/skeleton";
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
   const { user, isLoading } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
+  const path = usePathname();
 
   return (
     <Box
@@ -93,27 +95,31 @@ export default function WithSubnavigation() {
               {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun />}
             </Button>
 
-            <Link href={user ? "/dashboard/write-post" : "/auth/sign-in"}>
-              <Box
-                fontSize={"sm"}
-                px="1rem"
-                py=".5rem"
-                borderRadius="5px"
-                color={"white"}
-                bg="#543EE0"
-                border="2px solid #543EE0"
-                display={{ base: "none", md: "inline-flex" }}
-                fontWeight={600}
-                _hover={{
-                  textDecor: "none",
-                }}
-              >
-                <Icon as={FaPencilAlt} color="#fff" mr=".5rem" />
-                Write
-              </Box>
-            </Link>
+            {!path.includes("write-post") && (
+              <Link href={user ? "/dashboard/write-post" : "/auth/sign-in"}>
+                <Box
+                  fontSize={"sm"}
+                  px="1rem"
+                  py=".5rem"
+                  borderRadius="5px"
+                  color={"white"}
+                  bg="#543EE0"
+                  border="2px solid #543EE0"
+                  display={{ base: "none", md: "inline-flex" }}
+                  fontWeight={600}
+                  _hover={{
+                    textDecor: "none",
+                  }}
+                >
+                  <Icon as={FaPencilAlt} color="#fff" mr=".5rem" />
+                  Write
+                </Box>
+              </Link>
+            )}
 
-            {isLoading ? null : (
+            {isLoading ? (
+              <ProfileImageSkeleton />
+            ) : (
               <>
                 {user ? (
                   <NavProfile />

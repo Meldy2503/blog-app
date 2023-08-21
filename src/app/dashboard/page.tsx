@@ -23,7 +23,6 @@ import { useAuth } from "../../../hooks/auth";
 import { usePosts, usePostsUid } from "../../../hooks/posts";
 import { BlogContext } from "../../../context/blog-context";
 import { ImFilesEmpty } from "react-icons/im";
-import ProtectedRoute from "../../../components/protected-routes";
 
 const Dashboard = () => {
   const { colorMode } = useColorMode();
@@ -36,7 +35,7 @@ const Dashboard = () => {
   const sortedPosts = posts?.sort((a, b) => b?.postedOn - a?.postedOn);
 
   return (
-    <ProtectedRoute>
+    <>
       <Sidebar>
         <Box
           bg={colorMode === "light" ? "#f7f6f6" : "#171923"}
@@ -202,7 +201,7 @@ const Dashboard = () => {
           </Box>
         </Box>
       </Sidebar>
-     </ProtectedRoute>
+    </>
   );
 };
 export default Dashboard;
